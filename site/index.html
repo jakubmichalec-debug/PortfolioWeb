@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jakub Michalec · Interactive prototyping</title>
+  <meta name="description" content="Portfolio of Jakub Michalec, Multimedia and Creative Technologies student at KdG. CAD, 3D printing, Arduino electronics and the code that makes prototypes react.">
+  <meta name="theme-color" content="#08205a">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2308205a'/%3E%3Crect x='2.5' y='2.5' width='27' height='27' fill='none' stroke='%23f4f8ff'/%3E%3Ctext x='16' y='20.5' font-family='monospace' font-size='11' text-anchor='middle' fill='%23f4f8ff'%3EJM%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <script>document.documentElement.classList.add(matchMedia('(prefers-reduced-motion: reduce)').matches ? 'still' : 'anim');</script>
+  <link rel="stylesheet" href="css/tokens.css?v=25">
+  <link rel="stylesheet" href="css/base.css?v=25">
+  <link rel="stylesheet" href="css/components.css?v=25">
+  <link rel="stylesheet" href="css/home.css?v=25">
+  <link rel="stylesheet" href="css/motion.css?v=25">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"></div>
+  <div class="xhair" aria-hidden="true"><i class="h"></i><i class="v"></i><i class="dot"></i><span class="coords"></span></div>
+
+  <header class="nav">
+    <a class="brand" href="index.html" aria-label="Jakub Michalec, home">
+      <span class="brand-mark" aria-hidden="true">JM</span>
+      <span>Jakub Michalec</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu"><span></span><span></span></button>
+    <nav class="nav-links" id="nav-links" aria-label="Main">
+      <a href="pinball.html">Pinball</a>
+      <a href="lost-and-found.html">Lost and found</a>
+      <a href="web.html">Web</a>
+      <a href="about.html">About</a>
+      <a class="btn btn--redline btn--sm" href="#contact" data-magnetic>Contact</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="sheet">
+        <div class="zones zones--x" aria-hidden="true"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i></div>
+        <div class="zones zones--y" aria-hidden="true"><i>A</i><i>B</i><i>C</i><i>D</i></div>
+        <svg class="pf" data-playfield aria-hidden="true"></svg>
+
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">MCT student · interactive prototyping</p>
+            <h1 class="h1" id="hero-title">
+              <span class="w"><span class="wi">I</span></span>
+              <span class="w"><span class="wi">build</span></span>
+              <span class="w"><span class="wi">machines</span></span>
+              <span class="w"><span class="wi">where</span></span>
+              <span class="mark"><span class="w"><span class="wi">logic</span></span><svg class="redline redline--under" viewBox="0 0 200 20" aria-hidden="true"><path pathLength="1" d="M3 12C30 4 58 17 92 9S156 5 197 11"/></svg></span>
+              <span class="w"><span class="wi">controls</span></span>
+              <span class="mark"><span class="w"><span class="wi">hardware.</span></span><svg class="redline redline--loop" viewBox="0 0 540 100" aria-hidden="true"><path pathLength="1" d="M46 54C30 22 150 8 285 9C420 10 522 26 516 52C510 80 392 92 262 91C132 90 24 82 38 46C46 24 110 14 170 12"/></svg></span>
+            </h1>
+            <p class="lede">Hi, I'm Jakub. I design, 3D print and wire interactive prototypes, and write the code that makes them react.</p>
+            <div class="cta">
+              <a class="btn btn--redline" href="pinball.html" data-magnetic>See the pinball <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
+              <a class="btn" href="assets/Jakub-Michalec-CV.pdf" download data-magnetic>Download CV <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8M4.5 7 8 10.5 11.5 7M3 13.5h10"/></svg></a>
+            </div>
+          </div>
+
+          <figure class="photo">
+            <span class="tick tick--tl" aria-hidden="true"></span><span class="tick tick--tr" aria-hidden="true"></span>
+            <span class="tick tick--bl" aria-hidden="true"></span><span class="tick tick--br" aria-hidden="true"></span>
+            <div class="dim dim--x" aria-hidden="true"><span>1 : 1</span></div>
+            <div class="dim dim--y" aria-hidden="true"><span>1 : 1</span></div>
+            <div class="photo-frame">
+              <svg class="photo-ph" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 100 100M100 0 0 100" fill="none" stroke="rgba(170,205,255,.22)" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>
+              <span class="ph-label" aria-hidden="true"><span>Your photo</span><span>assets/img/profile.jpg</span></span>
+              <img src="assets/img/profile.jpg" alt="Portrait of Jakub Michalec" width="960" height="960" onload="this.closest('.photo').classList.add('has-photo')" onerror="this.remove()">
+            </div>
+            <figcaption><span>Fig. 01</span><span>J. Michalec</span></figcaption>
+          </figure>
+        </div>
+
+        <dl class="titleblock" aria-label="Drawing details">
+          <dt>Title</dt><dd>Pinball playfield</dd>
+          <dt>Drawn</dt><dd>J. Michalec</dd>
+          <dt>Units</dt><dd>mm · not to scale</dd>
+        </dl>
+      </div>
+
+      <div class="ticker" aria-label="Tools I use">
+        <div class="ticker-track">
+          <ul>
+            <li>FreeCAD</li><li>PrusaSlicer</li><li>Arduino</li><li>RFID</li><li>Solenoids</li><li>Laser cutting</li><li>3D printing</li><li>Illustrator</li><li>Blender</li><li>Tinkercad</li><li>Soldering</li>
+          </ul>
+          <ul aria-hidden="true">
+            <li>FreeCAD</li><li>PrusaSlicer</li><li>Arduino</li><li>RFID</li><li>Solenoids</li><li>Laser cutting</li><li>3D printing</li><li>Illustrator</li><li>Blender</li><li>Tinkercad</li><li>Soldering</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="work" aria-labelledby="work-h">
+      <div class="wrap">
+        <header class="sec-head reveal">
+          <h2 id="work-h">Selected work</h2>
+          <p class="eyebrow">Two projects, both built end to end</p>
+        </header>
+        <div class="work-grid">
+          <a class="project project--a detail reveal" href="pinball.html" data-tilt aria-labelledby="p-a-title">
+            <div class="project-media project-media--pf">
+              <svg class="pf pf--card" data-playfield aria-hidden="true"></svg>
+              <span class="media-label">Playfield · 600 × 800 mm</span>
+            </div>
+            <div class="project-body">
+              <p class="meta">2026 · 12 weeks · team of 3</p>
+              <h3 id="p-a-title">Pinball machine</h3>
+              <p>A playable table with solenoid flippers, scoring targets and an RFID card that starts a game. I designed the CAD, wrote the Arduino code and did the wiring.</p>
+              <ul class="tags"><li>FreeCAD</li><li>Arduino</li><li>Laser cutter</li><li>3D printing</li></ul>
+              <span class="more">View project <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span>
+            </div>
+          </a>
+
+          <a class="project project--b detail reveal" href="lost-and-found.html" data-tilt aria-labelledby="p-b-title">
+            <div class="project-media project-media--photo">
+              <img src="assets/img/lost-and-found-inside.jpg" alt="Inside the Lost and found prototype: an Arduino, breadboard, buzzer, LEDs and RFID reader wired inside a cardboard box" width="1125" height="1500" loading="lazy">
+            </div>
+            <div class="project-body">
+              <p class="meta">Course project · 2024–25</p>
+              <h3 id="p-b-title">Lost and found locker</h3>
+              <p>An RFID locker for music festivals. Tag a found item, scan the owner's card and a servo opens the lock. The Arduino code handles a master card, tag matching and an LCD list.</p>
+              <ul class="tags"><li>Arduino</li><li>RFID</li><li>Servo</li></ul>
+              <span class="more">View project <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span>
+            </div>
+          </a>
+
+          <div class="project project--soon reveal">Web design projects · next up</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="skills-h">
+      <div class="wrap">
+        <header class="sec-head reveal">
+          <h2 id="skills-h">What I work with</h2>
+          <p class="eyebrow">Prototyping, end to end</p>
+        </header>
+        <div class="skill-grid">
+          <article class="skill reveal">
+            <svg class="icon" viewBox="0 0 48 48" aria-hidden="true">
+              <path class="d" pathLength="1" d="M24 4 41 13.5v21L24 44 7 34.5v-21z"/>
+              <path class="d acc" pathLength="1" d="M7 13.5 24 23l17-9.5"/>
+              <path class="d" pathLength="1" d="M24 23v21"/>
+            </svg>
+            <h3>CAD and fabrication</h3>
+            <p>Parametric parts in FreeCAD, 3D printed and laser cut.</p>
+          </article>
+          <article class="skill reveal">
+            <svg class="icon" viewBox="0 0 48 48" aria-hidden="true">
+              <rect class="d" pathLength="1" x="12" y="12" width="24" height="24" rx="1"/>
+              <rect class="d acc" pathLength="1" x="19" y="19" width="10" height="10"/>
+              <path class="d" pathLength="1" d="M18 5v7M24 5v7M30 5v7M18 36v7M24 36v7M30 36v7M5 18h7M5 24h7M5 30h7M36 18h7M36 24h7M36 30h7"/>
+            </svg>
+            <h3>Electronics and code</h3>
+            <p>Arduino, sensors, solenoids and RFID, wired and programmed by me.</p>
+          </article>
+          <article class="skill reveal">
+            <svg class="icon" viewBox="0 0 48 48" aria-hidden="true">
+              <rect class="d" pathLength="1" x="5" y="9" width="38" height="30" rx="1"/>
+              <path class="d" pathLength="1" d="M5 17h38"/>
+              <path class="d acc" pathLength="1" d="M12 32c5-9 9 2 14-5s7-2 10-6"/>
+              <circle class="d acc" pathLength="1" cx="36.500" cy="21.500" r="2.400"/>
+            </svg>
+            <h3>Web and motion</h3>
+            <p>Animated, responsive sites, art-directed by me and built with AI tools.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact" aria-labelledby="contact-h">
+      <div class="wrap">
+        <div class="contact-inner detail reveal">
+          <p class="eyebrow">Available 1 Feb to 5 May 2027</p>
+          <h2 id="contact-h">Looking for an internship in prototyping and interactive tech.</h2>
+          <div class="contact-row">
+            <a class="btn btn--redline" href="mailto:your@email.com" data-magnetic>Get in touch <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
+            <a class="mail" href="mailto:your@email.com">your@email.com</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <p>© 2026 Jakub Michalec</p>
+      <p>Designed by me, built with Claude</p>
+      <nav aria-label="Elsewhere"><a href="#">LinkedIn</a><a href="#">GitHub</a><a href="assets/Jakub-Michalec-CV.pdf">CV</a></nav>
+    </div>
+  </footer>
+
+  <script defer src="js/vendor/gsap.min.js?v=25"></script>
+  <script defer src="js/vendor/ScrollTrigger.min.js?v=25"></script>
+  <script defer src="js/vendor/lenis.min.js?v=25"></script>
+  <script defer src="js/playfield-data.js?v=25"></script>
+  <script defer src="js/main.js?v=25"></script>
+</body>
+</html>

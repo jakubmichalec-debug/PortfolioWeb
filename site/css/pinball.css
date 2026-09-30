@@ -1,0 +1,164 @@
+/* Pinball page hero band. The build story itself lives in story.css. */
+
+.pb-hero {
+  padding: calc(var(--nav-h) + 28px) var(--gutter) 0;
+}
+
+.pb-hero .wrap {
+  padding-bottom: clamp(28px, 4vw, 44px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.pb-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+}
+
+/* the payoff up front: the finished table in play, with the top-down shot pinned over its
+   corner like a photo clipped to a drawing sheet (cards built by js/media.js) */
+.pb-hero-media {
+  position: relative;
+  padding-left: 24%;
+}
+
+.pb-hero-media .media-card--lead {
+  position: relative;
+}
+
+.pb-hero-media .media-card--lead::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--redline);
+  border-left: 0;
+  border-bottom: 0;
+  pointer-events: none;
+}
+
+.pb-hero-media .media-card--pin {
+  position: absolute;
+  left: 0;
+  top: 10%;
+  z-index: 1;
+  width: 42%;
+  transform: rotate(-3deg);
+}
+
+.pb-hero-media .media-card--pin .media-open {
+  border-color: var(--rule-strong);
+  box-shadow: 0 22px 44px -14px rgba(0, 0, 0, 0.75);
+}
+
+.pb-hero-media .media-card--pin figcaption {
+  display: none; /* it's in the full-screen viewer; here it would sit on top of the clip */
+}
+
+@media (max-width: 860px) {
+  .pb-hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pb-hero-media {
+    max-width: 480px;
+  }
+}
+
+.pb-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin: 1.1rem 0 1.6rem;
+}
+
+.pb-kicker li {
+  padding: 0.32rem 0.7rem;
+  border: 1px solid var(--rule);
+  font: 500 0.68rem var(--f-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.pb-h1 {
+  font: 800 clamp(2.1rem, 5vw, 3.8rem) / 1 var(--f-display);
+  font-stretch: 118%;
+  letter-spacing: -0.02em;
+  max-width: 18ch;
+}
+
+.pb-lede {
+  max-width: 40rem;
+  margin-top: 1rem;
+  color: var(--ink-2);
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
+}
+
+.pb-credit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  align-items: center;
+  margin-top: 1.4rem;
+  font: 500 0.72rem var(--f-mono);
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+}
+
+.pb-credit b {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* the RFID start - set apart from the lede because the code excerpts on the page predate it */
+.pb-note {
+  max-width: 40rem;
+  margin-top: 1.2rem;
+  padding: 0.7rem 0.9rem;
+  border-left: 2px solid var(--redline);
+  background: rgba(255, 214, 10, 0.05);
+  color: var(--ink-2);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.pb-note b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* the 2 parts that only ever existed as a FreeCAD sketch: no STL, no cut file, no usable
+   thumbnail. Says so plainly instead of faking a preview - matches the "your photo" slot
+   language on Home rather than looking like a broken image. Used inside story.css's
+   .chapter-stage / .satellite. */
+.ph-slot {
+  width: calc(100% - 24px);
+  height: calc(100% - 24px);
+  margin: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border: 1px dashed var(--rule-strong);
+  color: var(--ink-3);
+}
+
+.ph-slot svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+  opacity: 0.6;
+}
+
+.ph-slot span {
+  font: 500 0.64rem var(--f-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}

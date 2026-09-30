@@ -1,0 +1,15 @@
+# Text is stored with LF line endings (several files here were written on Windows with CRLF).
+* text=auto eol=lf
+*.bat text eol=crlf
+
+# Never touch binaries
+*.glb binary
+*.hdr binary
+*.webp binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.mp4 binary
+*.xlsx binary
+*.pdf binary
+*.woff2 binary

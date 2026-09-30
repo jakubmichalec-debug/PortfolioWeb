@@ -1,0 +1,755 @@
+/* Pinball page: a build story you scroll through, not a filtered gallery. One chapter per
+   mechanism, alternating sides, connected by an animated path - each model idles in place
+   until clicked, then opens full-screen for real inspection. */
+
+.story {
+  padding-top: clamp(56px, 8vw, 96px);
+}
+
+.story-head {
+  margin-bottom: clamp(8px, 2vw, 16px);
+}
+
+.story-head h2 {
+  font: 700 clamp(1.5rem, 2.6vw, 2.1rem) / 1.1 var(--f-display);
+  font-stretch: 112%;
+}
+
+/* ---------------- chapter ---------------- */
+.chapter {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(20px, 4vw, 56px);
+  align-items: center;
+  padding: clamp(28px, 5vw, 48px) 0;
+}
+
+.chapter:nth-child(even) .chapter-visual {
+  order: 2;
+}
+
+.chapter-num {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 0.6rem;
+  font: 700 0.85rem var(--f-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--redline-soft);
+}
+
+.chapter-num span {
+  color: var(--ink-3);
+  font-weight: 500;
+}
+
+.chapter h3 {
+  font: 700 clamp(1.4rem, 2.6vw, 2rem) / 1.15 var(--f-display);
+  font-stretch: 112%;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.7rem;
+}
+
+.chapter-blurb {
+  color: var(--ink-2);
+  max-width: 44ch;
+  font-size: clamp(0.95rem, 1vw, 1.02rem);
+}
+
+.chapter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 1rem;
+}
+
+.chapter-tags li {
+  padding: 0.28rem 0.6rem;
+  border: 1px solid var(--rule);
+  font: 500 0.64rem var(--f-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.chapter-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.2rem;
+  font: 500 0.72rem var(--f-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--redline);
+}
+
+.chapter-code svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.chapter-code--soon {
+  color: var(--ink-3);
+  border-bottom-color: var(--rule);
+  cursor: default;
+}
+
+/* ---------------- visual: hero + satellite strip ---------------- */
+.chapter-visual {
+  display: grid;
+  gap: 10px;
+}
+
+.chapter-stage {
+  position: relative;
+  aspect-ratio: 1;
+  border: 1px solid var(--rule);
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.06), transparent 62%),
+    var(--paper-deep);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.chapter-stage model-viewer,
+.chapter-stage img,
+.chapter-stage .pf {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  --poster-color: transparent;
+}
+
+.chapter-stage img {
+  object-fit: contain;
+  padding: 16px;
+}
+
+.chapter-stage.is-empty img {
+  display: none;
+}
+
+.chapter-stage .pf {
+  padding: 12px;
+  color: var(--ink-2);
+  --sw: 2.2;
+}
+
+.chapter-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid transparent;
+  transition: border-color 0.3s, background 0.3s;
+  pointer-events: none;
+}
+
+.chapter-stage:hover::after {
+  border-color: var(--redline);
+  background: rgba(255, 214, 10, 0.05);
+}
+
+.chapter-expand {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.3rem 0.6rem;
+  background: rgba(6, 24, 73, 0.75);
+  border: 1px solid var(--rule);
+  font: 500 0.62rem var(--f-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.chapter-stage:hover .chapter-expand {
+  opacity: 1;
+}
+
+.chapter-expand svg {
+  width: 11px;
+  height: 11px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+.satellites {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: 8px;
+}
+
+.satellite {
+  aspect-ratio: 1;
+  border: 1px solid var(--rule);
+  background: var(--paper-deep);
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.satellite:hover {
+  border-color: var(--rule-strong);
+}
+
+.satellite model-viewer,
+.satellite img {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  --poster-color: transparent;
+}
+
+.satellite img {
+  object-fit: contain;
+  padding: 8px;
+}
+
+/* ---------------- the connecting path: one line, real stage to real stage ---------------- */
+/* Built in JS from each .chapter-stage's actual position (see story.js#rebuildConnector),
+   not a decorative shape - it really does run image-to-image in a zigzag. Sits behind the
+   chapters (z-index 0 vs their 1) and fills in as you scroll the whole section (scrubbed,
+   not a snap-in), via stroke-dashoffset driven straight off ScrollTrigger progress. */
+.story-connector {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.connector-path {
+  fill: none;
+  stroke: var(--redline);
+  stroke-width: 2;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 5px var(--redline-glow));
+}
+
+.connector-node {
+  fill: var(--paper);
+  stroke: var(--redline);
+  stroke-width: 2;
+  transition: r 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .connector-path {
+    filter: none;
+  }
+}
+
+/* ---------------- fullscreen lightbox ---------------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 14, 42, 0.92);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s var(--ease-out), visibility 0.35s;
+}
+
+.lightbox.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-stage {
+  width: min(88vw, 900px);
+  height: min(72vh, 900px);
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-deep);
+  position: relative;
+  transform: scale(0.96);
+  transition: transform 0.35s var(--ease-out);
+}
+
+.lightbox.open .lightbox-stage {
+  transform: scale(1);
+}
+
+.lightbox-stage model-viewer {
+  width: 100%;
+  height: 100%;
+  --poster-color: transparent;
+}
+
+.lightbox-bar {
+  width: min(88vw, 900px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  padding: 14px 2px 0;
+  font: 500 0.72rem var(--f-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.lightbox-hint {
+  color: var(--ink-3);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -46px;
+  right: 0;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule-strong);
+  color: var(--ink);
+  background: var(--paper-deep);
+}
+
+.lightbox-close svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+/* the "open one part alone" chip row for assemblies (e.g. the solenoid adapter) -
+   click a piece and the same lightbox swaps to just that piece. */
+.lightbox-parts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: min(88vw, 900px);
+  margin-top: 12px;
+}
+
+.lightbox-part-chip {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--rule);
+  font: 500 0.68rem var(--f-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+}
+
+.lightbox-part-chip:hover {
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+
+.lightbox-part-chip.on {
+  color: var(--paper-deep);
+  background: var(--redline);
+  border-color: var(--redline);
+}
+
+.lightbox-tools {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lightbox-dims {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--rule);
+  font: 500 0.66rem var(--f-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.lightbox-dims[hidden] {
+  display: none;
+}
+
+.lightbox-dims[aria-pressed="true"] {
+  color: var(--ink);
+  border-color: var(--redline);
+}
+
+.lightbox-dims svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------------- dimension lines (site/js/dimensions.js) ---------------- */
+/* "measure-" not "dim": Home's drafting-sheet hero already owns .dim (and motion.css hides
+   .anim .dim until that page's intro plays) */
+.measure {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.measure-set {
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out);
+}
+
+.measure-set.on {
+  opacity: 1;
+}
+
+.measure-set path {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.measure-ext {
+  stroke: var(--ink-2);
+  stroke-width: 1;
+  opacity: 0.65;
+}
+
+.measure-line {
+  stroke: var(--redline);
+  stroke-width: 1.4;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.1s var(--ease-out);
+}
+
+.measure.drawn .measure-line {
+  stroke-dashoffset: 0;
+}
+
+.measure-tick {
+  stroke: var(--redline);
+  stroke-width: 1.6;
+}
+
+.measure-pt {
+  display: none;
+}
+
+/* slotted into model-viewer's hotspot layer: absolutely positioned + self-centred on its
+   anchor, exactly the way model-viewer's own dimension example sets its labels up */
+.measure-label {
+  position: absolute;
+  width: max-content;
+  display: flex;
+  align-items: baseline;
+  gap: 0.25em;
+  padding: 0.3rem 0.45rem 0.28rem;
+  background: var(--paper-deep);
+  border: 1px solid var(--redline);
+  box-shadow: 0 0 14px -4px var(--redline-glow);
+  font: 500 0.66rem/1 var(--f-mono);
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out);
+}
+
+.measure-label.on {
+  opacity: 1;
+}
+
+.measure-label small {
+  font-size: 0.82em;
+  color: var(--ink-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .measure-set,
+  .measure-line,
+  .measure-label,
+  .media-open img,
+  .media-open video {
+    transition: none;
+  }
+}
+
+/* ---------------- from the workshop: the real build next to each model ---------------- */
+.workshop {
+  margin-top: 1.6rem;
+}
+
+.workshop-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.75rem;
+  font: 500 0.66rem var(--f-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.workshop-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+.workshop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+  gap: 14px 12px;
+}
+
+@media (max-width: 560px) {
+  .workshop-grid {
+    grid-template-columns: repeat(auto-fill, minmax(94px, 1fr));
+  }
+}
+
+.media-card {
+  margin: 0;
+}
+
+.media-open {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: var(--paper-deep);
+}
+
+.media-open img,
+.media-open video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.media-open:hover img,
+.media-open:hover video {
+  transform: scale(1.05);
+}
+
+.media-open::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid transparent;
+  transition: border-color 0.3s;
+  pointer-events: none;
+}
+
+.media-open:hover::after,
+.media-open:focus-visible::after {
+  border-color: var(--redline);
+}
+
+.media-play {
+  position: absolute;
+  left: 7px;
+  bottom: 7px;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--redline);
+  background: rgba(6, 24, 73, 0.82);
+  pointer-events: none;
+}
+
+.media-play svg {
+  width: 9px;
+  height: 9px;
+  fill: var(--redline);
+}
+
+.media-card figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.76rem;
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+
+.media-card time {
+  display: block;
+  margin-bottom: 0.15rem;
+  font: 500 0.6rem var(--f-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--redline);
+}
+
+/* ---------------- photo / clip viewer ---------------- */
+.mediabox-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(88vw, 1000px);
+  height: min(74vh, 880px);
+  pointer-events: none; /* empty space beside a tall photo closes the viewer, like the backdrop */
+}
+
+.mediabox-stage > * {
+  pointer-events: auto;
+}
+
+.mediabox-frame img,
+.mediabox-frame video {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(88vw, 1000px);
+  max-height: min(74vh, 880px);
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-deep);
+}
+
+.mediabox-nav {
+  position: absolute;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule-strong);
+  background: rgba(6, 24, 73, 0.82);
+  color: var(--ink);
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.mediabox-nav:hover {
+  border-color: var(--redline);
+  color: var(--redline);
+}
+
+.mediabox-nav[hidden] {
+  display: none;
+}
+
+.mediabox-prev {
+  left: 0;
+}
+
+.mediabox-next {
+  right: 0;
+}
+
+.mediabox-nav svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+.mediabox-caption time {
+  margin-right: 0.45rem;
+  color: var(--redline);
+}
+
+/* ---------------- code panel ---------------- */
+.codepanel-stage {
+  width: min(92vw, 720px);
+  max-height: 78vh;
+  overflow-y: auto;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-deep);
+  padding: clamp(20px, 3vw, 32px);
+}
+
+.codepanel-stage h4 {
+  font: 700 1.1rem/1.3 var(--f-display);
+  font-stretch: 112%;
+  margin-bottom: 0.5rem;
+}
+
+.codepanel-note {
+  color: var(--ink-2);
+  font-size: 0.92rem;
+  max-width: 60ch;
+  margin-bottom: 1.1rem;
+}
+
+.codepanel-file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 0.6rem;
+  font: 500 0.68rem var(--f-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.codepanel-file a {
+  color: var(--redline-soft);
+  border-bottom: 1px solid currentColor;
+}
+
+.codepanel-stage pre {
+  margin: 0;
+  padding: 16px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  overflow-x: auto;
+  font: 400 0.82rem/1.6 var(--f-mono);
+  color: var(--ink-2);
+  white-space: pre;
+}
+
+.codepanel-stage pre .kw { color: var(--redline-soft); }
+.codepanel-stage pre .cm { color: var(--ink-3); font-style: italic; }
+.codepanel-stage pre .nm { color: var(--ink); }
+.codepanel-stage pre .str { color: #9fd8a8; }
+
+@media (max-width: 860px) {
+  .chapter {
+    grid-template-columns: 1fr;
+  }
+
+  .chapter:nth-child(even) .chapter-visual {
+    order: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-stage model-viewer,
+  .satellite model-viewer,
+  .lightbox-stage model-viewer {
+    --model-viewer-auto-rotate-delay: 999999;
+  }
+}

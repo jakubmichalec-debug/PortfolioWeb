@@ -1,0 +1,32 @@
+/* Start states for the intro and scroll animations.
+   They only apply while <html> has the "anim" class, which main.js removes again if GSAP is missing
+   or the visitor prefers reduced motion. Without it, everything is simply visible. */
+.anim .nav,
+.anim .reveal,
+.anim .hero .eyebrow,
+.anim .lede,
+.anim .hero .cta > *,
+.anim .h1 .wi,
+.anim .zones i,
+.anim .titleblock,
+.anim .photo figcaption,
+.anim .dim,
+.anim .tick {
+  opacity: 0;
+}
+
+.anim .sheet {
+  clip-path: inset(0 100% 0 0);
+}
+
+.anim .photo-frame {
+  clip-path: inset(0 0 100% 0);
+}
+
+.anim .pf path,
+.anim .pf circle,
+.anim .redline path,
+.anim .icon .d {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}

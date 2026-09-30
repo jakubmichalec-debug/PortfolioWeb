@@ -1,0 +1,746 @@
+/* ================= HERO: a drawing sheet ================= */
+.hero {
+  padding: calc(var(--nav-h) + 18px) var(--gutter) 0;
+}
+
+.sheet {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: min(100%, var(--maxw));
+  margin-inline: auto;
+  min-height: min(780px, calc(100svh - var(--nav-h) - 36px));
+  border: 1px solid var(--rule-strong);
+  background: rgba(6, 24, 73, 0.6);
+}
+
+/* inner border, like the margin of a real drawing sheet */
+.sheet::before {
+  content: "";
+  position: absolute;
+  inset: 20px;
+  z-index: 1;
+  border: 1px solid var(--rule);
+  pointer-events: none;
+}
+
+/* zone labels along the top and left edge */
+.zones {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  font: 500 0.6rem/1 var(--f-mono);
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+
+.zones i {
+  display: grid;
+  place-items: center;
+  font-style: normal;
+}
+
+.zones--x {
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 20px;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.zones--x i {
+  border-left: 1px solid var(--rule);
+}
+
+.zones--x i:last-child {
+  border-right: 1px solid var(--rule);
+}
+
+.zones--y {
+  left: 0;
+  top: 20px;
+  bottom: 20px;
+  width: 20px;
+  grid-template-rows: repeat(4, 1fr);
+}
+
+.zones--y i {
+  border-top: 1px solid var(--rule);
+}
+
+.zones--y i:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+/* the playfield outline: exported straight from the FreeCAD sketch */
+.sheet .pf {
+  position: absolute;
+  z-index: 0;
+  top: -14%;
+  right: -3%;
+  height: 128%;
+  width: auto;
+  aspect-ratio: 612 / 812;
+  rotate: -7deg;
+  opacity: 0.5;
+  --sw: 1.8;
+  /* fade the drawing out towards the text so the headline stays clean */
+  -webkit-mask-image: linear-gradient(to left, #000 38%, transparent 82%);
+  mask-image: linear-gradient(to left, #000 38%, transparent 82%);
+}
+
+.hero-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.72fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: center;
+  padding: clamp(56px, 7vw, 92px) clamp(46px, 6vw, 88px) clamp(104px, 9vw, 128px);
+}
+
+.h1 {
+  margin: 1.1rem 0 1.4rem;
+  font: 800 clamp(2.4rem, 5vw, 4.6rem) / 0.98 var(--f-display);
+  font-stretch: 118%;
+  letter-spacing: -0.022em;
+}
+
+/* word masks for the reveal */
+.w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0.06em 0.05em 0.16em;
+  margin: -0.06em -0.05em -0.16em;
+}
+
+.wi {
+  display: inline-block;
+}
+
+/* the redline pen: neon markup on the words that matter */
+.mark {
+  position: relative;
+  display: inline-block;
+}
+
+.redline {
+  position: absolute;
+  pointer-events: none;
+  overflow: visible;
+  fill: none;
+  stroke: var(--redline);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 7px var(--redline-glow));
+}
+
+.redline--under {
+  left: -3%;
+  bottom: -0.16em;
+  width: 106%;
+  aspect-ratio: 10 / 1;
+}
+
+.redline--loop {
+  left: -6%;
+  top: 50%;
+  width: 119%;
+  aspect-ratio: 27 / 5;
+  translate: 0 -50%;
+}
+
+.lede {
+  max-width: 34rem;
+  color: var(--ink-2);
+  font-size: clamp(1rem, 1.25vw, 1.15rem);
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 2rem;
+}
+
+/* photo slot */
+.photo {
+  position: relative;
+  justify-self: end;
+  width: min(100%, 340px);
+  margin-top: 34px;
+  margin-right: 34px;
+}
+
+.photo-frame {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-deep);
+}
+
+.photo-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-ph {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ph-label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 0.4rem;
+  text-align: center;
+  font: 500 0.66rem var(--f-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.ph-label span:first-child {
+  color: var(--ink-2);
+  font-size: 0.78rem;
+}
+
+.photo.has-photo .photo-ph,
+.photo.has-photo .ph-label {
+  display: none;
+}
+
+.tick {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--ink);
+  pointer-events: none;
+}
+
+.tick--tl {
+  top: -9px;
+  left: -9px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.tick--tr {
+  top: -9px;
+  right: -9px;
+  border-left: 0;
+  border-bottom: 0;
+}
+
+.tick--bl {
+  bottom: -9px;
+  left: -9px;
+  border-right: 0;
+  border-top: 0;
+}
+
+.tick--br {
+  bottom: -9px;
+  right: -9px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.dim {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 0.6rem var(--f-mono);
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+
+.dim::before,
+.dim::after {
+  content: "";
+  flex: 1;
+  background: var(--rule-strong);
+}
+
+.dim--x {
+  left: 0;
+  right: 0;
+  top: -28px;
+  height: 12px;
+  border-inline: 1px solid var(--rule-strong);
+}
+
+.dim--x::before,
+.dim--x::after {
+  height: 1px;
+}
+
+.dim--y {
+  top: 0;
+  bottom: 0;
+  right: -28px;
+  width: 12px;
+  flex-direction: column;
+  border-block: 1px solid var(--rule-strong);
+}
+
+.dim--y::before,
+.dim--y::after {
+  width: 1px;
+}
+
+.dim--y span {
+  writing-mode: vertical-rl;
+}
+
+.photo figcaption {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+  font: 500 0.62rem var(--f-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* title block, bottom-right, like a real drawing */
+.titleblock {
+  position: absolute;
+  z-index: 3;
+  right: 20px;
+  bottom: 20px;
+  display: grid;
+  grid-template-columns: auto auto;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-deep);
+  font: 500 0.6rem/1.25 var(--f-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.titleblock dt,
+.titleblock dd {
+  padding: 0.55rem 0.8rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.titleblock dt {
+  color: var(--ink-3);
+  border-right: 1px solid var(--rule);
+}
+
+.titleblock dd {
+  color: var(--ink);
+}
+
+.titleblock dt:nth-last-of-type(1),
+.titleblock dd:last-of-type {
+  border-bottom: 0;
+}
+
+/* ================= TOOL TICKER ================= */
+.ticker {
+  margin-top: clamp(40px, 6vw, 72px);
+  overflow: hidden;
+  border-block: 1px solid var(--rule);
+  background: rgba(6, 24, 73, 0.45);
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: tick 50s linear infinite;
+}
+
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+.ticker ul {
+  display: flex;
+  gap: 2.2rem;
+  padding: 1rem 2.2rem 1rem 0;
+  font: 500 0.78rem var(--f-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.ticker li {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.2rem;
+}
+
+.ticker li::after {
+  content: "+";
+  color: var(--redline-soft);
+}
+
+@keyframes tick {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ================= SECTIONS ================= */
+.sec {
+  padding-top: clamp(72px, 10vw, 132px);
+}
+
+.sec-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 10px 32px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+
+.sec-head h2,
+.contact h2 {
+  font: 700 clamp(1.7rem, 3.2vw, 2.6rem) / 1.05 var(--f-display);
+  font-stretch: 112%;
+  letter-spacing: -0.015em;
+}
+
+/* skills */
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3.4vw, 48px);
+}
+
+.skill {
+  position: relative;
+  padding-top: 26px;
+  border-top: 1px solid var(--rule-strong);
+}
+
+.skill::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  height: 1px;
+  width: 30px;
+  background: var(--redline);
+  box-shadow: 0 0 10px var(--redline-glow);
+  transition: width 0.7s var(--ease-out);
+}
+
+.skill:hover::before {
+  width: 100%;
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1.5rem;
+  overflow: visible;
+}
+
+.icon * {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon .acc {
+  stroke: var(--redline);
+}
+
+.skill h3 {
+  font: 700 1.25rem/1.15 var(--f-display);
+  font-stretch: 108%;
+  margin-bottom: 0.55rem;
+}
+
+.skill p {
+  color: var(--ink-2);
+  max-width: 30ch;
+  font-size: 0.98rem;
+}
+
+/* projects */
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(16px, 2.4vw, 32px);
+}
+
+.project--a {
+  grid-column: span 7;
+}
+
+.project--b {
+  grid-column: span 5;
+}
+
+.project {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--rule);
+  background: rgba(6, 24, 73, 0.55);
+  transition: border-color 0.4s;
+  will-change: transform;
+}
+
+.project:hover {
+  border-color: var(--redline);
+}
+
+.project-media {
+  position: relative;
+  height: clamp(250px, 30vw, 370px);
+  overflow: hidden;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-deep);
+}
+
+.project-media--pf {
+  padding: 26px;
+}
+
+/* the SVG fills the padded box and its viewBox fits the drawing inside, centred */
+.pf--card {
+  width: 100%;
+  height: 100%;
+  rotate: -5deg;
+  color: var(--ink);
+  --sw: 3.4;
+  transition: rotate 0.8s var(--ease-out), scale 0.8s var(--ease-out);
+}
+
+.project:hover .pf--card {
+  rotate: 0deg;
+  scale: 1.04;
+}
+
+.media-label {
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  font: 500 0.62rem var(--f-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* cyanotype print that develops into colour on hover */
+.project-media--photo {
+  background: #1747b8;
+  transition: background 0.7s;
+}
+
+.project-media--photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 48%;
+  filter: grayscale(1) contrast(1.15) brightness(0.95);
+  mix-blend-mode: multiply;
+  transform: scale(1.03);
+  transition: filter 0.7s, transform 1.2s var(--ease-out);
+}
+
+.project:hover .project-media--photo {
+  background: #fff;
+}
+
+.project:hover .project-media--photo img {
+  filter: none;
+  transform: scale(1.07);
+}
+
+.project-body {
+  display: grid;
+  gap: 0.8rem;
+  padding: clamp(18px, 2.4vw, 28px);
+}
+
+.meta {
+  font: 500 0.68rem var(--f-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.project h3 {
+  font: 700 clamp(1.35rem, 2.2vw, 1.8rem) / 1.1 var(--f-display);
+  font-stretch: 112%;
+  letter-spacing: -0.01em;
+}
+
+.project p {
+  max-width: 46ch;
+  color: var(--ink-2);
+  font-size: 0.98rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tags li {
+  padding: 0.28rem 0.55rem;
+  border: 1px solid var(--rule);
+  font: 500 0.66rem var(--f-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+  font: 500 0.72rem var(--f-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.more svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.45s var(--ease-out);
+}
+
+.project:hover .more svg {
+  transform: translateX(6px);
+}
+
+.project--soon {
+  grid-column: 1 / -1;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  border-style: dashed;
+  border-color: var(--rule-strong);
+  background: none;
+  color: var(--ink-3);
+  font: 500 0.72rem var(--f-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ================= CONTACT ================= */
+.contact {
+  padding-top: clamp(72px, 10vw, 132px);
+}
+
+.contact-inner {
+  display: grid;
+  gap: 1.6rem;
+  padding: clamp(26px, 5vw, 64px);
+  border: 1px solid var(--rule-strong);
+  background: rgba(6, 24, 73, 0.6);
+}
+
+.contact h2 {
+  max-width: 20ch;
+  font-weight: 800;
+  font-size: clamp(1.9rem, 4.2vw, 3.4rem);
+  font-stretch: 116%;
+  letter-spacing: -0.02em;
+}
+
+.contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 28px;
+}
+
+.mail {
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--rule-strong);
+  font: 500 0.85rem var(--f-mono);
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.mail:hover {
+  color: var(--ink);
+  border-color: var(--redline);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 960px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    padding-bottom: 56px;
+  }
+
+  .photo {
+    justify-self: start;
+    width: min(100%, 300px);
+    margin-top: 40px;
+  }
+
+  .titleblock {
+    position: relative;
+    inset: auto;
+    margin: 0 20px 20px auto;
+    width: max-content;
+    max-width: calc(100% - 40px);
+  }
+
+  .sheet .pf {
+    right: -22%;
+    opacity: 0.32;
+  }
+
+  .skill-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project--a,
+  .project--b {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero-grid {
+    padding-inline: 34px;
+  }
+
+  .zones--x i:nth-child(n + 4) {
+    display: none;
+  }
+
+  .zones--x {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
+}

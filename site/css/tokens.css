@@ -1,0 +1,32 @@
+/* Design tokens. Blueprint paper + one neon "redline" pen. Change the accent here and the whole site follows. */
+:root {
+  /* cyanotype paper */
+  --paper: #08205a;
+  --paper-deep: #061849;
+  --paper-lift: #0d2d77;
+
+  /* drafting lines: a cutting-mat grid over the whole site, minor every 32px, major (bolder) every 160px */
+  --grid: rgba(178, 211, 255, 0.28);
+  --grid-major: rgba(205, 227, 255, 0.5);
+  --rule: rgba(170, 205, 255, 0.26);
+  --rule-strong: rgba(206, 228, 255, 0.55);
+
+  /* ink */
+  --ink: #f4f8ff;
+  --ink-2: #bed1f4;
+  --ink-3: #8aa7db;
+
+  /* the redline: the neon accent, used like an engineer's markup pen */
+  --redline: #ffd60a;
+  --redline-soft: #ffe57a;
+  --redline-glow: rgba(255, 214, 10, 0.45);
+
+  --f-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --gutter: clamp(16px, 3.4vw, 44px);
+  --maxw: 1240px;
+  --nav-h: 64px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
