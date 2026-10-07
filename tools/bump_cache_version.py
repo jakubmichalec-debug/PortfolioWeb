@@ -6,18 +6,19 @@ Run this after editing any file under site/css or site/js:
     python tools/bump_cache_version.py
 """
 import glob
+import os
 import re
 
-SITE = "C:/Users/jakub/Desktop/PORTFOLIO/site"
+SITE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "site")
 ATTR = re.compile(r'((?:href|src)=")(css/[\w.\-]+\.css|js/[\w.\-/]+\.js)(?:\?v=(\d+))?(")')
 
-paths = glob.glob(SITE + "/*.html")
-seen = [int(m.group(3)) for path in paths for m in ATTR.finditer(open(path, encoding="utf8").read()) if m.group(3)]
+paths = glob.glob(os.path.join(SITE, "*.html"))
+seen = [int(m.group(3)) for path in paths for m in ATTR.finditer(open(path, encoding="utf8", newline="").read()) if m.group(3)]
 version = max(seen, default=0) + 1
 
 for path in paths:
-    html = open(path, encoding="utf8").read()
+    html = open(path, encoding="utf8", newline="").read()
     new_html, n = ATTR.subn(rf"\g<1>\g<2>?v={version}\g<4>", html)
     if new_html != html:
-        open(path, "w", encoding="utf8").write(new_html)
-    print(f"{path.split('/')[-1]}: {n} tag(s) -> v{version}")
+        open(path, "w", encoding="utf8", newline="").write(new_html)
+    print(f"{os.path.basename(path)}: {n} tag(s) -> v{version}")

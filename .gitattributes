@@ -13,3 +13,6 @@
 *.xlsx binary
 *.pdf binary
 *.woff2 binary
+
+# The archived Arduino sketch stays byte-for-byte: tests and tools check its SHA-256
+*.ino -text

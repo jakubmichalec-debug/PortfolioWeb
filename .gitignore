@@ -14,3 +14,12 @@ desktop.ini
 
 # throwaway pages made while checking the site
 site/_*.html
+
+# Raw review photos and screenshots made while preparing media (never publish)
+tmp/
+
+# Worktrees that Claude Code sessions create inside the project folder
+.claude/worktrees/
+
+# Node tools and tests have no dependencies; this only guards against an accidental install
+node_modules/
