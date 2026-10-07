@@ -14,7 +14,15 @@ From the repo root:
 python tools/dev_server.py
 ```
 
-then open http://localhost:5173. On Windows, `open-site.bat` does both. The dev server sends no-cache headers. After editing anything in `site/css` or `site/js`, run `python tools/bump_cache_version.py` to bump the `?v=` on every stylesheet and script tag.
+then open http://localhost:5173. On Windows, `open-site.bat` does both. The dev server sends no-cache headers and answers HTTP Range requests (a browser needs them to seek in a video). After editing anything in `site/css` or `site/js`, run `python tools/bump_cache_version.py` to bump the `?v=` on every stylesheet and script tag.
+
+## Test
+
+The Lost and found demo has plain Node tests (Node 20+, nothing to install):
+
+```bash
+node --test tests/locker-engine.test.mjs tests/locker-guided.test.mjs tests/locker-case-study.test.mjs tests/locker-pacing.test.mjs
+```
 
 ## Tools
 
@@ -23,11 +31,14 @@ then open http://localhost:5173. On Windows, `open-site.bat` does both. The dev 
 | Script | What it does |
 |---|---|
 | `make_pinball_models.py` | Builds the `.glb` models in `site/assets/models/` and `site/js/pinball-parts.js` for the parts marked "Used" in `pinball-parts-inventory.xlsx`. Uses `glb_export.py`, `svg_extrude.py` and `assemble_box.py` |
-| `make_pinball_media.py` | Resizes the photos and clips, builds the scroll-film frame sequences, and writes `site/assets/media/pinball/` and `site/js/pinball-media.js`. Strips all metadata (EXIF, GPS, audio) and checks that none survived |
+| `make_pinball_media.py` | Resizes the photos and clips, cuts and crops the 4K showcase footage into the hero/finale video and the Home loop, and writes `site/assets/media/pinball/` and `site/js/pinball-media.js`. Strips all metadata (EXIF, GPS, audio) and checks that none survived |
 | `build_inventory.py` | Builds `pinball-parts-inventory.xlsx`, the catalogue of every part (thumbnails from `tools/fcstd_thumbnails/`) |
 | `make_playfield_js.py` | Turns the FreeCAD playfield drawing into `site/js/playfield-data.js` |
 | `make_studio_env.py` | Writes the lighting used by the 3D viewers, `site/assets/env/studio.hdr` |
 | `check_box_joints.py` | Checks that the assembled box's finger joints interlock with no overlap or gap |
 | `extract_lf_photos.py` | Pulls the Lost and found prototype photos out of the assignment PDF |
+| `prepare_locker_media.py` | Prepares the Lost and found photos and clips (silent, metadata stripped) and `manifest.json` in `site/assets/media/lost-and-found/`; `--verify` re-checks the originals and the archived sketch |
+| `scope_locker_css.mjs` | Regenerates `site/css/locker-lab.css` from `locker-demo.css`, so the demo's styles stay inside the case study (Node, no install) |
+| `bump_cache_version.py` | Stamps one `?v=N` on every CSS and JS tag of every page; run it after editing `site/css` or `site/js` |
 
 Needs Python 3 with Pillow, NumPy, openpyxl and pypdfium2, plus `ffmpeg` and `ffprobe` on the PATH for the media script.
