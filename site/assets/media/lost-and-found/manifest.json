@@ -1,0 +1,604 @@
+{
+  "project": "Lost & Found locker",
+  "prepared": "2026-10-01",
+  "baseUrl": "assets/media/lost-and-found",
+  "status": "Prepared assets integrated into the main Lost and Found case study, with a reusable guided interactive locker and updated Home project card.",
+  "captions": {
+    "language": "en",
+    "type": "explanatory descriptions",
+    "speechTranscript": false
+  },
+  "audio": "All web edits are silent. Original recordings retain their sound in FestivalProject/Locker.",
+  "sourcesUnchanged": true,
+  "originals": [
+    {
+      "path": "FestivalProject/Locker/photos/locker-arduino-wiring.HEIC",
+      "sha256": "e53ac110c1a0106f45478f8e81f393e185a6eccbb2bb3647353cd98342ed8ade"
+    },
+    {
+      "path": "FestivalProject/Locker/photos/locker-cardboard-front.HEIC",
+      "sha256": "715a14f9993e1ae8d67ea1d48f1cfa02fe3d175619ead0f1fc2ab8557573b3e2"
+    },
+    {
+      "path": "FestivalProject/Locker/photos/locker-code-reference.jpg",
+      "sha256": "34fcdd332a5c811ec976cb27b7c44654463617c2e14b4840897597846383fc75"
+    },
+    {
+      "path": "FestivalProject/Locker/photos/locker-finished-front.jpg",
+      "sha256": "afe28285a12f60b6aa7ab89a89dfd38133265ead6385c80e96201598c5e46d78"
+    },
+    {
+      "path": "FestivalProject/Locker/photos/locker-inside.HEIC",
+      "sha256": "0a30f9c7a4ad2676894ed4dfb595abf230057f6336b092a5a456bf066d395e25"
+    },
+    {
+      "path": "FestivalProject/Locker/photos/locker-rfid-reader.HEIC",
+      "sha256": "bb0e06280523fd9f1a676a340c64e160de654c921c3c76a6a28369d869cba565"
+    },
+    {
+      "path": "FestivalProject/Locker/photos/locker-wiring-lcd-rfid.HEIC",
+      "sha256": "c56d99eae4dbbd31723a001b2f0bbc7e88026b16641d34c23ad442bebc427ca9"
+    },
+    {
+      "path": "FestivalProject/Locker/videos/duplicates/locker-demo-copy.mp4",
+      "sha256": "d06b10794d875337236df003913da4caedfabdb5d51f9d79d46e2edfd8b85bee"
+    },
+    {
+      "path": "FestivalProject/Locker/videos/locker-demo.mp4",
+      "sha256": "d06b10794d875337236df003913da4caedfabdb5d51f9d79d46e2edfd8b85bee"
+    },
+    {
+      "path": "FestivalProject/Locker/videos/locker-full-demo.mp4",
+      "sha256": "641e01730d1bd9831bd6a9c10d00adb752ff65f4b0e5150a7b6b845181ed00ff"
+    }
+  ],
+  "photos": [
+    {
+      "id": "locker-arduino-wiring",
+      "file": "locker-arduino-wiring.webp",
+      "thumbnail": "locker-arduino-wiring-thumb.webp",
+      "alt": "The Arduino Uno and jumper wiring before enclosure assembly.",
+      "purpose": "Arduino component hotspot",
+      "source": "FestivalProject/Locker/photos/locker-arduino-wiring.HEIC",
+      "date": null
+    },
+    {
+      "id": "locker-cardboard-front",
+      "file": "locker-cardboard-front.webp",
+      "thumbnail": "locker-cardboard-front-thumb.webp",
+      "alt": "The early cardboard enclosure with the LCD and RFID reader mounted on the front.",
+      "purpose": "build timeline / enclosure",
+      "source": "FestivalProject/Locker/photos/locker-cardboard-front.HEIC",
+      "date": null
+    },
+    {
+      "id": "locker-code-reference",
+      "file": "locker-code-reference.webp",
+      "thumbnail": "locker-code-reference-thumb.webp",
+      "alt": "A photograph of a laptop displaying an earlier Lost Found System code draft.",
+      "purpose": "research archive only; use readable source excerpts on the page",
+      "source": "FestivalProject/Locker/photos/locker-code-reference.jpg",
+      "date": null
+    },
+    {
+      "id": "locker-finished-front",
+      "file": "locker-finished-front.webp",
+      "thumbnail": "locker-finished-front-thumb.webp",
+      "alt": "The black-painted Lost & Found locker with its LCD and RFID reader.",
+      "purpose": "hero / overview",
+      "source": "FestivalProject/Locker/photos/locker-finished-front.jpg",
+      "date": null
+    },
+    {
+      "id": "locker-inside",
+      "file": "locker-inside.webp",
+      "thumbnail": "locker-inside-thumb.webp",
+      "alt": "Inside the early cardboard enclosure, showing the Arduino, breadboard and wiring.",
+      "purpose": "build timeline / enclosure",
+      "source": "FestivalProject/Locker/photos/locker-inside.HEIC",
+      "date": null
+    },
+    {
+      "id": "locker-rfid-reader",
+      "file": "locker-rfid-reader.webp",
+      "thumbnail": "locker-rfid-reader-thumb.webp",
+      "alt": "The MFRC522 RFID reader connected by jumper wires during assembly.",
+      "purpose": "RFID component hotspot",
+      "source": "FestivalProject/Locker/photos/locker-rfid-reader.HEIC",
+      "date": null
+    },
+    {
+      "id": "locker-wiring-lcd-rfid",
+      "file": "locker-wiring-lcd-rfid.webp",
+      "thumbnail": "locker-wiring-lcd-rfid-thumb.webp",
+      "alt": "The locker electronics spread out on the workbench, connected to a blue LCD.",
+      "purpose": "wiring explorer / build timeline",
+      "source": "FestivalProject/Locker/photos/locker-wiring-lcd-rfid.HEIC",
+      "date": null
+    },
+    {
+      "id": "concept-sketch",
+      "file": "concept-sketch.webp",
+      "thumbnail": "concept-sketch-thumb.webp",
+      "alt": "The original locker concept drawing, showing display, reader and servo.",
+      "purpose": "build timeline; historical component test, not final wiring specification",
+      "source": "KdG/fablab/Fusion challange/Final Assignment_Michalec_Lost & Found.pdf",
+      "sourcePage": 5,
+      "date": null
+    },
+    {
+      "id": "early-led-buzzer-test",
+      "file": "early-led-buzzer-test.webp",
+      "thumbnail": "early-led-buzzer-test-thumb.webp",
+      "alt": "Early test diagram connecting LEDs and buzzer to an Arduino Uno.",
+      "purpose": "build timeline; historical component test, not final wiring specification",
+      "source": "KdG/fablab/Fusion challange/Final Assignment_Michalec_Lost & Found.pdf",
+      "sourcePage": 6,
+      "date": null
+    },
+    {
+      "id": "early-lcd-test",
+      "file": "early-lcd-test.webp",
+      "thumbnail": "early-lcd-test-thumb.webp",
+      "alt": "Early I2C LCD component test diagram with an Arduino Uno.",
+      "purpose": "build timeline; historical component test, not final wiring specification",
+      "source": "KdG/fablab/Fusion challange/Final Assignment_Michalec_Lost & Found.pdf",
+      "sourcePage": 7,
+      "date": null
+    },
+    {
+      "id": "early-servo-test",
+      "file": "early-servo-test.webp",
+      "thumbnail": "early-servo-test-thumb.webp",
+      "alt": "Early servo component test diagram with an Arduino Uno.",
+      "purpose": "build timeline; historical component test, not final wiring specification",
+      "source": "KdG/fablab/Fusion challange/Final Assignment_Michalec_Lost & Found.pdf",
+      "sourcePage": 8,
+      "date": null
+    }
+  ],
+  "clips": [
+    {
+      "id": "access-granted",
+      "source": "locker-full-demo",
+      "in": 95.0,
+      "out": 105.0,
+      "caption": "A matching personal tag lights the green LED; the demonstrator opens the locker door."
+    },
+    {
+      "id": "access-denied",
+      "source": "locker-demo",
+      "in": 8.5,
+      "out": 13.5,
+      "caption": "An unknown RFID tag is scanned; the display shows Access Denied."
+    },
+    {
+      "id": "registration",
+      "source": "locker-full-demo",
+      "editedMontage": true,
+      "segments": [
+        {
+          "in": 10.3,
+          "out": 25.5
+        },
+        {
+          "in": 29.0,
+          "out": 32.5
+        },
+        {
+          "in": 61.0,
+          "out": 66.0
+        }
+      ],
+      "caption": "Staff registration and wallet placement, followed by a successful door closure from the keys take."
+    },
+    {
+      "id": "electronics",
+      "source": "locker-full-demo",
+      "in": 81.0,
+      "out": 88.5,
+      "caption": "A close look inside the working prototype: Arduino, breadboard, LEDs and buzzer."
+    }
+  ],
+  "walkthrough": {
+    "duration": 43.5,
+    "clean": "walkthrough.mp4",
+    "captioned": "walkthrough-captioned.mp4",
+    "captionTrack": "walkthrough.en.vtt",
+    "editedMontage": true,
+    "shots": [
+      {
+        "id": "ready",
+        "source": "locker-full-demo",
+        "in": 0.5,
+        "out": 3.5,
+        "title": "01 / THE PROTOTYPE",
+        "lines": [
+          "Lost & Found for music festivals.",
+          "An RFID locker built around Arduino."
+        ],
+        "timelineIn": 0,
+        "timelineOut": 3.0
+      },
+      {
+        "id": "master",
+        "source": "locker-full-demo",
+        "in": 10.3,
+        "out": 14.3,
+        "title": "02 / STAFF ACCESS",
+        "lines": [
+          "The master card starts registration.",
+          "The LCD shows Master Mode On."
+        ],
+        "timelineIn": 3.0,
+        "timelineOut": 7.0
+      },
+      {
+        "id": "item",
+        "source": "locker-full-demo",
+        "in": 14.3,
+        "out": 18.3,
+        "title": "03 / REGISTER AN ITEM",
+        "lines": [
+          "Scan the item's RFID tag.",
+          "The LCD prompts Register Item."
+        ],
+        "timelineIn": 7.0,
+        "timelineOut": 11.0
+      },
+      {
+        "id": "description",
+        "source": "locker-full-demo",
+        "in": 20.0,
+        "out": 25.0,
+        "title": "04 / ADD A DESCRIPTION",
+        "lines": [
+          "Staff enter a description using",
+          "the Arduino Serial Monitor."
+        ],
+        "timelineIn": 11.0,
+        "timelineOut": 16.0
+      },
+      {
+        "id": "placement",
+        "source": "locker-full-demo",
+        "in": 29.0,
+        "out": 32.5,
+        "title": "05 / STORE THE WALLET",
+        "lines": [
+          "Place the wallet inside the locker.",
+          "The door is open for storage."
+        ],
+        "timelineIn": 16.0,
+        "timelineOut": 19.5
+      },
+      {
+        "id": "closure",
+        "source": "locker-full-demo",
+        "in": 61.0,
+        "out": 65.5,
+        "title": "05 / CLOSE THE DOOR",
+        "lines": [
+          "Close the locker door.",
+          "Closure shown from the keys take."
+        ],
+        "timelineIn": 19.5,
+        "timelineOut": 24.0
+      },
+      {
+        "id": "claim",
+        "source": "locker-full-demo",
+        "in": 95.0,
+        "out": 105.0,
+        "title": "06 / CLAIM A MATCHING ITEM",
+        "lines": [
+          "A matching personal tag lights green.",
+          "The demonstrator opens the door."
+        ],
+        "timelineIn": 24.0,
+        "timelineOut": 34.0
+      },
+      {
+        "id": "denied",
+        "source": "locker-demo",
+        "in": 8.5,
+        "out": 13.5,
+        "title": "07 / REJECT AN UNKNOWN TAG",
+        "lines": [
+          "An unknown tag is scanned.",
+          "The LCD responds Access Denied."
+        ],
+        "timelineIn": 34.0,
+        "timelineOut": 39.0
+      },
+      {
+        "id": "inside",
+        "source": "locker-full-demo",
+        "in": 81.0,
+        "out": 85.5,
+        "title": "08 / INSIDE THE BUILD",
+        "lines": [
+          "Arduino, breadboard and wiring.",
+          "One sketch connects the components."
+        ],
+        "timelineIn": 39.0,
+        "timelineOut": 43.5
+      }
+    ]
+  },
+  "code": {
+    "file": "../../code/lost-and-found.ino",
+    "sha256": "8aeedd232565368e2ed5705a24d5e5232cb84e7928ba53ec3dde3f8735ca5e5d",
+    "status": "Archived demonstration sketch; not modified or compiled in this preparation pass."
+  },
+  "files": [
+    {
+      "file": "access-denied-poster.jpg",
+      "bytes": 55404,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "file": "access-denied.en.srt",
+      "bytes": 135
+    },
+    {
+      "file": "access-denied.en.vtt",
+      "bytes": 211
+    },
+    {
+      "file": "access-denied.mp4",
+      "bytes": 1085415,
+      "duration": 5.0,
+      "width": 720,
+      "height": 1280,
+      "codec": "h264"
+    },
+    {
+      "file": "access-granted-poster.jpg",
+      "bytes": 56172,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "file": "access-granted.en.srt",
+      "bytes": 220
+    },
+    {
+      "file": "access-granted.en.vtt",
+      "bytes": 296
+    },
+    {
+      "file": "access-granted.mp4",
+      "bytes": 2385858,
+      "duration": 10.0,
+      "width": 720,
+      "height": 1280,
+      "codec": "h264"
+    },
+    {
+      "file": "code-excerpts.json",
+      "bytes": 3950
+    },
+    {
+      "file": "concept-sketch-thumb.webp",
+      "bytes": 8946,
+      "width": 640,
+      "height": 567
+    },
+    {
+      "file": "concept-sketch.webp",
+      "bytes": 22026,
+      "width": 1413,
+      "height": 1251
+    },
+    {
+      "file": "early-lcd-test-thumb.webp",
+      "bytes": 16168,
+      "width": 640,
+      "height": 419
+    },
+    {
+      "file": "early-lcd-test.webp",
+      "bytes": 23544,
+      "width": 906,
+      "height": 593
+    },
+    {
+      "file": "early-led-buzzer-test-thumb.webp",
+      "bytes": 28996,
+      "width": 640,
+      "height": 389
+    },
+    {
+      "file": "early-led-buzzer-test.webp",
+      "bytes": 44626,
+      "width": 940,
+      "height": 571
+    },
+    {
+      "file": "early-servo-test-thumb.webp",
+      "bytes": 22854,
+      "width": 640,
+      "height": 384
+    },
+    {
+      "file": "early-servo-test.webp",
+      "bytes": 31010,
+      "width": 866,
+      "height": 520
+    },
+    {
+      "file": "electronics-poster.jpg",
+      "bytes": 70666,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "file": "electronics.en.srt",
+      "bytes": 105
+    },
+    {
+      "file": "electronics.en.vtt",
+      "bytes": 181
+    },
+    {
+      "file": "electronics.mp4",
+      "bytes": 2299336,
+      "duration": 7.5,
+      "width": 720,
+      "height": 1280,
+      "codec": "h264"
+    },
+    {
+      "file": "locker-arduino-wiring-thumb.webp",
+      "bytes": 51738,
+      "width": 480,
+      "height": 640
+    },
+    {
+      "file": "locker-arduino-wiring.webp",
+      "bytes": 217202,
+      "width": 1350,
+      "height": 1800
+    },
+    {
+      "file": "locker-cardboard-front-thumb.webp",
+      "bytes": 39070,
+      "width": 480,
+      "height": 640
+    },
+    {
+      "file": "locker-cardboard-front.webp",
+      "bytes": 192580,
+      "width": 1350,
+      "height": 1800
+    },
+    {
+      "file": "locker-code-reference-thumb.webp",
+      "bytes": 31150,
+      "width": 360,
+      "height": 640
+    },
+    {
+      "file": "locker-code-reference.webp",
+      "bytes": 185010,
+      "width": 1013,
+      "height": 1800
+    },
+    {
+      "file": "locker-finished-front-thumb.webp",
+      "bytes": 36088,
+      "width": 360,
+      "height": 640
+    },
+    {
+      "file": "locker-finished-front.webp",
+      "bytes": 166232,
+      "width": 1013,
+      "height": 1800
+    },
+    {
+      "file": "locker-inside-thumb.webp",
+      "bytes": 43452,
+      "width": 480,
+      "height": 640
+    },
+    {
+      "file": "locker-inside.webp",
+      "bytes": 188830,
+      "width": 1350,
+      "height": 1800
+    },
+    {
+      "file": "locker-rfid-reader-thumb.webp",
+      "bytes": 28292,
+      "width": 480,
+      "height": 640
+    },
+    {
+      "file": "locker-rfid-reader.webp",
+      "bytes": 129302,
+      "width": 1350,
+      "height": 1800
+    },
+    {
+      "file": "locker-wiring-lcd-rfid-thumb.webp",
+      "bytes": 35008,
+      "width": 480,
+      "height": 640
+    },
+    {
+      "file": "locker-wiring-lcd-rfid.webp",
+      "bytes": 176360,
+      "width": 1350,
+      "height": 1800
+    },
+    {
+      "file": "registration-poster.jpg",
+      "bytes": 50504,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "file": "registration.en.srt",
+      "bytes": 425
+    },
+    {
+      "file": "registration.en.vtt",
+      "bytes": 501
+    },
+    {
+      "file": "registration.mp4",
+      "bytes": 5150276,
+      "duration": 23.7,
+      "width": 720,
+      "height": 1280,
+      "codec": "h264"
+    },
+    {
+      "file": "walkthrough-captioned-poster.jpg",
+      "bytes": 75752,
+      "width": 720,
+      "height": 1440
+    },
+    {
+      "file": "walkthrough-captioned.en.srt",
+      "bytes": 918
+    },
+    {
+      "file": "walkthrough-captioned.en.vtt",
+      "bytes": 994
+    },
+    {
+      "file": "walkthrough-captioned.mp4",
+      "bytes": 9089532,
+      "duration": 43.5,
+      "width": 720,
+      "height": 1440,
+      "codec": "h264"
+    },
+    {
+      "file": "walkthrough-poster.jpg",
+      "bytes": 61716,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "file": "walkthrough.en.srt",
+      "bytes": 918
+    },
+    {
+      "file": "walkthrough.en.vtt",
+      "bytes": 994
+    },
+    {
+      "file": "walkthrough.mp4",
+      "bytes": 9329904,
+      "duration": 43.5,
+      "width": 720,
+      "height": 1280,
+      "codec": "h264"
+    }
+  ]
+}

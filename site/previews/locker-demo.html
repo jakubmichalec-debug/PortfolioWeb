@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lost & Found · interactive prototype · Jakub Michalec</title>
+  <meta name="theme-color" content="#08205a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="../css/tokens.css"><link rel="stylesheet" href="../css/locker-demo.css">
+  <script type="module" src="../js/locker-demo.js"></script>
+</head>
+<body>
+  <a class="skip" href="#controls">Skip to demo controls</a>
+  <header class="preview-nav"><a href="../index.html">JM <span>/ PORTFOLIO</span></a><span class="eyebrow">INTERACTION STUDY · 01</span><a href="../assets/media/lost-and-found/walkthrough-captioned.mp4">Watch the real prototype ↗</a></header>
+  <main>
+    <div class="intro"><p class="eyebrow"><span class="live-dot"></span> LOST & FOUND / ARDUINO PROTOTYPE</p><h1>A small box.<br>A little <em>logic.</em></h1><p>Try it yourself—no Arduino knowledge needed.<br>Choose a task, then follow the highlighted action. The demo waits for you at every physical step.</p></div>
+    <div class="scenario-controls" role="group" aria-label="Choose a guided task"><button data-scenario="claim" aria-pressed="true"><strong>Collect my item</strong><small>Visitor · 4 steps</small></button><button data-scenario="store" aria-pressed="false"><strong>Store a found item</strong><small>Staff · 6 steps</small></button></div>
+    <section class="workbench" tabindex="-1" aria-label="Interactive Lost and Found locker">
+      <div class="control-panel" id="controls">
+        <ol id="guide-steps" class="guide-steps" aria-label="Task progress"></ol>
+        <div class="guide-current">
+          <div class="guide-text"><span class="eyebrow" id="guide-position">STEP 1 OF 4</span><h2 id="guide-title">Scan your personal card</h2><p id="guide-instruction">Your wallet is inside. Start by scanning the card that belongs to you.</p></div>
+          <button id="next-action" class="next-action">Scan my personal card →</button>
+          <div class="wait" id="wait" hidden><div class="timer-track" id="timer-track"><i id="timer-fill"></i></div><span id="timer" class="tiny"></span></div>
+        </div>
+        <div class="hand-tray" id="hand-tray" hidden><span class="eyebrow">IN YOUR HAND</span><div id="hand-items">Your hands are empty.</div></div>
+        <div id="item-tags" class="item-tags" hidden><button data-tag="wallet">Wallet tag · B180BD02</button><button data-tag="keys">Keys tag · 3D801C2F</button></div>
+        <form id="registration" hidden><label for="description">Name the found item</label><input id="description" name="description" value="Wallet" maxlength="64" required autocomplete="off"></form>
+        <p id="status" class="sr-only" role="status" aria-live="polite">Tap a card to scan it.</p>
+        <button id="reset">Restart ↻</button>
+      </div>
+      <div class="model-panel">
+        <div class="scene" id="scene">
+        <div class="floor-grid" aria-hidden="true"></div>
+        <div class="machine" id="machine">
+          <div class="box-side" aria-hidden="true"><span>RFID / UNO / SERVO</span><i class="side-ribs"></i></div><div class="box-top" aria-hidden="true"><div class="top-wire"></div><span class="roof-mark">LF / 01</span></div>
+          <div class="electronics-deck"><button class="uno-board" data-part="arduino" aria-label="Inspect Arduino electronics"><span class="usb-port"></span><span class="uno-chip"></span><span class="board-headers"></span><b>UNO</b><small>ATmega328P</small><i class="board-led"></i></button><svg class="deck-wires" viewBox="0 0 300 130" aria-hidden="true"><path d="M80 55C35 50 35 110 105 120"/><path d="M120 60C225 5 275 40 220 125"/><path d="M145 66C230 20 270 60 240 126"/><path d="M155 70C210 32 258 74 250 126"/></svg><span class="deck-label">CONCEPTUAL ELECTRONICS VIEW</span></div>
+          <div class="box-front">
+            <i class="case-fasteners" aria-hidden="true"></i>
+            <div class="top-mark">JM—LF <span>FESTIVAL EDITION / 2025</span></div>
+            <div class="hardware-row">
+              <button class="lcd" data-part="lcd" aria-label="Inspect LCD display"><span id="lcd-line1">Locker Ready</span><span id="lcd-line2">&nbsp;</span></button>
+              <button class="reader" id="reader" data-part="rfid" aria-label="Inspect RFID reader"><i class="reader-chip"></i><i class="reader-pins"></i><svg viewBox="0 0 70 70" aria-hidden="true"><path d="M17 35a18 18 0 0 1 36 0m-31 0a13 13 0 0 1 26 0m-21 0a8 8 0 0 1 16 0M17 40a18 18 0 0 0 36 0m-31 0a13 13 0 0 0 26 0m-21 0a8 8 0 0 0 16 0"/><circle cx="35" cy="37" r="2"/></svg><span>MFRC522</span></button>
+            </div>
+            <div class="indicator-row"><button class="indicator" data-part="feedback" aria-label="Inspect LED and buzzer feedback"><i id="led-red" class="led red"></i><i id="led-green" class="led green"></i><span id="feedback-text">STANDBY</span></button><span class="tiny">16 × 2 / I²C</span></div>
+            <div class="door-frame">
+              <div class="interior" id="interior"><div class="inner-back"></div><div class="inner-side"></div><div class="shelf"></div><div id="physical-items" class="physical-items"></div><span class="inside-label">CLICK THE MATCHING ITEM TO TAKE IT OUT</span></div>
+              <button class="door" id="door" aria-label="Open locker door" aria-expanded="false"><span class="door-back"><i></i><b>KEEPER / LATCH</b></span><span class="door-hinges"></span><span class="door-title">LOST &<br>FOUND<span>SCAN. MATCH. RETURN.</span></span><span class="door-handle"></span><span class="door-foot">001 <span>PROTOTYPE</span></span></button>
+            </div>
+            <button class="latch" data-part="servo" aria-label="Inspect exposed servo latch"><span>SERVO</span><i id="servo-arm"></i><b id="model-latch-label">LOCKED</b></button>
+          </div>
+        </div>
+        <div class="model-caption"><span class="tiny">Illustration, not measured CAD</span><button id="electronics-toggle" aria-pressed="false">Show electronics ↗</button></div>
+        <a id="watch-real" class="real-clip" href="#watch" hidden></a>
+      </div>
+      </div>
+      <details class="card-drawer">
+        <summary>Other cards &amp; options</summary>
+        <div class="drawer-body">
+          <p class="subtle">Tap a card, or drag it onto the reader. The matching personal card collects items; staff mode stores them.</p>
+          <div class="cards" id="cards">
+          <button class="tag-card owner-card" draggable="true" data-tag="owner"><span class="card-chip">▦</span><span class="card-kind">PERSONAL / A</span><strong>My items</strong><small>538CC9D9 · matching owner</small><span class="card-arrow">↗</span></button>
+          <button class="tag-card other-card" draggable="true" data-tag="other"><span class="card-chip">▦</span><span class="card-kind">PERSONAL / B</span><strong>Another visitor</strong><small>77C01C2F · no owned items</small><span class="card-arrow">↗</span></button>
+          <button class="tag-card unknown-card" draggable="true" data-tag="unknown"><span class="card-chip">▦</span><span class="card-kind">UNRECOGNISED</span><strong>Unknown card</strong><small>DEADBEEF · access denied</small><span class="card-arrow">↗</span></button>
+          <button class="tag-card staff-card" draggable="true" data-tag="staff"><span class="card-chip">▦</span><span class="card-kind">STAFF / MASTER</span><strong>Store an item</strong><small>D34611DA · registration mode</small><span class="card-arrow">↗</span></button>
+        </div>
+          <div class="options">
+            <label class="toggle"><input id="sound" type="checkbox"> Buzzer sound <span class="tiny">500 / 1000 Hz</span></label>
+            <label class="toggle quick-toggle"><input id="quick" type="checkbox" checked> Quick feedback <span class="tiny">uncheck for the real 6 s delay</span></label>
+            <div class="toggle rotate"><label for="rotation">Rotate the box</label><input id="rotation" type="range" min="-28" max="28" value="-15"></div>
+          </div>
+        </div>
+      </details>
+    </section>
+    <details class="under-the-hood">
+      <summary>Hardware &amp; code behind each step</summary>
+      <div class="hood-body">
+      <div class="explanation"><h2 id="part-title">One scan.<br>A chain of decisions.</h2><p id="part-description">The reader turns a card UID into an uppercase string. The Arduino checks staff access first, then recognised personal cards and item ownership.</p><div class="part-tabs" role="group" aria-label="Inspect a component"><button data-part="rfid" aria-pressed="true">RFID</button><button data-part="arduino" aria-pressed="false">Arduino</button><button data-part="lcd" aria-pressed="false">LCD</button><button data-part="servo" aria-pressed="false">Servo</button><button data-part="feedback" aria-pressed="false">Feedback</button><button data-part="memory" aria-pressed="false">Memory</button></div><ol class="signal-path"><li>RFID input</li><li>Owner check</li><li>LCD + feedback</li><li>Servo latch</li></ol><p class="tiny" id="hardware-spec">MFRC522 · chip select 10 · reset 9</p></div>
+      <div class="code-panel"><div class="panel-label"><span id="code-label">getRFIDTag()</span><a href="../assets/code/lost-and-found.ino" download>Original sketch ↓</a></div><pre tabindex="0" aria-label="Original Arduino source excerpt"><code id="code">Loading the archived Arduino sketch…</code></pre><p class="tiny" id="code-location"></p></div>
+        <div class="event-panel"><div><p class="eyebrow">SIGNAL LOG</p><ol id="events"></ol></div><div class="inventory"><span class="eyebrow">PHYSICALLY INSIDE <span id="count">02</span></span><div id="inventory-list"></div><p class="tiny" id="memory-count"></p></div></div>
+      </div>
+    </details>
+    <details class="honesty-note">
+      <summary>What’s real, what’s simulated</summary>
+      <p>This walkthrough adds teaching safeguards: move the item before closing, no time limit while you learn, non-empty descriptions and duplicate-tag checks. Waits after a rejected card are shortened by default (untick Quick feedback for the real delays). The real Arduino sketch has no door or item sensor: it runs an eight-second servo window and removes the first matching record afterward. Those physical-step safeguards would need extra hardware and firmware in a real locker. Card IDs, owner checks and staff registration are based on the saved sketch; geometry, sample descriptions and exposed latch placement are illustrative. The guided view adds helpful LCD prompts and starts closed at 90°, while the original setup writes 0°. This is not a secure production system.</p>
+    </details>
+    <footer><span>JAKUB MICHALEC / LOST & FOUND</span><a href="../assets/media/lost-and-found/walkthrough-captioned.mp4">Compare with the real build ↗</a></footer>
+  </main>
+</body>
+</html>

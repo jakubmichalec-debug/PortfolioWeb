@@ -1,0 +1,69 @@
+{
+  "project": "Lost & Found locker",
+  "context": "Music festival Lost & Found station; Fusion challenge prototype",
+  "authorNamedInReports": "Jakub Michalec",
+  "pageCopy": {
+    "title": "Lost & Found locker",
+    "intro": "Built for a festival Lost & Found station, this Arduino prototype uses RFID tags to identify items and respond to claims with a display, LEDs, a buzzer and a servo-controlled lock.",
+    "tools": ["Arduino Uno", "RFID / MFRC522", "I2C LCD", "Servo", "Breadboard", "Cardboard prototype"],
+    "sections": ["The real prototype", "Try the locker", "How I built it", "The parts behind the response", "The prototype, in action", "Working prototype. Next iteration."],
+    "demoLabel": "Browser demonstration based on the archived Arduino sketch. Sample item data.",
+    "videoLabel": "Edited demonstration"
+  },
+  "source": {
+    "reportFolder": "~/Desktop/KdG/fablab/Fusion challange",
+    "sketch": "fusion_project_final/fusion_project_final.ino",
+    "mediaFolder": "~/Desktop/FestivalProject/Locker",
+    "separateProjectFolder": "~/Desktop/FestivalProject/Shot"
+  },
+  "explicitSketchConnections": [
+    {"component": "servo", "pin": 2, "constant": "servoPin"},
+    {"component": "red LED", "pin": 3, "constant": "redLedPin"},
+    {"component": "green LED", "pin": 4, "constant": "greenLedPin"},
+    {"component": "buzzer", "pin": 5, "constant": "buzzerPin"},
+    {"component": "RFID reset", "pin": 9, "constant": "rstPin"},
+    {"component": "RFID chip select", "pin": 10, "constant": "sdaPin", "note": "Passed as MFRC522's first constructor argument; do not confuse the reader board's SDA label with LCD I2C SDA."}
+  ],
+  "lcd": {"address": "0x27", "columns": 16, "rows": 2},
+  "softwareBehavior": {
+    "registration": "Master card, item-tag scan, description read through Serial Monitor, fixed owner assignment, record appended, unlock for placement.",
+    "claim": "Recognized personal tag is compared against itemOwners. First matching item unlocks, then is removed from arrays.",
+    "unknownTag": "Access Denied, 500 Hz tone for 500 ms, red LED flashes three times with 500 ms on and 500 ms off.",
+    "successfulUnlock": "Green LED high, 1000 Hz tone for 500 ms, servo 0 degrees for 8 seconds then 90 degrees, green LED low.",
+    "descriptionCycleSeconds": 3,
+    "nominalArrayCapacity": 10,
+    "recordsPersistent": false,
+    "dynamicOwnerPairing": false,
+    "browsingButtonsInSavedSketch": false,
+    "servoStartupAngle": 0,
+    "physicalStartupLatchStateVerified": false
+  },
+  "visibleFootageEvidence": [
+    "Locker Ready display",
+    "Master Mode On display",
+    "Register Item display",
+    "Arduino Serial Monitor requesting an item description",
+    "Item Registered display",
+    "Personal tag scan followed by green LED and a hand opening the door",
+    "Unknown tag scan followed by Access Denied display",
+    "Breadboard, Arduino, RFID reader, wiring, LEDs and buzzer inside the prototype"
+  ],
+  "unverifiedOrUnavailable": [
+    "Exact latch assembly and physical lock position at startup",
+    "Complete traced final wiring schematic",
+    "Locker CAD files or a CAD-designed enclosure",
+    "Exact dates for each build photo",
+    "Deployed festival service or measured user results",
+    "Buzzer sounds verified by listening or a speech transcript"
+  ],
+  "futureIdeasInReportsNotImplementedClaims": ["Cloud database", "App notifications", "Multiple connected stations", "Wi-Fi / Bluetooth integration"],
+  "presentationRules": [
+    "Use the real cardboard enclosure and black-painted build as evidence.",
+    "Label simplified machine art and browser behavior as illustrative.",
+    "Do not claim the servo automatically swings the door; the footage shows a person opening it.",
+    "Use original source excerpts instead of reproducing the photographed early code draft.",
+    "Keep dispenser media separate; a background dispenser in a locker photo is not locker hardware.",
+    "Keep real source timings and edited-video timings distinct.",
+    "Describe captions as explanatory visual descriptions, not a transcript of speech."
+  ]
+}

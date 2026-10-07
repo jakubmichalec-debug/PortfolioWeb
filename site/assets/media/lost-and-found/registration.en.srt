@@ -1,0 +1,20 @@
+1
+00:00:00,000 --> 00:00:04,000
+The master card enables staff registration.
+
+2
+00:00:04,000 --> 00:00:09,000
+Scan the item's tag; the LCD shows Register Item.
+
+3
+00:00:09,000 --> 00:00:15,200
+Enter a description using the Arduino Serial Monitor.
+
+4
+00:00:15,200 --> 00:00:18,700
+Place the wallet inside the locker.
+
+5
+00:00:18,700 --> 00:00:23,700
+Close the door. This closure is cut from the keys take.
+

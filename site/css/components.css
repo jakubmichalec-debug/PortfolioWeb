@@ -424,6 +424,14 @@
   color: var(--ink);
 }
 
+/* Touch screens: footer links get a full-size tap target. */
+@media (pointer: coarse) {
+  .footer nav { gap: 8px; margin-left: -8px; }
+  .footer nav a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding-inline: 8px; }
+  .nav-toggle { width: 44px; height: 44px; }
+  .btn { min-height: 44px; }
+}
+
 /* ---------- placeholder pages ---------- */
 .stub {
   min-height: 100svh;

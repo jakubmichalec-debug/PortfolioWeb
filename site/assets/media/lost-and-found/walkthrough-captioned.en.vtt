@@ -1,0 +1,49 @@
+WEBVTT
+
+NOTE Explanatory visual descriptions, not a speech transcript.
+
+1
+00:00:00.000 --> 00:00:03.000
+Lost & Found for music festivals.
+An RFID locker built around Arduino.
+
+2
+00:00:03.000 --> 00:00:07.000
+The master card starts registration.
+The LCD shows Master Mode On.
+
+3
+00:00:07.000 --> 00:00:11.000
+Scan the item's RFID tag.
+The LCD prompts Register Item.
+
+4
+00:00:11.000 --> 00:00:16.000
+Staff enter a description using
+the Arduino Serial Monitor.
+
+5
+00:00:16.000 --> 00:00:19.500
+Place the wallet inside the locker.
+The door is open for storage.
+
+6
+00:00:19.500 --> 00:00:24.000
+Close the locker door.
+Closure shown from the keys take.
+
+7
+00:00:24.000 --> 00:00:34.000
+A matching personal tag lights green.
+The demonstrator opens the door.
+
+8
+00:00:34.000 --> 00:00:39.000
+An unknown tag is scanned.
+The LCD responds Access Denied.
+
+9
+00:00:39.000 --> 00:00:43.500
+Arduino, breadboard and wiring.
+One sketch connects the components.
+

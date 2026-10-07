@@ -1,0 +1,233 @@
+{
+  "date": "2026-10-01",
+  "originalHashesMatch": true,
+  "archivedSketchMatches": true,
+  "excerptsMatchSourceLines": true,
+  "fullVideoDecodePassed": true,
+  "faststartVerified": true,
+  "captionsWithinDuration": true,
+  "imageExifRemoved": true,
+  "videoCaptureMetadataRemoved": true,
+  "silentOutputs": true,
+  "files": [
+    {
+      "file": "access-denied-poster.jpg",
+      "bytes": 55404,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "file": "access-denied.mp4",
+      "bytes": 1085415,
+      "duration": 5.0,
+      "width": 720,
+      "height": 1280,
+      "codec": "h264"
+    },
+    {
+      "file": "access-granted-poster.jpg",
+      "bytes": 56172,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "file": "access-granted.mp4",
+      "bytes": 2385858,
+      "duration": 10.0,
+      "width": 720,
+      "height": 1280,
+      "codec": "h264"
+    },
+    {
+      "file": "concept-sketch-thumb.webp",
+      "bytes": 8946,
+      "width": 640,
+      "height": 567
+    },
+    {
+      "file": "concept-sketch.webp",
+      "bytes": 22026,
+      "width": 1413,
+      "height": 1251
+    },
+    {
+      "file": "early-lcd-test-thumb.webp",
+      "bytes": 16168,
+      "width": 640,
+      "height": 419
+    },
+    {
+      "file": "early-lcd-test.webp",
+      "bytes": 23544,
+      "width": 906,
+      "height": 593
+    },
+    {
+      "file": "early-led-buzzer-test-thumb.webp",
+      "bytes": 28996,
+      "width": 640,
+      "height": 389
+    },
+    {
+      "file": "early-led-buzzer-test.webp",
+      "bytes": 44626,
+      "width": 940,
+      "height": 571
+    },
+    {
+      "file": "early-servo-test-thumb.webp",
+      "bytes": 22854,
+      "width": 640,
+      "height": 384
+    },
+    {
+      "file": "early-servo-test.webp",
+      "bytes": 31010,
+      "width": 866,
+      "height": 520
+    },
+    {
+      "file": "electronics-poster.jpg",
+      "bytes": 70666,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "file": "electronics.mp4",
+      "bytes": 2299336,
+      "duration": 7.5,
+      "width": 720,
+      "height": 1280,
+      "codec": "h264"
+    },
+    {
+      "file": "locker-arduino-wiring-thumb.webp",
+      "bytes": 51738,
+      "width": 480,
+      "height": 640
+    },
+    {
+      "file": "locker-arduino-wiring.webp",
+      "bytes": 217202,
+      "width": 1350,
+      "height": 1800
+    },
+    {
+      "file": "locker-cardboard-front-thumb.webp",
+      "bytes": 39070,
+      "width": 480,
+      "height": 640
+    },
+    {
+      "file": "locker-cardboard-front.webp",
+      "bytes": 192580,
+      "width": 1350,
+      "height": 1800
+    },
+    {
+      "file": "locker-code-reference-thumb.webp",
+      "bytes": 31150,
+      "width": 360,
+      "height": 640
+    },
+    {
+      "file": "locker-code-reference.webp",
+      "bytes": 185010,
+      "width": 1013,
+      "height": 1800
+    },
+    {
+      "file": "locker-finished-front-thumb.webp",
+      "bytes": 36088,
+      "width": 360,
+      "height": 640
+    },
+    {
+      "file": "locker-finished-front.webp",
+      "bytes": 166232,
+      "width": 1013,
+      "height": 1800
+    },
+    {
+      "file": "locker-inside-thumb.webp",
+      "bytes": 43452,
+      "width": 480,
+      "height": 640
+    },
+    {
+      "file": "locker-inside.webp",
+      "bytes": 188830,
+      "width": 1350,
+      "height": 1800
+    },
+    {
+      "file": "locker-rfid-reader-thumb.webp",
+      "bytes": 28292,
+      "width": 480,
+      "height": 640
+    },
+    {
+      "file": "locker-rfid-reader.webp",
+      "bytes": 129302,
+      "width": 1350,
+      "height": 1800
+    },
+    {
+      "file": "locker-wiring-lcd-rfid-thumb.webp",
+      "bytes": 35008,
+      "width": 480,
+      "height": 640
+    },
+    {
+      "file": "locker-wiring-lcd-rfid.webp",
+      "bytes": 176360,
+      "width": 1350,
+      "height": 1800
+    },
+    {
+      "file": "registration-poster.jpg",
+      "bytes": 50504,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "file": "registration.mp4",
+      "bytes": 5150276,
+      "duration": 23.7,
+      "width": 720,
+      "height": 1280,
+      "codec": "h264"
+    },
+    {
+      "file": "walkthrough-captioned-poster.jpg",
+      "bytes": 75752,
+      "width": 720,
+      "height": 1440
+    },
+    {
+      "file": "walkthrough-captioned.mp4",
+      "bytes": 9089532,
+      "duration": 43.5,
+      "width": 720,
+      "height": 1440,
+      "codec": "h264"
+    },
+    {
+      "file": "walkthrough-poster.jpg",
+      "bytes": 61716,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "file": "walkthrough.mp4",
+      "bytes": 9329904,
+      "duration": 43.5,
+      "width": 720,
+      "height": 1280,
+      "codec": "h264"
+    }
+  ],
+  "visualReview": "All 11 images and eight captioned chapters (nine shots) inspected for orientation and legibility, including wallet placement followed by the keys-take closure.",
+  "browserPlayback": "Captioned walkthrough decoded in the in-app browser: 720 x 1440, 43.5 seconds, readyState 4, no media error.",
+  "websiteImplementation": "Main Lost and Found case study and Home card implemented; reusable guided demo, real-photo explorers and captioned chapter video integrated. Browser checks are documented separately."
+}

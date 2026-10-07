@@ -1,0 +1,58 @@
+[
+  {
+    "id": "setup",
+    "source": "../../code/lost-and-found.ino",
+    "startLine": 1,
+    "endLine": 17,
+    "code": "#include <Servo.h>\n#include <Wire.h>\n#include <LiquidCrystal_I2C.h>\n#include <MFRC522.h>\n\nconst int servoPin = 2;\nconst int redLedPin = 3;\nconst int greenLedPin = 4;\nconst int buzzerPin = 5;\nconst int rstPin = 9;\nconst int sdaPin = 10;\n\nLiquidCrystal_I2C lcd(0x27, 16, 2);\nMFRC522 rfid(sdaPin, rstPin);\nServo lockerServo;\n\nString masterCard = \"D34611DA\";"
+  },
+  {
+    "id": "registration",
+    "source": "../../code/lost-and-found.ino",
+    "startLine": 62,
+    "endLine": 83,
+    "code": "      if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()) {\n        String itemTag = getRFIDTag();\n        lcd.clear();\n        lcd.print(\"Register Item\");\n        Serial.println(\"Enter description for item:\");\n\n        while (!Serial.available())\n          ;\n        String description = Serial.readString();\n        description.trim();\n\n        itemTags[itemCount] = itemTag;\n        itemDescriptions[itemCount] = description;\n        itemOwners[itemCount] = \"538CC9D9\";\n        itemCount++;\n\n        lcd.clear();\n        lcd.print(\"Item Registered\");\n        handleLocker();  // Open locker to allow item placement\n        lcd.setCursor(0, 1);\n        lcd.print(description);\n        delay(3000);"
+  },
+  {
+    "id": "owner-match",
+    "source": "../../code/lost-and-found.ino",
+    "startLine": 120,
+    "endLine": 136,
+    "code": "    bool foundMatch = false;\n    for (int i = 0; i < itemCount; i++) {\n      if (itemOwners[i] == scannedTag) {\n        lcd.clear();\n        lcd.print(\"Item ID: \");\n        lcd.print(itemTags[i]);\n        handleLocker();\n\n        for (int j = i; j < itemCount - 1; j++) {\n          itemTags[j] = itemTags[j + 1];\n          itemOwners[j] = itemOwners[j + 1];\n          itemDescriptions[j] = itemDescriptions[j + 1];\n        }\n        itemTags[itemCount - 1] = \"\";\n        itemOwners[itemCount - 1] = \"\";\n        itemDescriptions[itemCount - 1] = \"\";\n        itemCount--;"
+  },
+  {
+    "id": "access-denied",
+    "source": "../../code/lost-and-found.ino",
+    "startLine": 162,
+    "endLine": 169,
+    "code": "\n  lcd.clear();\n  lcd.print(\"Access Denied\");\n  tone(buzzerPin, 500, 500);\n  flashRedLed();\n  delay(3000);\n  lcd.clear();\n  lcd.print(\"Locker Ready\");"
+  },
+  {
+    "id": "read-tag",
+    "source": "../../code/lost-and-found.ino",
+    "startLine": 172,
+    "endLine": 181,
+    "code": "String getRFIDTag() {\n  String tag = \"\";\n  for (byte i = 0; i < rfid.uid.size; i++) {\n    if (rfid.uid.uidByte[i] < 0x10) tag += \"0\";\n    tag += String(rfid.uid.uidByte[i], HEX);\n  }\n  tag.toUpperCase();\n  rfid.PICC_HaltA();\n  return tag;\n}"
+  },
+  {
+    "id": "servo-and-feedback",
+    "source": "../../code/lost-and-found.ino",
+    "startLine": 183,
+    "endLine": 190,
+    "code": "void handleLocker() {\n  digitalWrite(greenLedPin, HIGH);\n  tone(buzzerPin, 1000, 500);\n  lockerServo.write(0);\n  delay(8000);\n  lockerServo.write(90);\n  digitalWrite(greenLedPin, LOW);\n}"
+  },
+  {
+    "id": "red-feedback",
+    "source": "../../code/lost-and-found.ino",
+    "startLine": 192,
+    "endLine": 199,
+    "code": "void flashRedLed() {\n  for (int i = 0; i < 3; i++) {\n    digitalWrite(redLedPin, HIGH);\n    delay(500);\n    digitalWrite(redLedPin, LOW);\n    delay(500);\n  }\n}"
+  },
+  {
+    "id": "display-cycle",
+    "source": "../../code/lost-and-found.ino",
+    "startLine": 201,
+    "endLine": 213,
+    "code": "void autoListDescriptions() {\n  int currentIndex = 0;\n  while (true) {\n    lcd.clear();\n    lcd.print(itemDescriptions[currentIndex]);\n    delay(3000);\n    currentIndex = (currentIndex + 1) % itemCount;\n\n    if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()) {\n      break;\n    }\n  }\n}"
+  }
+]

@@ -4,17 +4,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lost and found locker · Jakub Michalec</title>
-  <meta name="description" content="Portfolio of Jakub Michalec, Multimedia and Creative Technologies student at KdG. CAD, 3D printing, Arduino electronics and the code that makes prototypes react.">
+  <meta name="description" content="A festival Lost & Found locker, built with Arduino and RFID. Try the interactive prototype, explore the build photos and source code, and watch it work.">
   <meta name="theme-color" content="#08205a">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2308205a'/%3E%3Crect x='2.5' y='2.5' width='27' height='27' fill='none' stroke='%23f4f8ff'/%3E%3Ctext x='16' y='20.5' font-family='monospace' font-size='11' text-anchor='middle' fill='%23f4f8ff'%3EJM%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
   <script>document.documentElement.classList.add(matchMedia('(prefers-reduced-motion: reduce)').matches ? 'still' : 'anim');</script>
-  <link rel="stylesheet" href="css/tokens.css?v=25">
-  <link rel="stylesheet" href="css/base.css?v=25">
-  <link rel="stylesheet" href="css/components.css?v=25">
-  <link rel="stylesheet" href="css/motion.css?v=25">
+  <link rel="stylesheet" href="css/tokens.css?v=44">
+  <link rel="stylesheet" href="css/base.css?v=44">
+  <link rel="stylesheet" href="css/components.css?v=44">
+  <link rel="stylesheet" href="css/motion.css?v=44">
+  <link rel="stylesheet" href="css/locker-lab.css?v=44">
+  <link rel="stylesheet" href="css/locker.css?v=44">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -36,16 +38,61 @@
     </nav>
   </header>
 
-  <main id="main" class="stub">
-    <div class="wrap">
-      <div class="stub-card detail reveal">
-        <p class="eyebrow">Sheet in progress</p>
-        <h1>Lost and found locker</h1>
-        <p>Next on the drawing board: how the RFID locker works, with the wiring, the code and the photos of the build.</p>
-        <div class="cta"><a class="btn btn--redline" href="index.html" data-magnetic>Back to home <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div>
+  <main id="main" class="lf-page">
+    <section class="lf-hero wrap">
+      <div class="lf-hero-copy">
+        <p class="eyebrow">02 / PHYSICAL COMPUTING · FUSION CHALLENGE</p>
+        <h1>Lost.<br>Found.<br><em>Returned.</em></h1>
+        <p class="lf-lead">A little box for a very human problem.<br>An RFID locker that connects a found object to its owner—and makes the return tangible.</p>
+        <div class="lf-hero-actions"><a class="btn btn--redline" href="#try">Try the locker ↗</a><a class="lf-text-link" href="#watch">Watch the real build ↓</a></div>
+        <dl class="lf-specs"><div><dt>CONTEXT</dt><dd>KdG · 2024–25</dd></div><div><dt>BUILT WITH</dt><dd>Arduino / RFID / servo</dd></div><div><dt>MY WORK</dt><dd>Concept, build & code</dd></div></dl>
       </div>
-    </div>
+      <figure class="lf-hero-film">
+        <div class="lf-film-top"><span class="eyebrow">THE REAL PROTOTYPE</span><span>01 / ACCESS GRANTED</span></div>
+        <video id="lf-hero-video" muted loop playsinline preload="metadata" poster="assets/media/lost-and-found/access-granted-poster.jpg" width="720" height="1280" aria-label="A matching RFID card releases the prototype locker"><source src="assets/media/lost-and-found/access-granted.mp4" type="video/mp4"></video>
+        <figcaption><span>Scan a card. Release the latch.</span><button id="lf-film-toggle" aria-label="Play prototype preview">Play ↗</button></figcaption>
+      </figure>
+    </section>
+    <nav class="lf-section-nav" aria-label="Explore this project"><div class="wrap"><a href="#try">01 <span class="lf-n-long">/ Try it</span><span class="lf-n-short">Try</span></a><a href="#build">02 <span class="lf-n-long">/ The build</span><span class="lf-n-short">Build</span></a><a href="#inside">03 <span class="lf-n-long">/ Inside</span><span class="lf-n-short">Inside</span></a><a href="#watch">04 <span class="lf-n-long">/ Watch</span><span class="lf-n-short">Watch</span></a><a href="#reflection">05 <span class="lf-n-long">/ Next steps</span><span class="lf-n-short">Next</span></a></div></nav>
+    <section class="lf-context wrap">
+      <p class="eyebrow">THE IDEA</p><h2>A return journey.<br>Not just a locked door.</h2>
+      <p>At a festival, a wallet or a set of keys can easily become someone else’s lost-and-found problem. This course prototype explores a simple handover: staff register the item, the locker stores an owner record, and a matching personal card releases the latch.</p>
+      <ol class="lf-flow"><li><span>01</span>Identify the item</li><li><span>02</span>Store the record</li><li><span>03</span>Match the owner</li><li><span>04</span>Return the object</li></ol>
+    </section>
+    <section class="lf-section wrap" id="try">
+      <div class="lf-section-heading"><div><p class="eyebrow">01 / LEARN BY DOING</p><h2>Your turn.<br><em>Open the box.</em></h2></div><p>Pick a task, then follow the yellow button. The hardware and code behind each step are one click below.</p></div>
+      <div id="locker-lab" class="locker-lab" aria-busy="true"><p class="lf-loading" role="status">Preparing the interactive locker…</p><noscript><a href="previews/locker-demo.html">Open the locker demo</a> (JavaScript required).</noscript></div>
+    </section>
+    <section class="lf-section wrap" id="build">
+      <div class="lf-section-heading"><div><p class="eyebrow">02 / FROM IDEA TO OBJECT</p><h2>Build. Test.<br><em>Put it together.</em></h2></div><p>Real photos from the process, not a polished render. Explore the sketch, component experiments, wiring and enclosure.</p></div>
+      <div class="lf-build-grid">
+        <figure class="lf-stage-figure"><button id="lf-stage-enlarge" aria-label="Enlarge the selected build photo"><img id="lf-stage-image" src="assets/media/lost-and-found/concept-sketch.webp" width="1400" height="1800" alt="Early concept sketch for the festival Lost and Found locker" loading="lazy"><span class="lf-enlarge-label">EXPAND PHOTO ↗</span></button><figcaption><span id="lf-stage-count">01 / 06</span><p id="lf-stage-caption">An early sketch connects the enclosure, RFID access and a place for found objects.</p></figcaption></figure>
+        <div class="lf-stages" aria-label="Build stages">
+          <button data-stage="0" aria-pressed="true"><span>01</span><div><strong>The first idea</strong><small>Concept sketch</small></div><img src="assets/media/lost-and-found/concept-sketch-thumb.webp" alt="" loading="lazy"></button>
+          <button data-stage="1" aria-pressed="false"><span>02</span><div><strong>Make it respond</strong><small>Early display experiment</small></div><img src="assets/media/lost-and-found/early-lcd-test-thumb.webp" alt="" loading="lazy"></button>
+          <button data-stage="2" aria-pressed="false"><span>03</span><div><strong>Read the card</strong><small>RFID on the workbench</small></div><img src="assets/media/lost-and-found/locker-rfid-reader-thumb.webp" alt="" loading="lazy"></button>
+          <button data-stage="3" aria-pressed="false"><span>04</span><div><strong>Connect the system</strong><small>Display, reader & wiring</small></div><img src="assets/media/lost-and-found/locker-wiring-lcd-rfid-thumb.webp" alt="" loading="lazy"></button>
+          <button data-stage="4" aria-pressed="false"><span>05</span><div><strong>Give it a body</strong><small>Cardboard enclosure</small></div><img src="assets/media/lost-and-found/locker-cardboard-front-thumb.webp" alt="" loading="lazy"></button>
+          <button data-stage="5" aria-pressed="false"><span>06</span><div><strong>The finished prototype</strong><small>Painted & assembled</small></div><img src="assets/media/lost-and-found/locker-finished-front-thumb.webp" alt="" loading="lazy"></button>
+          <button class="lf-stage-next" id="lf-stage-next">Next build stage →</button>
+        </div>
+      </div>
+    </section>
+    <section class="lf-section wrap" id="inside">
+      <div class="lf-section-heading"><div><p class="eyebrow">03 / UNDER THE SURFACE</p><h2>Simple parts.<br><em>A connected system.</em></h2></div><p>The reader supplies an identifier. The Arduino makes a decision. The display, LEDs, buzzer and servo make that decision visible.</p></div>
+      <div class="lf-inside-grid">
+        <figure class="lf-hardware-photo"><button id="lf-hardware-enlarge" aria-label="Enlarge the selected hardware photo"><img id="lf-hardware-image" src="assets/media/lost-and-found/locker-inside.webp" width="1350" height="1800" alt="Electronics and servo inside the real locker" loading="lazy"><span class="lf-enlarge-label">LOOK CLOSER ↗</span></button><figcaption id="lf-hardware-caption">The real enclosure interior. Select a component to inspect its evidence and pin connections.</figcaption></figure>
+        <div class="lf-hardware-detail"><p class="eyebrow">SELECT A COMPONENT</p><div class="lf-hardware-tabs" aria-label="Real prototype components"><button data-hardware="arduino" aria-pressed="true">Arduino</button><button data-hardware="rfid" aria-pressed="false">RFID reader</button><button data-hardware="lcd" aria-pressed="false">LCD</button><button data-hardware="servo" aria-pressed="false">Servo</button><button data-hardware="feedback" aria-pressed="false">LEDs + buzzer</button></div><h3 id="lf-hardware-title">The decision-maker.</h3><p id="lf-hardware-description">An Arduino Uno coordinates the input, stored records and outputs. Item records live in RAM, rather than persistent storage.</p><p class="lf-hardware-spec" id="lf-hardware-spec">Arduino Uno · SPI + I²C · volatile memory</p><div class="lf-signal-diagram" aria-label="Conceptual signal flow, not a wiring schematic"><span>RFID input</span><i>→</i><strong>Arduino decision</strong><i>→</i><span>LCD · feedback · latch</span></div><p class="lf-small">Signal flow, not a traced wiring schematic. Exact source excerpts are available in the interactive demo above.</p><a class="lf-text-link" href="assets/code/lost-and-found.ino" download>Download the original Arduino sketch ↓</a></div>
+      </div>
+    </section>
+    <section class="lf-section wrap" id="watch">
+      <div class="lf-section-heading"><div><p class="eyebrow">04 / THE PROOF IS PHYSICAL</p><h2>See the real<br><em>thing work.</em></h2></div><p>From staff registration to a personal-card return. Pick a chapter to jump straight to the moment you want to see.</p></div>
+      <div class="lf-watch-grid"><figure class="lf-walkthrough"><video id="lf-walkthrough" controls playsinline preload="metadata" width="720" height="1280" poster="assets/media/lost-and-found/walkthrough-poster.jpg"><source src="assets/media/lost-and-found/walkthrough.mp4" type="video/mp4"><track kind="captions" src="assets/media/lost-and-found/walkthrough.en.vtt" srclang="en" label="English · explanatory captions" default></video><figcaption>Silent edited footage · English explanatory captions<br><a href="assets/media/lost-and-found/walkthrough-captioned.mp4">Open the version with captions built into the picture ↗</a></figcaption></figure><div class="lf-video-story"><p class="eyebrow">43.5 SECONDS / NINE MOMENTS</p><div id="lf-chapters" class="lf-chapters" aria-label="Video chapters"></div><p class="lf-chapter-caption" id="lf-chapter-caption" role="status">The prototype is ready for an RFID scan.</p><aside class="lf-edit-note"><span class="eyebrow">A NOTE ON THE EDIT</span><p>Wallet placement is followed by successful door closure from the keys take. These are two demonstration takes, not one continuous action.</p></aside></div></div>
+    </section>
+    <section class="lf-section wrap" id="reflection"><div class="lf-section-heading"><div><p class="eyebrow">05 / A PROTOTYPE, NOT A PROMISE</p><h2>What works.<br><em>What comes next.</em></h2></div><p>The prototype demonstrates the card-to-latch interaction. A real unattended locker would need more than this proof of concept.</p></div><div class="lf-reflections"><article><span>01 / OWNERSHIP</span><h3>Assign the right person.</h3><p>The saved sketch assigns new items to a hardcoded owner. Next: a staff flow that pairs each found item with its actual owner.</p></article><article><span>02 / MEMORY</span><h3>Keep the records.</h3><p>Ten records live in RAM. Next: capacity checks and persistent storage, so a power cycle does not erase the inventory.</p></article><article><span>03 / PHYSICAL STATE</span><h3>Know what happened.</h3><p>The original uses an eight-second latch window, without door or item sensors. Next: detect closure and collection before confirming a return.</p></article><article><span>04 / INTERACTION</span><h3>Make the workflow complete.</h3><p>Descriptions are entered through Serial Monitor and delays block the loop. Next: a staff interface, non-blocking timing and a stronger enclosure.</p></article></div><p class="lf-evidence-note">The interactive model is a teaching illustration, not measured CAD. Its guided safeguards are browser additions, not features claimed for the original hardware. The original sketch remains unchanged.</p></section>
+    <a class="lf-next-project wrap" href="pinball.html"><span class="eyebrow">ANOTHER PHYSICAL BUILD</span><strong>From a small box<br>to a full <em>playfield.</em></strong><span>Explore the pinball machine ↗</span></a>
   </main>
+  <dialog id="lf-lightbox" aria-label="Expanded project photo"><button id="lf-lightbox-close" aria-label="Close expanded photo">Close ×</button><figure><img id="lf-lightbox-image" alt=""><figcaption id="lf-lightbox-caption"></figcaption></figure></dialog>
 
   <footer class="footer">
     <div class="wrap">
@@ -55,10 +102,11 @@
     </div>
   </footer>
 
-  <script defer src="js/vendor/gsap.min.js?v=25"></script>
-  <script defer src="js/vendor/ScrollTrigger.min.js?v=25"></script>
-  <script defer src="js/vendor/lenis.min.js?v=25"></script>
-  <script defer src="js/playfield-data.js?v=25"></script>
-  <script defer src="js/main.js?v=25"></script>
+  <script defer src="js/vendor/gsap.min.js?v=44"></script>
+  <script defer src="js/vendor/ScrollTrigger.min.js?v=44"></script>
+  <script defer src="js/vendor/lenis.min.js?v=44"></script>
+  <script defer src="js/playfield-data.js?v=44"></script>
+  <script defer src="js/main.js?v=44"></script>
+  <script type="module" src="js/locker-story.js?v=44"></script>
 </body>
 </html>
