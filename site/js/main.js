@@ -113,7 +113,7 @@
   }
 
   /* ---------- scroll: reveals, icon drawing, project cards, hero parallax ---------- */
-  function initScroll(fields) {
+  function initScroll() {
     $$('.reveal').forEach((el) => {
       gsap.fromTo(
         el,
@@ -132,14 +132,6 @@
       });
     });
 
-    fields
-      .filter((f) => f.svg.closest('.project'))
-      .forEach((f) => {
-        const trigger = { trigger: f.svg, start: 'top 85%', once: true };
-        gsap.to(f.outlines, { strokeDashoffset: 0, duration: 1.4, stagger: 0.04, ease: 'power2.inOut', scrollTrigger: trigger });
-        gsap.to(f.holes, { strokeDashoffset: 0, duration: 0.6, stagger: 0.02, delay: 0.6, scrollTrigger: trigger });
-      });
-
     const sheetField = $('.sheet .pf');
     if (sheetField) {
       gsap.to(sheetField, {
@@ -150,6 +142,25 @@
     }
 
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
+  }
+
+  /* the Home Pinball card: the finished table playing in its frame. It is only fetched and
+     started when the card is near the screen and pauses once it has gone, so a video the visitor
+     hasn't reached yet costs nothing. Reduced motion: the poster stays. */
+  function initCardVideos() {
+    const videos = $$('.pf-real');
+    if (!videos.length || reduceMotion || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.preload = 'auto';
+            e.target.play().catch(() => {});
+          } else e.target.pause();
+        }),
+      { rootMargin: '300px 0px' }
+    );
+    videos.forEach((v) => io.observe(v));
   }
 
   /* ---------- pointer effects (desktop only) ---------- */
@@ -259,7 +270,7 @@
     try {
       const heroField = fields.find((f) => f.svg.closest('.sheet')) || { outlines: [], holes: [] };
       intro(heroField);
-      initScroll(fields);
+      initScroll();
       initTilt();
       initMagnetic();
     } catch (err) {
@@ -270,4 +281,5 @@
   }
   initCrosshair();
   initSmoothScroll();
+  initCardVideos();
 })();

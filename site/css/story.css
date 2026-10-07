@@ -26,8 +26,140 @@
   padding: clamp(28px, 5vw, 48px) 0;
 }
 
-.chapter:nth-child(even) .chapter-visual {
+/* every other chapter puts its model on the right (story.js sets chapter--flip) */
+.chapter--flip .chapter-visual {
   order: 2;
+}
+
+/* a chapter with footage of the mechanism working: model | clip | text (or mirrored) */
+.chapter--real {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.36fr) minmax(0, 0.92fr);
+}
+
+.chapter--real.chapter--flip {
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 0.36fr) minmax(0, 1fr);
+}
+
+.chapter--real.chapter--flip .chapter-visual {
+  order: 3;
+}
+
+.chapter--real.chapter--flip .chapter-real {
+  order: 2;
+}
+
+.chapter-real {
+  --wipe: 1;
+  display: grid;
+  gap: 0.55rem;
+  align-self: center;
+  margin: 0;
+}
+
+.real-tag {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font: 500 0.6rem var(--f-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--redline-soft);
+}
+
+.real-tag::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff5a36;
+  box-shadow: 0 0 8px rgba(255, 90, 54, 0.8);
+}
+
+/* wipes out from behind the model as the chapter scrolls up (story.js drives --wipe) */
+.real-open {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-deep);
+  clip-path: inset(0 calc((1 - var(--wipe)) * 100%) 0 0);
+}
+
+.chapter--flip .real-open {
+  clip-path: inset(0 0 0 calc((1 - var(--wipe)) * 100%));
+}
+
+.real-open video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.real-open:hover video {
+  transform: scale(1.04);
+}
+
+.real-open::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid transparent;
+  transition: border-color 0.3s;
+  pointer-events: none;
+}
+
+.real-open:hover::after,
+.real-open:focus-visible::after {
+  border-color: var(--redline);
+}
+
+.real-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--wipe) * 100% - 2px);
+  width: 2px;
+  background: var(--redline);
+  box-shadow: 0 0 12px var(--redline-glow);
+  opacity: calc(1 - var(--wipe));
+  pointer-events: none;
+}
+
+.chapter--flip .real-edge {
+  left: auto;
+  right: calc(var(--wipe) * 100% - 2px);
+}
+
+.chapter-real figcaption {
+  font-size: 0.74rem;
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+
+.chapter-real time {
+  display: block;
+  margin-bottom: 0.15rem;
+  font: 500 0.6rem var(--f-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--redline);
+}
+
+/* chapter 07: text and workshop photos side by side, the wiring diagram full width under them */
+.chapter--wide {
+  align-items: end;
+}
+
+.chapter--wide .workshop {
+  margin-top: 0;
+}
+
+.chapter--wide .brain {
+  grid-column: 1 / -1;
 }
 
 .chapter-num {
@@ -100,6 +232,19 @@
   color: var(--ink-3);
   border-bottom-color: var(--rule);
   cursor: default;
+}
+
+/* code written for the page rather than taken from the sketch: always says so */
+.chapter-code--recon {
+  border-bottom-style: dashed;
+}
+
+.recon-badge {
+  margin-left: 0.2rem;
+  padding: 0.12rem 0.4rem;
+  border: 1px dashed var(--redline);
+  font-size: 0.56rem;
+  color: var(--redline-soft);
 }
 
 /* ---------------- visual: hero + satellite strip ---------------- */
@@ -253,6 +398,14 @@
 @media (prefers-reduced-motion: reduce) {
   .connector-path {
     filter: none;
+  }
+}
+
+/* one column: every stage sits in the middle, so the path could only run straight down
+   through the text - leave it out */
+@media (max-width: 860px) {
+  .story-connector {
+    display: none;
   }
 }
 
@@ -690,6 +843,26 @@
   padding: clamp(20px, 3vw, 32px);
 }
 
+.codepanel-badge {
+  display: inline-block;
+  margin-bottom: 0.8rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px dashed var(--redline);
+  font: 500 0.62rem var(--f-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--redline-soft);
+}
+
+.codepanel-badge[hidden] {
+  display: none;
+}
+
+.is-reconstruction .codepanel-stage pre {
+  border-style: dashed;
+  border-color: rgba(255, 214, 10, 0.45);
+}
+
 .codepanel-stage h4 {
   font: 700 1.1rem/1.3 var(--f-display);
   font-stretch: 112%;
@@ -737,12 +910,77 @@
 .codepanel-stage pre .str { color: #9fd8a8; }
 
 @media (max-width: 860px) {
-  .chapter {
+  .chapter,
+  .chapter--real,
+  .chapter--real.chapter--flip {
     grid-template-columns: 1fr;
   }
 
-  .chapter:nth-child(even) .chapter-visual {
+  .chapter--flip .chapter-visual,
+  .chapter--real.chapter--flip .chapter-visual,
+  .chapter--real.chapter--flip .chapter-real {
     order: 0;
+  }
+}
+
+/* narrower than a clip column can hold: the clip goes under the model, beside its own label */
+@media (min-width: 861px) and (max-width: 1099px) {
+  .chapter--real,
+  .chapter--real.chapter--flip {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "visual text"
+      "real text";
+    row-gap: 18px;
+  }
+
+  .chapter--real.chapter--flip {
+    grid-template-areas:
+      "text visual"
+      "text real";
+  }
+
+  .chapter--real .chapter-visual {
+    grid-area: visual;
+  }
+
+  .chapter--real .chapter-real {
+    grid-area: real;
+  }
+
+  .chapter--real .chapter-text {
+    grid-area: text;
+  }
+}
+
+@media (max-width: 1099px) {
+  .chapter-real {
+    grid-template-columns: 38% minmax(0, 1fr);
+    grid-template-rows: 1fr auto;
+    grid-template-areas:
+      "open tag"
+      "open cap";
+    align-items: end;
+    column-gap: 14px;
+  }
+
+  .real-tag {
+    grid-area: tag;
+  }
+
+  .real-open,
+  .chapter--flip .real-open {
+    grid-area: open;
+    clip-path: inset(0 calc((1 - var(--wipe)) * 100%) 0 0);
+  }
+
+  .chapter--flip .real-edge {
+    left: calc(var(--wipe) * 100% - 2px);
+    right: auto;
+  }
+
+  .chapter-real figcaption {
+    grid-area: cap;
   }
 }
 

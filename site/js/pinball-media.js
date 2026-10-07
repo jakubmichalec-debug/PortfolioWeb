@@ -7,11 +7,11 @@ window.PINBALL_MEDIA = {
    "poster": "assets/media/pinball/flip-real.jpg",
    "w": 720,
    "h": 1280,
-   "duration": 11.0,
+   "duration": 10.5,
    "date": "15 Jun",
    "iso": "2026-06-15",
    "id": "flip-real",
-   "caption": "The flippers in a real game"
+   "caption": "The flippers in a real game, up close"
   },
   "Ball loading": {
    "kind": "video",
@@ -38,77 +38,6 @@ window.PINBALL_MEDIA = {
    "caption": "The score display, up close"
   }
  },
- "films": {
-  "hero": {
-   "dir": "assets/media/pinball/film-hero/",
-   "count": 44,
-   "ext": "webp",
-   "w": 464,
-   "h": 832,
-   "seconds": 4.4,
-   "display": [
-    {
-     "t": 0,
-     "top": "SCORE",
-     "bottom": "0 B:3"
-    }
-   ]
-  },
-  "finale": {
-   "dir": "assets/media/pinball/film-finale/",
-   "count": 136,
-   "ext": "webp",
-   "w": 464,
-   "h": 832,
-   "seconds": 22.6,
-   "display": [
-    {
-     "t": 0,
-     "top": "SCORE",
-     "bottom": "0 B:3"
-    },
-    {
-     "t": 0.0221,
-     "top": "BALL",
-     "bottom": "LOST"
-    },
-    {
-     "t": 0.1549,
-     "top": "RE",
-     "bottom": "LOAD"
-    },
-    {
-     "t": 0.2522,
-     "top": "SCORE",
-     "bottom": "0 B:2"
-    },
-    {
-     "t": 0.6239,
-     "top": "+10",
-     "bottom": "POINTS"
-    },
-    {
-     "t": 0.646,
-     "top": "SCORE",
-     "bottom": "10 B:2"
-    }
-   ]
-  }
- },
- "home": [
-  {
-   "kind": "video",
-   "src": "assets/media/pinball/home-loop.mp4",
-   "poster": "assets/media/pinball/home-loop.jpg",
-   "w": 464,
-   "h": 832,
-   "duration": 7.8,
-   "date": null,
-   "iso": null,
-   "id": "home-loop",
-   "caption": "The finished table in play"
-  }
- ],
  "Structure": [
   {
    "kind": "photo",
@@ -371,115 +300,430 @@ window.PINBALL_MEDIA = {
    "caption": "From the wiring to the sketch running on the laptop"
   }
  ],
+ "showcase": {
+  "src": "assets/media/pinball/showcase.mp4",
+  "poster": "assets/media/pinball/showcase.jpg",
+  "w": 720,
+  "h": 900,
+  "duration": 27.33,
+  "display": [
+   {
+    "t": 0.0,
+    "top": "START",
+    "bottom": "GAME"
+   },
+   {
+    "t": 2.0,
+    "top": "SCORE",
+    "bottom": "0 B:3"
+   },
+   {
+    "t": 8.5,
+    "top": "SCORE",
+    "bottom": "10 B:3"
+   }
+  ],
+  "events": [
+   {
+    "t": 0.05,
+    "kind": "start"
+   },
+   {
+    "t": 2.0,
+    "kind": "play"
+   },
+   {
+    "t": 8.0,
+    "kind": "flip"
+   },
+   {
+    "t": 8.5,
+    "kind": "hit"
+   },
+   {
+    "t": 12.1,
+    "kind": "close"
+   },
+   {
+    "t": 26.4,
+    "kind": "open"
+   }
+  ],
+  "cuts": [
+   2.0,
+   12.1,
+   17.8
+  ],
+  "home": {
+   "src": "assets/media/pinball/home-loop.mp4",
+   "poster": "assets/media/pinball/home-loop.jpg",
+   "w": 544,
+   "h": 680
+  }
+ },
  "timeline": [
   {
-   "kind": "photo",
-   "date": "24 Apr",
-   "iso": "2026-04-24",
-   "src": "assets/media/pinball/box-layout.jpg",
-   "w": 1298,
-   "h": 1800,
-   "thumb": "assets/media/pinball/box-layout-thumb.jpg",
-   "id": "box-layout",
-   "caption": "The playfield drawn out on the MDF",
+   "kind": "model",
+   "caption": "A finger-jointed box in FreeCAD: the file that grew into the cabinet",
+   "source": "boxProjectFinger.FCStd",
+   "iso": "2026-02-28",
+   "date": "28 Feb",
+   "model": "box-finger-joints-boxprojectfinger.glb",
    "day": 0
   },
   {
-   "kind": "photo",
-   "date": "30 Apr",
-   "iso": "2026-04-30",
-   "src": "assets/media/pinball/target-housing-early.jpg",
-   "w": 1012,
-   "h": 1800,
-   "thumb": "assets/media/pinball/target-housing-early-thumb.jpg",
-   "id": "target-housing-early",
+   "kind": "model",
+   "caption": "The flipper lever, drawn in FreeCAD",
+   "source": "RucickaNova.FCStd",
+   "iso": "2026-04-11",
+   "date": "11 Apr",
+   "model": "flipper-lever-rucickanova.glb",
+   "day": 42
+  },
+  {
+   "kind": "drawing",
+   "caption": "The playfield redrawn in FreeCAD",
+   "source": "SketchMiddleNew.FCStd",
+   "iso": "2026-04-23",
+   "date": "23 Apr",
+   "day": 54
+  },
+  {
+   "kind": "photos",
+   "items": [
+    {
+     "kind": "photo",
+     "date": "24 Apr",
+     "iso": "2026-04-24",
+     "src": "assets/media/pinball/box-layout.jpg",
+     "w": 1298,
+     "h": 1800,
+     "thumb": "assets/media/pinball/box-layout-thumb.jpg",
+     "id": "box-layout",
+     "caption": "Playfield layout drawn out on the MDF"
+    }
+   ],
+   "caption": "The playfield drawn out on the MDF",
+   "iso": "2026-04-24",
+   "date": "24 Apr",
+   "day": 55
+  },
+  {
+   "kind": "photos",
+   "items": [
+    {
+     "kind": "video",
+     "src": "assets/media/pinball/tl-bench.mp4",
+     "poster": "assets/media/pinball/tl-bench.jpg",
+     "w": 720,
+     "h": 1280,
+     "duration": 6.9,
+     "date": "28 Apr",
+     "iso": "2026-04-28",
+     "id": "tl-bench",
+     "caption": "The first test board: an Arduino and its wiring on a sheet of MDF"
+    }
+   ],
+   "caption": "The first test board: an Arduino and its wiring on a sheet of MDF",
+   "iso": "2026-04-28",
+   "date": "28 Apr",
+   "day": 59
+  },
+  {
+   "kind": "photos",
+   "items": [
+    {
+     "kind": "photo",
+     "date": "30 Apr",
+     "iso": "2026-04-30",
+     "src": "assets/media/pinball/target-housing-early.jpg",
+     "w": 1012,
+     "h": 1800,
+     "thumb": "assets/media/pinball/target-housing-early-thumb.jpg",
+     "id": "target-housing-early",
+     "caption": "First print of the target housing"
+    }
+   ],
    "caption": "First printed part: a target housing",
-   "day": 6
+   "iso": "2026-04-30",
+   "date": "30 Apr",
+   "day": 61
   },
   {
-   "kind": "photo",
-   "date": "7 May",
-   "iso": "2026-05-07",
-   "src": "assets/media/pinball/target-print.jpg",
-   "w": 1012,
-   "h": 1800,
-   "thumb": "assets/media/pinball/target-print-thumb.jpg",
-   "id": "target-print",
+   "kind": "model",
+   "caption": "The flipper drive, rebuilt as one assembly after five redesigns",
+   "source": "AdapterArmsV1.FCStd",
+   "iso": "2026-05-04",
+   "date": "4 May",
+   "model": "flipper-solenoid-assembly-adapterarmsv1.glb",
+   "day": 65
+  },
+  {
+   "kind": "photos",
+   "items": [
+    {
+     "kind": "photo",
+     "date": "7 May",
+     "iso": "2026-05-07",
+     "src": "assets/media/pinball/target-print.jpg",
+     "w": 1012,
+     "h": 1800,
+     "thumb": "assets/media/pinball/target-print-thumb.jpg",
+     "id": "target-print",
+     "caption": "Printing a target holder"
+    }
+   ],
    "caption": "Printing target holders",
-   "day": 13
+   "iso": "2026-05-07",
+   "date": "7 May",
+   "day": 68
   },
   {
-   "kind": "video",
-   "src": "assets/media/pinball/load-bench.mp4",
-   "poster": "assets/media/pinball/load-bench.jpg",
-   "w": 720,
-   "h": 1280,
-   "duration": 11.0,
-   "date": "11 May",
-   "iso": "2026-05-11",
-   "id": "load-bench",
-   "caption": "The loading mechanism on the test bench",
-   "day": 17
-  },
-  {
-   "kind": "photo",
-   "date": "12 May",
+   "kind": "photos",
+   "items": [
+    {
+     "kind": "photo",
+     "date": "12 May",
+     "iso": "2026-05-12",
+     "src": "assets/media/pinball/flip-on-shaft.jpg",
+     "w": 1012,
+     "h": 1800,
+     "thumb": "assets/media/pinball/flip-on-shaft-thumb.jpg",
+     "id": "flip-on-shaft",
+     "caption": "Flipper on its shaft"
+    },
+    {
+     "kind": "photo",
+     "date": "12 May",
+     "iso": "2026-05-12",
+     "src": "assets/media/pinball/tl-vise.jpg",
+     "w": 1012,
+     "h": 1800,
+     "thumb": "assets/media/pinball/tl-vise-thumb.jpg",
+     "id": "tl-vise",
+     "caption": "Fitting the steel shaft through a flipper"
+    },
+    {
+     "kind": "photo",
+     "date": "12 May",
+     "iso": "2026-05-12",
+     "src": "assets/media/pinball/tl-paint.jpg",
+     "w": 1012,
+     "h": 1800,
+     "thumb": "assets/media/pinball/tl-paint-thumb.jpg",
+     "id": "tl-paint",
+     "caption": "The playfield painted black, then sprayed with stars"
+    }
+   ],
+   "caption": "Flippers on their shafts, and the playfield painted",
    "iso": "2026-05-12",
-   "src": "assets/media/pinball/flip-on-shaft.jpg",
-   "w": 1012,
-   "h": 1800,
-   "thumb": "assets/media/pinball/flip-on-shaft-thumb.jpg",
-   "id": "flip-on-shaft",
-   "caption": "A flipper on its D-profile shaft",
-   "day": 18
+   "date": "12 May",
+   "day": 73
   },
   {
-   "kind": "photo",
-   "date": "18 May",
+   "kind": "photos",
+   "items": [
+    {
+     "kind": "photo",
+     "date": "13 May",
+     "iso": "2026-05-13",
+     "src": "assets/media/pinball/tl-cutplan.jpg",
+     "w": 1315,
+     "h": 1800,
+     "thumb": "assets/media/pinball/tl-cutplan-thumb.jpg",
+     "id": "tl-cutplan",
+     "caption": "WhatToCUT.png: the playfield drawing, laser cuts marked in red"
+    }
+   ],
+   "caption": "The cut plan for the laser",
+   "iso": "2026-05-13",
+   "date": "13 May",
+   "day": 74
+  },
+  {
+   "kind": "photos",
+   "items": [
+    {
+     "kind": "photo",
+     "date": "18 May",
+     "iso": "2026-05-18",
+     "src": "assets/media/pinball/target-holder.jpg",
+     "w": 1012,
+     "h": 1800,
+     "thumb": "assets/media/pinball/target-holder-thumb.jpg",
+     "id": "target-holder",
+     "caption": "Target in its holder"
+    },
+    {
+     "kind": "photo",
+     "date": "18 May",
+     "iso": "2026-05-18",
+     "src": "assets/media/pinball/tl-target-house.jpg",
+     "w": 1800,
+     "h": 1013,
+     "thumb": "assets/media/pinball/tl-target-house-thumb.jpg",
+     "id": "tl-target-house",
+     "caption": "A target in its painted housing"
+    },
+    {
+     "kind": "photo",
+     "date": "18 May",
+     "iso": "2026-05-18",
+     "src": "assets/media/pinball/tl-targets.jpg",
+     "w": 1265,
+     "h": 1800,
+     "thumb": "assets/media/pinball/tl-targets-thumb.jpg",
+     "id": "tl-targets",
+     "caption": "Targets fixed onto the black playfield"
+    }
+   ],
+   "caption": "Targets going into the painted playfield",
    "iso": "2026-05-18",
-   "src": "assets/media/pinball/target-holder.jpg",
-   "w": 1012,
-   "h": 1800,
-   "thumb": "assets/media/pinball/target-holder-thumb.jpg",
-   "id": "target-holder",
-   "caption": "Painted playfield, targets going in",
-   "day": 24
+   "date": "18 May",
+   "day": 79
   },
   {
-   "kind": "photo",
-   "date": "7 Jun",
+   "kind": "photos",
+   "items": [
+    {
+     "kind": "video",
+     "src": "assets/media/pinball/tl-firstgame.mp4",
+     "poster": "assets/media/pinball/tl-firstgame.jpg",
+     "w": 720,
+     "h": 1280,
+     "duration": 9.0,
+     "date": "19 May",
+     "iso": "2026-05-19",
+     "id": "tl-firstgame",
+     "caption": "The first test on the real playfield"
+    }
+   ],
+   "caption": "The first test on the real playfield",
+   "iso": "2026-05-19",
+   "date": "19 May",
+   "day": 80
+  },
+  {
+   "kind": "model",
+   "caption": "A holder for the RFID reader that starts a game",
+   "source": "RFIDHolder.FCStd",
+   "iso": "2026-05-20",
+   "date": "20 May",
+   "model": "rfid-holder-rfidholder.glb",
+   "day": 81
+  },
+  {
+   "kind": "model",
+   "caption": "A platform that shoots the ball into play",
+   "source": "BallLoadingShootPlatform.FCStd",
+   "iso": "2026-05-25",
+   "date": "25 May",
+   "model": "ball-shoot-platform-ballloadingshootplatform.glb",
+   "day": 86
+  },
+  {
+   "kind": "photos",
+   "items": [
+    {
+     "kind": "photo",
+     "date": "7 Jun",
+     "iso": "2026-06-07",
+     "src": "assets/media/pinball/hero-table.jpg",
+     "w": 1275,
+     "h": 1800,
+     "thumb": "assets/media/pinball/hero-table-thumb.jpg",
+     "id": "hero-table",
+     "caption": "Finished, from above"
+    },
+    {
+     "kind": "photo",
+     "date": "7 Jun",
+     "iso": "2026-06-07",
+     "src": "assets/media/pinball/tl-front.jpg",
+     "w": 1800,
+     "h": 1013,
+     "thumb": "assets/media/pinball/tl-front-thumb.jpg",
+     "id": "tl-front",
+     "caption": "The front: aliens, the score display and the plunger"
+    },
+    {
+     "kind": "photo",
+     "date": "7 Jun",
+     "iso": "2026-06-07",
+     "src": "assets/media/pinball/tl-side.jpg",
+     "w": 1800,
+     "h": 1013,
+     "thumb": "assets/media/pinball/tl-side-thumb.jpg",
+     "id": "tl-side",
+     "caption": "The side panel, lettered"
+    }
+   ],
+   "caption": "Finished: painted, lettered, playable",
    "iso": "2026-06-07",
-   "src": "assets/media/pinball/hero-table.jpg",
-   "w": 1275,
-   "h": 1800,
-   "thumb": "assets/media/pinball/hero-table-thumb.jpg",
-   "id": "hero-table",
-   "caption": "Finished",
-   "day": 44
+   "date": "7 Jun",
+   "day": 99
   },
   {
-   "kind": "photo",
-   "date": "14 Jun",
+   "kind": "photos",
+   "items": [
+    {
+     "kind": "photo",
+     "date": "14 Jun",
+     "iso": "2026-06-14",
+     "src": "assets/media/pinball/load-under.jpg",
+     "w": 1012,
+     "h": 1800,
+     "thumb": "assets/media/pinball/load-under-thumb.jpg",
+     "id": "load-under",
+     "caption": "Underneath: the reload mechanism and the wooden balls"
+    },
+    {
+     "kind": "photo",
+     "date": "14 Jun",
+     "iso": "2026-06-14",
+     "src": "assets/media/pinball/tl-displays.jpg",
+     "w": 1012,
+     "h": 1800,
+     "thumb": "assets/media/pinball/tl-displays-thumb.jpg",
+     "id": "tl-displays",
+     "caption": "The two score displays, four MAX7219 modules each, wired up"
+    },
+    {
+     "kind": "photo",
+     "date": "14 Jun",
+     "iso": "2026-06-14",
+     "src": "assets/media/pinball/tl-flippers.jpg",
+     "w": 1012,
+     "h": 1800,
+     "thumb": "assets/media/pinball/tl-flippers-thumb.jpg",
+     "id": "tl-flippers",
+     "caption": "The flippers in place"
+    }
+   ],
+   "caption": "The last wiring: reload, displays, flippers",
    "iso": "2026-06-14",
-   "src": "assets/media/pinball/load-under.jpg",
-   "w": 1012,
-   "h": 1800,
-   "thumb": "assets/media/pinball/load-under-thumb.jpg",
-   "id": "load-under",
-   "caption": "Final wiring underneath",
-   "day": 51
+   "date": "14 Jun",
+   "day": 106
   },
   {
-   "kind": "photo",
-   "date": "15 Jun",
-   "iso": "2026-06-15",
-   "src": "assets/media/pinball/showcase.jpg",
-   "w": 1012,
-   "h": 1800,
-   "thumb": "assets/media/pinball/showcase-thumb.jpg",
-   "id": "showcase",
+   "kind": "photos",
+   "items": [
+    {
+     "kind": "photo",
+     "date": "15 Jun",
+     "iso": "2026-06-15",
+     "src": "assets/media/pinball/showcase.jpg",
+     "w": 1012,
+     "h": 1800,
+     "thumb": "assets/media/pinball/showcase-thumb.jpg",
+     "id": "showcase",
+     "caption": "Showcase day"
+    }
+   ],
    "caption": "Showcase day",
-   "day": 52
+   "iso": "2026-06-15",
+   "date": "15 Jun",
+   "day": 107
   }
  ]
 };

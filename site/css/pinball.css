@@ -1,72 +1,45 @@
-/* Pinball page hero band. The build story itself lives in story.css. */
+/* Pinball page hero band: the text, and beside it the finished table playing (scenes.css
+   .hero-stage). The build story itself lives in story.css. */
 
 .pb-hero {
-  padding: calc(var(--nav-h) + 28px) var(--gutter) 0;
-}
-
-.pb-hero .wrap {
-  padding-bottom: clamp(28px, 4vw, 44px);
-  border-bottom: 1px solid var(--rule);
+  padding-top: var(--nav-h);
 }
 
 .pb-hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: clamp(28px, 5vw, 64px);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
   align-items: center;
-}
-
-/* the payoff up front: the finished table in play, with the top-down shot pinned over its
-   corner like a photo clipped to a drawing sheet (cards built by js/media.js) */
-.pb-hero-media {
-  position: relative;
-  padding-left: 24%;
-}
-
-.pb-hero-media .media-card--lead {
-  position: relative;
-}
-
-.pb-hero-media .media-card--lead::before {
-  content: "";
-  position: absolute;
-  top: -7px;
-  right: -7px;
-  width: 18px;
-  height: 18px;
-  border: 1px solid var(--redline);
-  border-left: 0;
-  border-bottom: 0;
-  pointer-events: none;
-}
-
-.pb-hero-media .media-card--pin {
-  position: absolute;
-  left: 0;
-  top: 10%;
-  z-index: 1;
-  width: 42%;
-  transform: rotate(-3deg);
-}
-
-.pb-hero-media .media-card--pin .media-open {
-  border-color: var(--rule-strong);
-  box-shadow: 0 22px 44px -14px rgba(0, 0, 0, 0.75);
-}
-
-.pb-hero-media .media-card--pin figcaption {
-  display: none; /* it's in the full-screen viewer; here it would sit on top of the clip */
+  gap: clamp(28px, 5vw, 72px);
+  min-height: calc(100svh - var(--nav-h));
+  padding-block: 28px;
 }
 
 @media (max-width: 860px) {
   .pb-hero-grid {
     grid-template-columns: 1fr;
-  }
-
-  .pb-hero-media {
-    max-width: 480px;
+    gap: 24px;
+    min-height: 0;
+    padding-top: 20px;
   }
 }
+
+/* the text rises in by itself - no script involved, so it can't get stuck invisible */
+@keyframes pb-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+.anim .pb-hero-text > * {
+  animation: pb-rise 0.8s var(--ease-out) both;
+}
+
+.anim .pb-hero-text > :nth-child(2) { animation-delay: 0.07s; }
+.anim .pb-hero-text > :nth-child(3) { animation-delay: 0.14s; }
+.anim .pb-hero-text > :nth-child(4) { animation-delay: 0.21s; }
+.anim .pb-hero-text > :nth-child(5) { animation-delay: 0.28s; }
+.anim .pb-hero-text > :nth-child(6) { animation-delay: 0.35s; }
 
 .pb-kicker {
   display: flex;
@@ -117,7 +90,6 @@
 /* the RFID start - set apart from the lede because the code excerpts on the page predate it */
 .pb-note {
   max-width: 40rem;
-  margin-top: 1.2rem;
   padding: 0.7rem 0.9rem;
   border-left: 2px solid var(--redline);
   background: rgba(255, 214, 10, 0.05);

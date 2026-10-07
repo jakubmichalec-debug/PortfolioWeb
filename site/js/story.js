@@ -1,17 +1,23 @@
 /* Pinball page: the build told as one continuous story, not a filtered gallery. Each chapter
-   is a mechanism (Structure, Flippers, Loading, Targets, Slide & small parts, Brackets),
-   alternating sides, connected by an animated path. Every model just idles in place until
-   clicked - click opens it full-screen with real orbit + zoom controls (site/js/lightbox.js).
-   Reads window.PINBALL_PARTS (tools/make_pinball_models.py) for the 3D/photo content, and
-   embeds short, real excerpts from the actual Arduino sketch (site/assets/code/pinball.ino)
-   for the three chapters an Arduino actually drives. */
+   is a mechanism (Structure, Flippers, Loading, Targets, Slide & small parts, Brackets, and
+   the electronics that run it all), alternating sides, connected by an animated path. Every
+   model just idles in place until clicked - click opens it full-screen with real orbit + zoom
+   controls (site/js/lightbox.js). Where there's footage of a mechanism working, it wipes in
+   beside the CAD model as the chapter scrolls up: the drawing, then the real thing.
+   Reads window.PINBALL_PARTS (tools/make_pinball_models.py) for the 3D/photo content and
+   window.PINBALL_MEDIA (tools/make_pinball_media.py) for the photos and clips, and embeds
+   short, real excerpts from the actual Arduino sketch (site/assets/code/pinball.ino) for the
+   three chapters an Arduino actually drives. The one piece of code that isn't from that
+   sketch - the RFID card start - is labelled as a reconstruction wherever it appears. */
 (() => {
   'use strict';
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canAnimate = !reduceMotion && !!(window.gsap && window.ScrollTrigger);
   const parts = window.PINBALL_PARTS || [];
+  const media = window.PINBALL_MEDIA || {};
   const root = $('#story-chapters');
   if (!root || !parts.length) return;
 
@@ -110,6 +116,50 @@ if (lastHighTargetState == HIGH && highTargetState == LOW) {
       blurb: "Plain corner brackets, holding the box square. Every seam of the cabinet is both glued and screwed - each bracket is printed with holes so a screw bites into both panels on top of the glue joint, the least glamorous parts and some of the most necessary.",
       tags: ['3D printed'],
     },
+    {
+      group: 'Electronics',
+      custom: 'brain',
+      title: 'The brain: wiring and code',
+      blurb: "One Arduino UNO runs the whole machine. Every button, target, sensor, solenoid and the card reader was wired up on a test board first, then moved into the cabinet. Scroll the diagram into view and it plays through a game.",
+      tags: ['Arduino UNO', 'C++', 'RFID', 'MAX7219'],
+      codeButton: 'The card start',
+      code: {
+        reconstruction: true,
+        label: 'Starting a game with an RFID card',
+        note: 'The RFID version of the sketch isn’t in my files any more - the excerpts elsewhere on this page come from the version before the reader went in. This is how the card start works, written the way my Lost & Found locker reads its cards.',
+        snippet: `#include <SPI.h>
+#include <MFRC522.h>
+
+MFRC522 rfid(10, 9);   // SS, RST
+
+void setup() {
+  // ... inputs, outputs and displays as before ...
+  SPI.begin();         // the reader shares the bus with the displays
+  rfid.PCD_Init();     // and no startGame() here: the machine waits for a card
+}
+
+void loop() {
+  printDistanceEvery5Sec();
+
+  if (!gameActive) {
+    analogWrite(leftFlipperOut, 0);
+    analogWrite(rightFlipperOut, 0);
+
+    // a tapped card starts the next game: score 0, 3 balls, START GAME
+    if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()) {
+      rfid.PICC_HaltA();
+      startGame();
+    }
+    return;
+  }
+
+  handleLeftFlipper();
+  handleRightFlipper();
+  handleTargets();
+  handleLostBall();   // after GAME OVER: gameActive = false, and wait
+}                     // for a card instead of restarting by itself`,
+      },
+    },
   ];
 
   // ---------- helpers ----------
@@ -150,7 +200,7 @@ if (lastHighTargetState == HIGH && highTargetState == LOW) {
       svg.setAttribute('aria-hidden', 'true');
       requestAnimationFrame(() => {
         const field = window.buildPlayfield(svg);
-        if (window.gsap && window.ScrollTrigger && !reduceMotion) {
+        if (canAnimate) {
           gsap.set([...field.outlines, ...field.holes], { strokeDashoffset: 1 });
           const trigger = { trigger: svg, start: 'top 85%', once: true };
           gsap.to(field.outlines, { strokeDashoffset: 0, duration: 1.3, stagger: 0.04, ease: 'power2.inOut', scrollTrigger: trigger });
@@ -176,15 +226,71 @@ if (lastHighTargetState == HIGH && highTargetState == LOW) {
     return part.kind === 'model'; // photos/placeholders/playfield have nothing extra to show full-screen
   }
 
+  function chapterText(ch, i) {
+    const text = document.createElement('div');
+    text.className = 'chapter-text';
+    const codeHtml = ch.code
+      ? `<button type="button" class="chapter-code${ch.code.reconstruction ? ' chapter-code--recon' : ''}">${CODE_ICON}${ch.codeButton || 'View the code'}${ch.code.reconstruction ? '<span class="recon-badge">Reconstruction</span>' : ''}</button>`
+      : '';
+    text.innerHTML = `
+      <p class="chapter-num">${String(i + 1).padStart(2, '0')} <span>/ ${String(CHAPTERS.length).padStart(2, '0')}</span></p>
+      <h3>${ch.title}</h3>
+      <p class="chapter-blurb">${ch.blurb}</p>
+      <ul class="chapter-tags">${ch.tags.map((t) => `<li>${t}</li>`).join('')}</ul>
+      ${codeHtml}
+    `;
+    if (ch.code) {
+      text.querySelector('.chapter-code').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.openCodePanel(ch.code);
+      });
+    }
+    return text;
+  }
+
+  // the footage of a mechanism working, next to its CAD model
+  function realClip(item) {
+    const fig = document.createElement('figure');
+    fig.className = 'chapter-real';
+    const label = `Play clip: ${item.caption}${item.date ? `, ${item.date}` : ''}`;
+    fig.innerHTML = `
+      <p class="real-tag">The real thing</p>
+      <button type="button" class="real-open" aria-label="${label}">
+        <video muted loop playsinline preload="none" poster="${item.poster}" src="${item.src}" aria-hidden="true"></video>
+        <span class="real-edge" aria-hidden="true"></span>
+      </button>
+      <figcaption>${item.date ? `<time>${item.date}</time>` : ''}${item.caption}</figcaption>`;
+    const video = fig.querySelector('video');
+    video.muted = true;
+    if (window.watchClip) window.watchClip(video);
+    fig.querySelector('.real-open').addEventListener('click', () => window.openMedia && window.openMedia([item], 0));
+    return fig;
+  }
+
+  function brainChapter(ch, i, section) {
+    section.classList.add('chapter--wide');
+    section.appendChild(chapterText(ch, i));
+    const workshop = media[ch.group];
+    if (workshop && workshop.length && window.buildMediaStrip) section.appendChild(window.buildMediaStrip(workshop));
+    if (window.buildBrain) section.appendChild(window.buildBrain());
+  }
+
   root.innerHTML = '';
   CHAPTERS.forEach((ch, i) => {
-    const items = byGroup[ch.group] || [];
-    if (!items.length) return;
-    const [hero, ...rest] = items;
-
     const section = document.createElement('article');
     section.className = 'chapter reveal';
     section.id = 'chapter-' + ch.group.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+    if (ch.custom === 'brain') {
+      brainChapter(ch, i, section);
+      root.appendChild(section);
+      return;
+    }
+
+    const items = byGroup[ch.group] || [];
+    if (!items.length) return;
+    const [hero, ...rest] = items;
+    if (i % 2 === 0) section.classList.add('chapter--flip'); // model on the right
 
     const visual = document.createElement('div');
     visual.className = 'chapter-visual';
@@ -214,42 +320,34 @@ if (lastHighTargetState == HIGH && highTargetState == LOW) {
       visual.appendChild(sat);
     }
 
-    const text = document.createElement('div');
-    text.className = 'chapter-text';
-    const codeHtml = ch.code ? `<button type="button" class="chapter-code">${CODE_ICON}View the code</button>` : '';
-    text.innerHTML = `
-      <p class="chapter-num">${String(i + 1).padStart(2, '0')} <span>/ ${CHAPTERS.length}</span></p>
-      <h3>${ch.title}</h3>
-      <p class="chapter-blurb">${ch.blurb}</p>
-      <ul class="chapter-tags">${ch.tags.map((t) => `<li>${t}</li>`).join('')}</ul>
-      ${codeHtml}
-    `;
-
-    const workshop = (window.PINBALL_MEDIA || {})[ch.group];
+    const text = chapterText(ch, i);
+    const workshop = media[ch.group];
     if (workshop && workshop.length && window.buildMediaStrip) text.appendChild(window.buildMediaStrip(workshop));
 
-    section.append(visual, text);
-    root.appendChild(section);
-
-    if (ch.code) {
-      const btn = section.querySelector('.chapter-code');
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.openCodePanel(ch.code);
-      });
+    const real = media.real && media.real[ch.group];
+    if (real) {
+      section.classList.add('chapter--real');
+      section.append(visual, realClip(real), text);
+    } else {
+      section.append(visual, text);
     }
+    root.appendChild(section);
   });
 
-  // ---------- scroll reveal ----------
-  if (window.gsap && window.ScrollTrigger && !reduceMotion) {
-    $$('.chapter.reveal').forEach((el) => {
+  // ---------- scroll reveal, and the real clips wiping out from behind their models ----------
+  if (canAnimate) {
+    $$('.chapter.reveal', root).forEach((el) => {
       gsap.fromTo(el, { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
+    });
+    $$('.chapter-real', root).forEach((fig) => {
+      gsap.fromTo(fig, { '--wipe': 0 }, { '--wipe': 1, ease: 'none', scrollTrigger: { trigger: fig, start: 'top 90%', end: 'top 50%', scrub: 0.4 } });
     });
   }
 
   // ---------- one continuous path, image to image, filling as you scroll the whole story ----------
   // Not a decorative shape dropped in the gap: it's built from each chapter's REAL stage
-  // position, so it actually zigzags left-stage -> right-stage -> left-stage down the page.
+  // position, so it actually zigzags left-stage -> right-stage -> left-stage down the page, and
+  // ends on the top edge of the wiring diagram.
   const NS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(NS, 'svg');
   svg.setAttribute('class', 'story-connector');
@@ -264,16 +362,17 @@ if (lastHighTargetState == HIGH && highTargetState == LOW) {
   let trigger = null;
 
   function rebuildConnector() {
-    const stages = $$('.chapter-stage', root);
-    if (stages.length < 2) return;
+    const stops = $$('.chapter-stage, [data-connector]', root);
+    if (stops.length < 2) return;
     const box = root.getBoundingClientRect();
     const h = root.scrollHeight;
     svg.setAttribute('viewBox', `0 0 ${box.width} ${h}`);
     svg.setAttribute('preserveAspectRatio', 'none');
 
-    const points = stages.map((s) => {
+    const points = stops.map((s) => {
       const r = s.getBoundingClientRect();
-      return { x: r.left - box.left + r.width / 2, y: r.top - box.top + r.height / 2 };
+      const top = s.hasAttribute('data-connector'); // a wide block: land on its top edge, not behind it
+      return { x: r.left - box.left + r.width / 2, y: r.top - box.top + (top ? 0 : r.height / 2) };
     });
 
     let d = `M ${points[0].x} ${points[0].y}`;
@@ -291,12 +390,12 @@ if (lastHighTargetState == HIGH && highTargetState == LOW) {
       c.setAttribute('class', 'connector-node');
       c.setAttribute('cx', p.x);
       c.setAttribute('cy', p.y);
-      c.setAttribute('r', reduceMotion || !window.ScrollTrigger ? 5 : 0);
+      c.setAttribute('r', canAnimate ? 0 : 5);
       nodes.appendChild(c);
     });
 
     const len = path.getTotalLength();
-    if (reduceMotion || !(window.gsap && window.ScrollTrigger)) {
+    if (!canAnimate) {
       path.style.strokeDasharray = 'none';
       return;
     }
@@ -307,7 +406,7 @@ if (lastHighTargetState == HIGH && highTargetState == LOW) {
     trigger = ScrollTrigger.create({
       trigger: root,
       start: 'top 72%',
-      end: 'bottom 55%',
+      end: () => `top+=${points[points.length - 1].y} 55%`,
       scrub: 0.5,
       onUpdate(self) {
         path.style.strokeDashoffset = String(len * (1 - self.progress));

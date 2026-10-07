@@ -189,9 +189,13 @@
     el.width = item.w;
     el.height = item.h;
     mbFrame.replaceChildren(el);
-    const time = document.createElement('time');
-    time.textContent = item.date;
-    $('#mediabox-caption').replaceChildren(time, ` ${item.caption}`);
+    const caption = [item.caption];
+    if (item.date) {
+      const time = document.createElement('time');
+      time.textContent = item.date;
+      caption.unshift(time, ' ');
+    }
+    $('#mediabox-caption').replaceChildren(...caption);
     const many = mbSet.length > 1;
     $('#mediabox-count').textContent = many ? `${mbAt + 1} / ${mbSet.length}` : '';
     mbPrev.hidden = !many;
@@ -224,6 +228,7 @@
       <button type="button" class="lightbox-close" data-close aria-label="Close">
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13"/></svg>
       </button>
+      <p class="codepanel-badge" id="codepanel-badge" hidden>Reconstruction · not the original code</p>
       <h4 id="codepanel-label"></h4>
       <p class="codepanel-note" id="codepanel-note"></p>
       <p class="codepanel-file"><span id="codepanel-file"></span><a id="codepanel-link" target="_blank" rel="noopener">view full source ↗</a></p>
@@ -232,22 +237,36 @@
   document.body.appendChild(cp);
   const cpClose = wire(cp);
 
-  const KEYWORDS = /\b(void|int|bool|const|unsigned|long|char|if|else|while|for|return|break|true|false|HIGH|LOW|OUTPUT|INPUT|INPUT_PULLUP)\b/g;
+  // One pass over the source, so a later rule never re-matches markup an earlier one inserted
+  // (colouring strings after comments used to wrap the "cm" in <span class="cm"> itself).
+  const TOKEN = /(\/\/[^\n]*)|("(?:[^"\\\n]|\\.)*")|(^#\w+)|\b(void|int|bool|const|unsigned|long|char|if|else|while|for|return|break|true|false|HIGH|LOW|OUTPUT|INPUT|INPUT_PULLUP)\b|\b(\d+)\b/gm;
+  const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
   function highlight(src) {
-    return src
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/(\/\/[^\n]*)/g, '<span class="cm">$1</span>')
-      .replace(/("(?:[^"\\]|\\.)*")/g, '<span class="str">$1</span>')
-      .replace(KEYWORDS, '<span class="kw">$1</span>')
-      .replace(/\b(\d+)\b/g, '<span class="nm">$1</span>');
+    let out = '';
+    let last = 0;
+    src.replace(TOKEN, (m, cm, str, pre, kw, nm, at) => {
+      const cls = cm ? 'cm' : str ? 'str' : pre || kw ? 'kw' : 'nm';
+      out += `${esc(src.slice(last, at))}<span class="${cls}">${esc(m)}</span>`;
+      last = at + m.length;
+      return m;
+    });
+    return out + esc(src.slice(last));
   }
 
+  // `reconstruction`: code written to show how something worked, not taken from the real
+  // sketch - badged as such, and with no "full source" link, because there is no source file
   window.openCodePanel = (code) => {
+    const recon = Boolean(code.reconstruction);
+    cp.classList.toggle('is-reconstruction', recon);
+    $('#codepanel-badge').hidden = !recon;
     $('#codepanel-label').textContent = code.label;
     $('#codepanel-note').textContent = code.note || '';
-    $('#codepanel-file').textContent = code.file;
-    $('#codepanel-link').href = 'assets/code/' + code.file;
+    $('#codepanel-file').textContent = recon ? 'Written for this page' : code.file;
+    const link = $('#codepanel-link');
+    link.hidden = recon;
+    if (recon) link.removeAttribute('href');
+    else link.href = 'assets/code/' + code.file;
     $('#codepanel-code').innerHTML = highlight(code.snippet.trim());
     open(cp, cpClose);
   };

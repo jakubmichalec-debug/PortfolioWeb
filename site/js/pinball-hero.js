@@ -1,67 +1,49 @@
-/* Pinball page hero: "the drawing comes to life". The playfield drawing traces itself on load;
-   scrolling then pins the stage and a scan line sweeps down it - above the line the drawing
-   has become the real table (FullShowcase1, frame by frame with the scroll), below it the
-   drawing is still waiting. Beside it, the machine's own display runs startGame()'s real
-   sequence: START GAME, TAKE BALL, then the score screen the footage shows. */
+/* Pinball page hero: the finished table playing, from the first moment. The <video> starts
+   itself (autoplay, muted, inline - it's in the HTML, so the browser begins fetching it while
+   the page is still parsing); this only adds what a video that never stops needs: a pause /
+   play button, and pausing while it is scrolled out of view. With "reduce motion" it doesn't
+   play on its own at all - the first frame stays up and the button starts it. */
 (() => {
   'use strict';
 
-  const media = window.PINBALL_MEDIA || {};
-  const film = media.films && media.films.hero;
-  const track = document.querySelector('[data-film="hero"]');
-  if (!track || !film || !window.ScrollFilm) return;
+  const video = document.querySelector('.hero-video');
+  const toggle = document.querySelector('.hero-toggle');
+  if (!video) return;
 
-  const stage = track.querySelector('.film-stage');
-  const canvas = stage.querySelector('.film-canvas');
-  const frameLabel = stage.querySelector('.film-frame');
-  const field = window.buildPlayfield(stage.querySelector('.film-pf'));
-  const player = window.ScrollFilm(canvas, film, { focusY: 0.55 });
-  const matrix = window.DotMatrix(track.querySelector('.dotmatrix'));
-  player.load(); // first thing on the page: start right away
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let userPaused = false;
 
-  const pad = (n) => String(n).padStart(3, '0');
-  const setFrame = () => {
-    if (frameLabel) frameLabel.textContent = `Frame ${pad(player.frame + 1)} / ${pad(player.count)}`;
+  const sync = () => {
+    if (!toggle) return;
+    toggle.setAttribute('aria-pressed', String(video.paused));
+    toggle.setAttribute('aria-label', video.paused ? 'Play the video' : 'Pause the video');
   };
 
-  // scroll budget, as fractions of the pinned scroll
-  const SWEEP = [0.05, 0.42]; // scan line top -> bottom
-  const PLAY = [0.42, 1]; // footage plays
-  const BOOT = [ // startGame(), pinball.ino - the text is the sketch's
-    [0.3, 'START', 'GAME'],
-    [0.39, 'TAKE', 'BALL'],
-    [0.48, film.display[0] ? film.display[0].top : 'SCORE', film.display[0] ? film.display[0].bottom : '0 B:3'],
-  ];
+  if (reduceMotion) {
+    video.removeAttribute('autoplay');
+    video.pause();
+    userPaused = true;
+  }
+  sync();
+  video.addEventListener('play', sync);
+  video.addEventListener('pause', sync);
 
-  const animated = window.filmScene(track, (p) => {
-    const sweep = window.clamp01((p - SWEEP[0]) / (SWEEP[1] - SWEEP[0]));
-    stage.style.setProperty('--sweep', sweep.toFixed(4));
-    stage.classList.toggle('is-sweeping', sweep > 0 && sweep < 1);
-    stage.classList.toggle('is-live', sweep >= 0.55);
-    stage.classList.toggle('is-scrolled', p > 0.02);
-    player.seek(window.clamp01((p - PLAY[0]) / (PLAY[1] - PLAY[0])));
-    setFrame();
-    let text = null;
-    BOOT.forEach(([at, top, bottom]) => {
-      if (p >= at) text = [top, bottom];
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      userPaused = !video.paused; // pausing it is a choice that off-screen playback must respect
+      if (video.paused) video.play().catch(() => {});
+      else video.pause();
     });
-    if (text) matrix.show(text[0], text[1]);
-    else matrix.clear();
-  });
-
-  if (!animated) {
-    // reduced motion / no GSAP: the finished state, still
-    stage.style.setProperty('--sweep', '1');
-    stage.classList.add('is-live', 'is-scrolled');
-    player.seek(1);
-    setFrame();
-    matrix.show(BOOT[2][1], BOOT[2][2]);
-    return;
   }
 
-  gsap.set([...field.outlines, ...field.holes], { strokeDashoffset: 1 });
-  gsap
-    .timeline({ delay: 0.25 })
-    .to(field.outlines, { strokeDashoffset: 0, duration: 1.6, stagger: 0.05, ease: 'power2.inOut' }, 0)
-    .to(field.holes, { strokeDashoffset: 0, duration: 0.6, stagger: 0.02 }, 0.9);
+  // a phone in low-power mode can refuse to autoplay: show the button as "play"
+  video.play && !reduceMotion && video.play().catch(sync);
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        if (!userPaused) video.play().catch(() => {});
+      } else video.pause();
+    }, { threshold: 0.25 }).observe(video);
+  }
 })();

@@ -11,12 +11,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
   <script>document.documentElement.classList.add(matchMedia('(prefers-reduced-motion: reduce)').matches ? 'still' : 'anim');</script>
-  <link rel="stylesheet" href="css/tokens.css?v=25">
-  <link rel="stylesheet" href="css/base.css?v=25">
-  <link rel="stylesheet" href="css/components.css?v=25">
-  <link rel="stylesheet" href="css/pinball.css?v=25">
-  <link rel="stylesheet" href="css/story.css?v=25">
-  <link rel="stylesheet" href="css/motion.css?v=25">
+  <link rel="stylesheet" href="css/tokens.css?v=44">
+  <link rel="stylesheet" href="css/base.css?v=44">
+  <link rel="stylesheet" href="css/components.css?v=44">
+  <link rel="stylesheet" href="css/pinball.css?v=44">
+  <link rel="stylesheet" href="css/story.css?v=44">
+  <link rel="stylesheet" href="css/scenes.css?v=44">
+  <link rel="stylesheet" href="css/motion.css?v=44">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -39,6 +40,7 @@
   </header>
 
   <main id="main">
+    <!-- the finished table in play, from the first moment (js/pinball-hero.js only pauses it off-screen) -->
     <section class="pb-hero" aria-labelledby="pb-h1">
       <div class="wrap pb-hero-grid">
         <div class="pb-hero-text">
@@ -47,11 +49,40 @@
           <p class="pb-lede">A playable table with solenoid flippers, scoring targets and a ball-loading system, all run from one Arduino sketch. Everything below is real - scroll through how it was actually built, and click any model, photo or clip to open it full-screen.</p>
           <p class="pb-credit"><b>CAD, code and wiring:</b> Jakub Michalec &nbsp;·&nbsp; <b>Team:</b> Nina Hajdikova, Grigor Grigorov</p>
           <ul class="pb-kicker" aria-label="Tools used">
-            <li>FreeCAD</li><li>PrusaSlicer</li><li>Arduino</li><li>Laser cutter</li><li>HC-SR04</li>
+            <li>FreeCAD</li><li>PrusaSlicer</li><li>Arduino</li><li>Laser cutter</li><li>HC-SR04</li><li>RFID</li>
           </ul>
           <p class="pb-note"><b>How a game starts:</b> tap an RFID card on the reader, like an access card, and the score resets and a new game begins. The code excerpts below come from an earlier version of the sketch, from before the reader went in.</p>
         </div>
-        <div class="pb-hero-media" data-media="hero"></div>
+
+        <figure class="hero-stage">
+          <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/media/pinball/showcase.jpg" width="720" height="900" aria-label="The finished pinball machine in play: a game starts, the ball rolls, a flipper scores 10 points, then the cabinet is opened on its electronics">
+            <source src="assets/media/pinball/showcase.mp4" type="video/mp4">
+          </video>
+          <span class="hero-tag" aria-hidden="true">The finished table, in play</span>
+          <button type="button" class="hero-toggle" aria-label="Pause the video" aria-pressed="false">
+            <svg viewBox="0 0 12 12" aria-hidden="true"><path class="i-pause" d="M3 2v8M9 2v8"/><path class="i-play" d="M3 1.5 10 6l-7 4.5z"/></svg>
+          </button>
+        </figure>
+      </div>
+    </section>
+
+    <!-- sketch to showcase: the build as dated moments on a ruler (js/timeline.js) -->
+    <section class="days" data-scene="days" aria-labelledby="days-h">
+      <div class="days-pin">
+        <header class="wrap days-head">
+          <div>
+            <p class="eyebrow">28 Feb → 15 Jun 2026 · dated by the photos and files themselves</p>
+            <h2 id="days-h">From first sketch to showcase</h2>
+          </div>
+          <p class="days-readout" aria-hidden="true"><span class="days-readout-day">Day 00</span><span class="days-readout-date">28 Feb</span></p>
+        </header>
+        <div class="days-window">
+          <div class="days-rail">
+            <ol class="days-cards" aria-label="The build in dated photos"></ol>
+            <div class="days-ruler" aria-hidden="true"></div>
+          </div>
+          <span class="days-cursor" aria-hidden="true"></span>
+        </div>
       </div>
     </section>
 
@@ -64,6 +95,47 @@
         <div id="story-chapters"></div>
       </div>
     </section>
+
+    <!-- it works: one real take, with the code behind each moment (js/finale.js) -->
+    <section class="finale" id="it-works" aria-labelledby="finale-h">
+      <div class="wrap finale-grid">
+        <div class="finale-left">
+          <header class="finale-head">
+            <p class="eyebrow">The showcase · one real take</p>
+            <h2 id="finale-h">It works</h2>
+          </header>
+          <div class="dotmatrix finale-matrix" role="img" aria-label="Score display"></div>
+          <div class="serial" aria-hidden="true">
+            <p class="serial-head"><span>Serial monitor</span><span>What pinball.ino prints</span></p>
+            <ol class="serial-lines"></ol>
+          </div>
+        </div>
+        <figure class="finale-stage">
+          <video class="finale-video" muted loop playsinline preload="metadata" poster="assets/media/pinball/showcase.jpg" width="720" height="900" aria-label="Footage of the finished table in play. A game starts, the ball is played, a flipper hit scores 10 points, the camera comes in on the flippers, and a hand lifts the back panel on the electronics.">
+            <source src="assets/media/pinball/showcase.mp4" type="video/mp4">
+          </video>
+          <div class="dotmatrix finale-matrix finale-matrix--overlay" aria-hidden="true"></div>
+        </figure>
+        <ol class="finale-events" aria-label="What happens, and the code behind it"></ol>
+        <div class="finale-scrub">
+          <button type="button" class="finale-play" aria-label="Pause">
+            <svg viewBox="0 0 12 12" aria-hidden="true"><path class="i-pause" d="M3 2v8M9 2v8"/><path class="i-play" d="M3 1.5 10 6l-7 4.5z"/></svg>
+          </button>
+          <span class="finale-time" aria-hidden="true">00:00.0</span>
+          <div class="finale-bar" role="slider" tabindex="0" aria-label="Position in the video" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <span class="finale-played"></span>
+          </div>
+          <span class="finale-total" aria-hidden="true">00:00.0</span>
+        </div>
+      </div>
+    </section>
+
+    <nav class="wrap next-project" aria-label="Next project">
+      <a class="next-link" href="lost-and-found.html">
+        <span class="eyebrow">Next project</span>
+        <span class="next-title">Lost and found locker <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M14 6l6 6-6 6"/></svg></span>
+      </a>
+    </nav>
   </main>
 
   <footer class="footer">
@@ -75,16 +147,21 @@
   </footer>
 
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
-  <script defer src="js/vendor/gsap.min.js?v=25"></script>
-  <script defer src="js/vendor/ScrollTrigger.min.js?v=25"></script>
-  <script defer src="js/vendor/lenis.min.js?v=25"></script>
-  <script defer src="js/playfield-data.js?v=25"></script>
-  <script defer src="js/main.js?v=25"></script>
-  <script defer src="js/pinball-parts.js?v=25"></script>
-  <script defer src="js/pinball-media.js?v=25"></script>
-  <script defer src="js/media.js?v=25"></script>
-  <script defer src="js/dimensions.js?v=25"></script>
-  <script defer src="js/lightbox.js?v=25"></script>
-  <script defer src="js/story.js?v=25"></script>
+  <script defer src="js/vendor/gsap.min.js?v=44"></script>
+  <script defer src="js/vendor/ScrollTrigger.min.js?v=44"></script>
+  <script defer src="js/vendor/lenis.min.js?v=44"></script>
+  <script defer src="js/playfield-data.js?v=44"></script>
+  <script defer src="js/main.js?v=44"></script>
+  <script defer src="js/pinball-parts.js?v=44"></script>
+  <script defer src="js/pinball-media.js?v=44"></script>
+  <script defer src="js/film.js?v=44"></script>
+  <script defer src="js/media.js?v=44"></script>
+  <script defer src="js/dimensions.js?v=44"></script>
+  <script defer src="js/lightbox.js?v=44"></script>
+  <script defer src="js/pinball-hero.js?v=44"></script>
+  <script defer src="js/timeline.js?v=44"></script>
+  <script defer src="js/brain.js?v=44"></script>
+  <script defer src="js/story.js?v=44"></script>
+  <script defer src="js/finale.js?v=44"></script>
 </body>
 </html>

@@ -11,11 +11,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
   <script>document.documentElement.classList.add(matchMedia('(prefers-reduced-motion: reduce)').matches ? 'still' : 'anim');</script>
-  <link rel="stylesheet" href="css/tokens.css?v=25">
-  <link rel="stylesheet" href="css/base.css?v=25">
-  <link rel="stylesheet" href="css/components.css?v=25">
-  <link rel="stylesheet" href="css/home.css?v=25">
-  <link rel="stylesheet" href="css/motion.css?v=25">
+  <link rel="stylesheet" href="css/tokens.css?v=44">
+  <link rel="stylesheet" href="css/base.css?v=44">
+  <link rel="stylesheet" href="css/components.css?v=44">
+  <link rel="stylesheet" href="css/home.css?v=44">
+  <link rel="stylesheet" href="css/motion.css?v=44">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -105,8 +105,12 @@
         <div class="work-grid">
           <a class="project project--a detail reveal" href="pinball.html" data-tilt aria-labelledby="p-a-title">
             <div class="project-media project-media--pf">
-              <svg class="pf pf--card" data-playfield aria-hidden="true"></svg>
-              <span class="media-label">Playfield · 600 × 800 mm</span>
+              <div class="pf-frame">
+                <video class="pf-real" muted loop playsinline preload="none" poster="assets/media/pinball/home-loop.jpg" width="544" height="680" aria-label="The finished pinball machine in play">
+                  <source src="assets/media/pinball/home-loop.mp4" type="video/mp4">
+                </video>
+              </div>
+              <span class="media-label">The finished table, in play</span>
             </div>
             <div class="project-body">
               <p class="meta">2026 · 12 weeks · team of 3</p>
@@ -119,14 +123,14 @@
 
           <a class="project project--b detail reveal" href="lost-and-found.html" data-tilt aria-labelledby="p-b-title">
             <div class="project-media project-media--photo">
-              <img src="assets/img/lost-and-found-inside.jpg" alt="Inside the Lost and found prototype: an Arduino, breadboard, buzzer, LEDs and RFID reader wired inside a cardboard box" width="1125" height="1500" loading="lazy">
+              <img src="assets/media/lost-and-found/locker-finished-front.webp" alt="The finished black-painted Lost and Found locker, with its RFID reader and LCD display" width="1350" height="1800" loading="lazy">
             </div>
             <div class="project-body">
               <p class="meta">Course project · 2024–25</p>
               <h3 id="p-b-title">Lost and found locker</h3>
-              <p>An RFID locker for music festivals. Tag a found item, scan the owner's card and a servo opens the lock. The Arduino code handles a master card, tag matching and an LCD list.</p>
+              <p>A festival lost-and-found prototype. Try the interactive locker, follow the build from sketch to enclosure, and explore the RFID logic, real wiring and Arduino code.</p>
               <ul class="tags"><li>Arduino</li><li>RFID</li><li>Servo</li></ul>
-              <span class="more">View project <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span>
+              <span class="more">Try the locker <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span>
             </div>
           </a>
 
@@ -196,10 +200,10 @@
     </div>
   </footer>
 
-  <script defer src="js/vendor/gsap.min.js?v=25"></script>
-  <script defer src="js/vendor/ScrollTrigger.min.js?v=25"></script>
-  <script defer src="js/vendor/lenis.min.js?v=25"></script>
-  <script defer src="js/playfield-data.js?v=25"></script>
-  <script defer src="js/main.js?v=25"></script>
+  <script defer src="js/vendor/gsap.min.js?v=44"></script>
+  <script defer src="js/vendor/ScrollTrigger.min.js?v=44"></script>
+  <script defer src="js/vendor/lenis.min.js?v=44"></script>
+  <script defer src="js/playfield-data.js?v=44"></script>
+  <script defer src="js/main.js?v=44"></script>
 </body>
 </html>
