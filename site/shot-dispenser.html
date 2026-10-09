@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shot dispenser · Jakub Michalec</title>
+  <meta name="description" content="A cashless festival shot dispenser built with Arduino, RFID and a pump. Follow one drink from tap to pour, try the simulator, and see the build, the code and the real prototype.">
+  <meta name="theme-color" content="#08205a">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2308205a'/%3E%3Crect x='2.5' y='2.5' width='27' height='27' fill='none' stroke='%23f4f8ff'/%3E%3Ctext x='16' y='20.5' font-family='monospace' font-size='11' text-anchor='middle' fill='%23f4f8ff'%3EJM%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <script>document.documentElement.classList.add(matchMedia('(prefers-reduced-motion: reduce)').matches ? 'still' : 'anim');</script>
+  <link rel="stylesheet" href="css/tokens.css?v=53">
+  <link rel="stylesheet" href="css/base.css?v=53">
+  <link rel="stylesheet" href="css/components.css?v=53">
+  <link rel="stylesheet" href="css/motion.css?v=53">
+  <link rel="stylesheet" href="css/shot.css?v=53">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"></div>
+  <div class="xhair" aria-hidden="true"><i class="h"></i><i class="v"></i><i class="dot"></i><span class="coords"></span></div>
+
+  <header class="nav">
+    <a class="brand" href="index.html" aria-label="Jakub Michalec, home">
+      <span class="brand-mark" aria-hidden="true">JM</span>
+      <span>Jakub Michalec</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu"><span></span><span></span></button>
+    <nav class="nav-links" id="nav-links" aria-label="Main">
+      <a href="pinball.html">Pinball</a>
+      <a href="lost-and-found.html">Lost and found</a>
+      <a href="shot-dispenser.html" aria-current="page">Shot dispenser</a>
+      <a href="https://jakubmichalec-debug.github.io/grigor-site/" target="_blank" rel="noopener">Grigor Studio <span aria-hidden="true">↗</span><span class="sr-only"> (opens the website in a new tab)</span></a>
+      <a href="https://jakubmichalec-debug.github.io/niana/" target="_blank" rel="noopener">NIANA Bags <span aria-hidden="true">↗</span><span class="sr-only"> (opens the website in a new tab)</span></a>
+      <a href="about.html">About</a>
+      <a class="btn btn--redline btn--sm" href="index.html#contact" data-magnetic>Contact</a>
+    </nav>
+  </header>
+
+  <main id="main" class="sd-page">
+    <section class="sd-hero wrap">
+      <div class="sd-hero-copy">
+        <p class="eyebrow">03 / PHYSICAL COMPUTING · FESTIVAL PROJECT</p>
+        <h1>Tap.<br>Pour.<br><em>Enjoy.</em></h1>
+        <p class="sd-lead">A cashless shot dispenser for festivals. Tap a bracelet, the Arduino checks your balance, and a pump pours exactly one drink.</p>
+        <div class="sd-hero-actions"><a class="btn btn--redline" href="#try">Tap a bracelet ↗</a><a class="sd-text-link" href="#watch">Watch the real build ↓</a></div>
+        <dl class="sd-specs"><div><dt>CONTEXT</dt><dd>KdG · 2024–25</dd></div><div><dt>BUILT WITH</dt><dd>Arduino / RFID / pump</dd></div><div><dt>MY WORK</dt><dd>Concept, build &amp; code</dd></div></dl>
+      </div>
+      <div class="sd-hero-stage" aria-hidden="true"><div class="sd-rig" data-rig="hero"></div></div>
+    </section>
+
+    <nav class="sd-section-nav" aria-label="Explore this project"><div class="wrap"><a href="#flow">01 <span class="sd-n-long">/ How it works</span><span class="sd-n-short">How</span></a><a href="#try">02 <span class="sd-n-long">/ Try it</span><span class="sd-n-short">Try</span></a><a href="#build">03 <span class="sd-n-long">/ The build</span><span class="sd-n-short">Build</span></a><a href="#code">04 <span class="sd-n-long">/ The code</span><span class="sd-n-short">Code</span></a><a href="#watch">05 <span class="sd-n-long">/ Watch</span><span class="sd-n-short">Watch</span></a></div></nav>
+
+    <section class="sd-flow" id="flow" aria-labelledby="flow-h">
+      <div class="sd-flow-sticky">
+        <div class="wrap sd-flow-grid">
+          <div class="sd-flow-copy">
+            <p class="eyebrow">01 / ONE TAP, START TO FINISH</p>
+            <h2 id="flow-h">Scroll to follow <em>one drink.</em></h2>
+            <ol class="sd-beats">
+              <li data-beat="0"><span>01</span><div><strong>Ready</strong><p>The float sensor says there is liquid in the tank. Green light on, and the display invites the next guest.</p></div></li>
+              <li data-beat="1"><span>02</span><div><strong>Tap</strong><p>The bracelet's tag touches the reader. The Arduino reads its ID and looks up the balance.</p></div></li>
+              <li data-beat="2"><span>03</span><div><strong>Pay</strong><p>15 credits is enough for a 6-credit shot. The new balance, 9, goes straight to the display.</p></div></li>
+              <li data-beat="3"><span>04</span><div><strong>Pour</strong><p>A transistor switches the 6 V pump on for five seconds while the green light blinks.</p></div></li>
+              <li data-beat="4"><span>05</span><div><strong>Enjoy</strong><p>The pump stops, the last drops fall, and the display says the only thing left to say.</p></div></li>
+            </ol>
+            <div class="sd-progress" aria-hidden="true"><i id="flow-bar"></i></div>
+          </div>
+          <div class="sd-flow-stage"><div class="sd-rig" data-rig="flow" role="img" aria-label="Cutaway drawing of the dispenser: display, RFID reader, tank, pump, hose and cup"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sd-section wrap" id="try" aria-labelledby="try-h">
+      <div class="sd-heading reveal"><div><p class="eyebrow">02 / YOUR ROUND</p><h2 id="try-h">Tap a bracelet.<br><em>See what it does.</em></h2></div><p>This runs the same decisions as the Arduino sketch. Bracelet A starts with 15 credits, bracelet B with 5. A shot costs 6.</p></div>
+      <div class="sd-lab">
+        <div class="sd-lab-stage"><div class="sd-rig" data-rig="lab" role="img" aria-label="The dispenser reacting to your taps"></div></div>
+        <div class="sd-lab-panel">
+          <p class="eyebrow" id="lab-state">READY</p>
+          <h3 id="lab-title">Pick a bracelet</h3>
+          <p id="lab-text" role="status" aria-live="polite">Green light on. The dispenser is waiting for a tap.</p>
+          <div class="sd-tags" role="group" aria-label="Bracelets">
+            <button data-tag="a"><span>BRACELET A</span><strong><b id="bal-a">15</b> credits</strong><small>6CF34403</small></button>
+            <button data-tag="b"><span>BRACELET B</span><strong><b id="bal-b">5</b> credits</strong><small>5EEC4403</small></button>
+            <button data-tag="unknown"><span>UNKNOWN TAG</span><strong>Not registered</strong><small>A1B2C3D4</small></button>
+          </div>
+          <div class="sd-wait" id="lab-wait" hidden><div class="sd-wait-track"><i id="lab-wait-fill"></i></div><button id="lab-skip">Skip →</button></div>
+          <div class="sd-lab-tools">
+            <button id="lab-tank" aria-pressed="false">Empty the tank</button>
+            <button id="lab-reset">Start over ↻</button>
+          </div>
+          <details class="sd-more">
+            <summary>Options &amp; serial log</summary>
+            <label class="sd-toggle"><input id="lab-sound" type="checkbox"> Buzzer sound <span>1000 Hz</span></label>
+            <label class="sd-toggle"><input id="lab-real" type="checkbox"> Real timing <span>a pour takes 11 s on the prototype</span></label>
+            <ol id="lab-log" class="sd-log" aria-label="Serial monitor"></ol>
+          </details>
+        </div>
+      </div>
+      <p class="sd-note reveal">A browser simulation of the sketch's logic, not the firmware itself. The drawing is an illustration, and waits are played 2.5× faster unless you tick Real timing. On the prototype the reader is only checked every five seconds, so a tap can take a moment to register.</p>
+    </section>
+
+    <section class="sd-section wrap" id="signals" aria-labelledby="sig-h">
+      <div class="sd-heading reveal"><div><p class="eyebrow">INPUT → DECISION → OUTPUT</p><h2 id="sig-h">Seven parts.<br><em>One decision loop.</em></h2></div><p>Before any wiring, every component was written down as an input, the decision it feeds and the output it causes. Hover or tap a row to trace it.</p></div>
+      <div class="sd-signal-grid"><div class="sd-signal-stage reveal"><div class="sd-rig" data-rig="signals" aria-hidden="true"></div></div>
+      <div class="sd-signals" role="group" aria-label="Components">
+        <button class="sd-signal" aria-pressed="false" data-signal="sensor"><span>IN</span><strong>Water level sensor</strong><p>Pin 5 reads LOW when the tank runs dry.</p><em>→ “Water Low!” · red LED · three beeps · no pouring</em></button>
+        <button class="sd-signal" aria-pressed="false" data-signal="reader"><span>IN</span><strong>Bracelet tag + MFRC522 reader</strong><p>The tag gives a unique ID; the reader passes it to the Arduino over SPI.</p><em>→ balance lookup</em></button>
+        <button class="sd-signal" aria-pressed="false" data-signal="lcd"><span>OUT</span><strong>16 × 2 LCD</strong><p>Always tells the guest what is happening.</p><em>→ “Welcome!” · “Pouring…” · “Enjoy!” · “Not enough funds”</em></button>
+        <button class="sd-signal" aria-pressed="false" data-signal="leds"><span>OUT</span><strong>Green and red LED</strong><p>Green blinks while pouring. Red blinks when the balance is too low.</p><em>→ pins 3 and 2</em></button>
+        <button class="sd-signal" aria-pressed="false" data-signal="pump"><span>OUT</span><strong>6 V pump through an NMOS</strong><p>The Arduino pin cannot drive a motor, so a transistor switches the battery.</p><em>→ pin 7 HIGH for 5 seconds</em></button>
+        <button class="sd-signal" aria-pressed="false" data-signal="buzzer"><span>OUT</span><strong>Buzzer</strong><p>Three short 1000 Hz beeps for a low tank or a declined payment.</p><em>→ pin 6</em></button>
+      </div></div>
+    </section>
+
+    <section class="sd-section wrap" id="build" aria-labelledby="build-h">
+      <div class="sd-heading reveal"><div><p class="eyebrow">03 / FROM SKETCH TO CARDBOARD</p><h2 id="build-h">One part at a time.<br><em>Then all together.</em></h2></div><p>Each component was tested alone in Tinkercad before it joined the full circuit. Pick a step to see it; click the picture to enlarge.</p></div>
+      <div class="sd-build">
+        <figure class="sd-build-figure"><button id="sd-enlarge" aria-label="Enlarge this picture"><img id="sd-build-img" src="assets/media/shot-dispenser/sketch.webp" alt="" width="788" height="823"><span>Enlarge ↗</span></button><figcaption><span id="sd-build-count">01 / 10</span><p id="sd-build-cap"></p></figcaption></figure>
+        <div class="sd-steps" id="sd-steps" role="group" aria-label="Build steps"></div>
+      </div>
+    </section>
+
+    <section class="sd-section wrap" id="code" aria-labelledby="code-h">
+      <div class="sd-heading reveal"><div><p class="eyebrow">04 / 194 LINES</p><h2 id="code-h">Small functions.<br><em>One job each.</em></h2></div><p>The sketch is split into short methods, so the loop reads like the idea: check the water, read a tag, process the payment. The panel follows the simulator above.</p></div>
+      <div class="sd-code">
+        <div class="sd-code-tabs" id="sd-code-tabs" role="group" aria-label="Parts of the sketch"></div>
+        <div class="sd-code-body"><div class="sd-code-head"><span id="sd-code-label">processTransaction()</span><a href="assets/code/shot-dispenser.ino" download>Download the sketch ↓</a></div><pre tabindex="0" role="region" aria-label="Arduino source excerpt"><code id="sd-code-text">Loading the sketch…</code></pre><p id="sd-code-note"></p></div>
+      </div>
+      <p class="sd-note reveal">Typed over line for line from the code screenshots in the project report, so the line numbers match the original.</p>
+    </section>
+
+    <section class="sd-section wrap" id="watch" aria-labelledby="watch-h">
+      <div class="sd-heading reveal"><div><p class="eyebrow">05 / THE REAL THING</p><h2 id="watch-h">Nineteen seconds.<br><em>One real pour.</em></h2></div><p>One take of the cardboard prototype: start-up, a tap with bracelet A, the pour and the goodbye. The display on the right follows the video.</p></div>
+      <div class="sd-watch">
+        <figure class="sd-video"><video id="sd-video" controls muted playsinline preload="metadata" width="720" height="1280" poster="assets/media/shot-dispenser/demo-poster.jpg"><source src="assets/media/shot-dispenser/demo.mp4" type="video/mp4"></video><figcaption>Silent footage of the prototype. Water with colouring stands in for the drink.</figcaption></figure>
+        <div class="sd-watch-side">
+          <div class="sd-lcd sd-lcd--big" aria-hidden="true"><span id="sd-v1">System Ready!</span><span id="sd-v2">&nbsp;</span></div>
+          <div class="sd-moments" id="sd-moments" role="group" aria-label="Moments in the video"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sd-section wrap" id="next-steps" aria-labelledby="ns-h">
+      <div class="sd-heading reveal"><div><p class="eyebrow">A PROTOTYPE, NOT A PRODUCT</p><h2 id="ns-h">What works.<br><em>What I would change.</em></h2></div><p>The prototype proves the tap-to-pour idea end to end. A dispenser for a real festival needs more than that.</p></div>
+      <div class="sd-next">
+        <article class="reveal"><span>01 / BALANCES</span><h3>Store them properly.</h3><p>Two balances live in the code and reset when the power does. Next: keep them on the tag or on a server.</p></article>
+        <article class="reveal"><span>02 / WAITING</span><h3>React at once.</h3><p>The loop sleeps five seconds between checks, so a tap can wait. Next: poll the reader without blocking.</p></article>
+        <article class="reveal"><span>03 / THE POUR</span><h3>Measure, do not time.</h3><p>Five seconds of pumping is not a fixed volume as the tank empties. Next: a flow sensor.</p></article>
+        <article class="reveal"><span>04 / THE REAL WORLD</span><h3>Age and hygiene.</h3><p>Serving alcohol needs age checks, food-safe parts and a sturdier case than cardboard.</p></article>
+      </div>
+    </section>
+
+    <a class="sd-next-project wrap" href="lost-and-found.html"><span class="eyebrow">SAME FESTIVAL, ANOTHER PROBLEM</span><strong>From a full cup<br>to a lost <em>wallet.</em></strong><span>Explore the Lost and found locker ↗</span></a>
+  </main>
+  <dialog id="sd-lightbox" aria-label="Enlarged picture"><button id="sd-lightbox-close" aria-label="Close enlarged picture">Close ×</button><figure><img id="sd-lightbox-img" alt=""><figcaption id="sd-lightbox-cap"></figcaption></figure></dialog>
+
+  <footer class="footer">
+    <div class="wrap">
+      <p>© 2026 Jakub Michalec</p>
+      <p>Designed by me, built with Claude</p>
+      <nav aria-label="Elsewhere"><a href="#">LinkedIn</a><a href="#">GitHub</a><a href="assets/Jakub-Michalec-CV.pdf">CV</a></nav>
+    </div>
+  </footer>
+
+  <script defer src="js/vendor/gsap.min.js?v=53"></script>
+  <script defer src="js/vendor/ScrollTrigger.min.js?v=53"></script>
+  <script defer src="js/vendor/lenis.min.js?v=53"></script>
+  <script defer src="js/playfield-data.js?v=53"></script>
+  <script defer src="js/main.js?v=53"></script>
+  <script type="module" src="js/shot.js?v=53"></script>
+</body>
+</html>

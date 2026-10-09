@@ -14,7 +14,7 @@ import re
 import shutil
 
 DIRECTORY = "site"
-PORT = 5173
+PORT = int(os.environ.get("PORT", 5173))  # another project may already hold 5173
 RANGE = re.compile(r"bytes=(\d*)-(\d*)$")
 
 
