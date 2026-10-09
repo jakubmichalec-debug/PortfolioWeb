@@ -491,6 +491,41 @@
   grid-column: span 5;
 }
 
+/* the third project runs the full width: photo beside the text */
+.project.project--c {
+  grid-column: 1 / -1;
+  flex-direction: row;
+}
+
+.project--c .project-media {
+  flex: 0 0 36%;
+  height: auto;
+  min-height: 360px;
+  border-bottom: 0;
+  border-right: 1px solid var(--rule);
+}
+
+.project--c .project-media--photo img {
+  position: absolute;
+  inset: 0;
+  object-position: 50% 42%;
+}
+
+/* the two websites sit side by side */
+.project--half {
+  grid-column: span 6;
+}
+
+.project--half .project-media--photo img {
+  object-position: 50% 50%;
+}
+
+.project--c .project-body {
+  flex: 1;
+  align-self: center;
+  max-width: 620px;
+}
+
 .project {
   position: relative;
   display: flex;
@@ -744,6 +779,22 @@
   .project--a,
   .project--b {
     grid-column: 1 / -1;
+  }
+
+  .project.project--c {
+    flex-direction: column;
+  }
+
+  .project--half {
+    grid-column: 1 / -1;
+  }
+
+  .project--c .project-media {
+    flex: none;
+    height: clamp(250px, 30vw, 370px);
+    min-height: 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
   }
 }
 

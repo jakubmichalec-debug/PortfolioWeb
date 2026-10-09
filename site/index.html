@@ -11,11 +11,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
   <script>document.documentElement.classList.add(matchMedia('(prefers-reduced-motion: reduce)').matches ? 'still' : 'anim');</script>
-  <link rel="stylesheet" href="css/tokens.css?v=44">
-  <link rel="stylesheet" href="css/base.css?v=44">
-  <link rel="stylesheet" href="css/components.css?v=44">
-  <link rel="stylesheet" href="css/home.css?v=44">
-  <link rel="stylesheet" href="css/motion.css?v=44">
+  <link rel="stylesheet" href="css/tokens.css?v=53">
+  <link rel="stylesheet" href="css/base.css?v=53">
+  <link rel="stylesheet" href="css/components.css?v=53">
+  <link rel="stylesheet" href="css/home.css?v=53">
+  <link rel="stylesheet" href="css/motion.css?v=53">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -31,7 +31,9 @@
     <nav class="nav-links" id="nav-links" aria-label="Main">
       <a href="pinball.html">Pinball</a>
       <a href="lost-and-found.html">Lost and found</a>
-      <a href="web.html">Web</a>
+      <a href="shot-dispenser.html">Shot dispenser</a>
+      <a href="https://jakubmichalec-debug.github.io/grigor-site/" target="_blank" rel="noopener">Grigor Studio <span aria-hidden="true">↗</span><span class="sr-only"> (opens the website in a new tab)</span></a>
+      <a href="https://jakubmichalec-debug.github.io/niana/" target="_blank" rel="noopener">NIANA Bags <span aria-hidden="true">↗</span><span class="sr-only"> (opens the website in a new tab)</span></a>
       <a href="about.html">About</a>
       <a class="btn btn--redline btn--sm" href="#contact" data-magnetic>Contact</a>
     </nav>
@@ -134,7 +136,44 @@
             </div>
           </a>
 
-          <div class="project project--soon reveal">Web design projects · next up</div>
+          <a class="project project--c detail reveal" href="shot-dispenser.html" data-tilt aria-labelledby="p-c-title">
+            <div class="project-media project-media--photo">
+              <img src="assets/media/shot-dispenser/front-finished.webp" alt="The cardboard shot dispenser prototype: display, RFID reader and a spout over a red cup" width="963" height="1284" loading="lazy">
+            </div>
+            <div class="project-body">
+              <p class="meta">Festival project · 2024–25</p>
+              <h3 id="p-c-title">Shot dispenser</h3>
+              <p>Tap a bracelet, pay with credits, and a pump pours one drink. Follow a single shot from tap to cup, try the simulator, and read the 194 lines of Arduino code behind it.</p>
+              <ul class="tags"><li>Arduino</li><li>RFID</li><li>Pump</li></ul>
+              <span class="more">Tap a bracelet <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span>
+            </div>
+          </a>
+
+          <a class="project project--half detail reveal" href="https://jakubmichalec-debug.github.io/grigor-site/" target="_blank" rel="noopener" data-tilt aria-labelledby="p-d-title">
+            <div class="project-media project-media--photo">
+              <img src="assets/media/web/grigor-studio.webp" alt="Opening screen of the Grigor videography website: a wall of film stills from races and events" width="1440" height="680" loading="lazy">
+            </div>
+            <div class="project-body">
+              <p class="meta">Web design · live site</p>
+              <h3 id="p-d-title">Grigor Studio</h3>
+              <p>A portfolio website for a videographer: a wall of film stills that opens into race films, event recaps and showreels.</p>
+              <ul class="tags"><li>Web design</li><li>Motion</li><li>Video</li></ul>
+              <span class="more">Open the website <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7"/></svg></span>
+            </div>
+          </a>
+
+          <a class="project project--half detail reveal" href="https://jakubmichalec-debug.github.io/niana/" target="_blank" rel="noopener" data-tilt aria-labelledby="p-e-title">
+            <div class="project-media project-media--photo">
+              <img src="assets/media/web/niana-bags.webp" alt="Opening screen of the NIANA website: a pink hand-crocheted bag in front of the words made by hand, piece by piece" width="1440" height="680" loading="lazy">
+            </div>
+            <div class="project-body">
+              <p class="meta">Web design · live site</p>
+              <h3 id="p-e-title">NIANA Bags</h3>
+              <p>A website for a handmade-bag label from Slovakia and Belgium, in English and Slovak, with the collection front and centre.</p>
+              <ul class="tags"><li>Web design</li><li>Motion</li><li>Two languages</li></ul>
+              <span class="more">Open the website <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7"/></svg></span>
+            </div>
+          </a>
         </div>
       </div>
     </section>
@@ -184,8 +223,8 @@
           <p class="eyebrow">Available 1 Feb to 5 May 2027</p>
           <h2 id="contact-h">Looking for an internship in prototyping and interactive tech.</h2>
           <div class="contact-row">
-            <a class="btn btn--redline" href="mailto:your@email.com" data-magnetic>Get in touch <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
-            <a class="mail" href="mailto:your@email.com">your@email.com</a>
+            <a class="btn btn--redline" href="mailto:jakub.michalec@student.kdg.be" data-magnetic>Get in touch <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
+            <a class="mail" href="mailto:jakub.michalec@student.kdg.be">jakub.michalec@student.kdg.be</a>
           </div>
         </div>
       </div>
@@ -200,10 +239,10 @@
     </div>
   </footer>
 
-  <script defer src="js/vendor/gsap.min.js?v=44"></script>
-  <script defer src="js/vendor/ScrollTrigger.min.js?v=44"></script>
-  <script defer src="js/vendor/lenis.min.js?v=44"></script>
-  <script defer src="js/playfield-data.js?v=44"></script>
-  <script defer src="js/main.js?v=44"></script>
+  <script defer src="js/vendor/gsap.min.js?v=53"></script>
+  <script defer src="js/vendor/ScrollTrigger.min.js?v=53"></script>
+  <script defer src="js/vendor/lenis.min.js?v=53"></script>
+  <script defer src="js/playfield-data.js?v=53"></script>
+  <script defer src="js/main.js?v=53"></script>
 </body>
 </html>

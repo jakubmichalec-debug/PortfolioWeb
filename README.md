@@ -4,7 +4,7 @@ Portfolio site for an interactive-prototyping internship (KdG, Multimedia and Cr
 
 Plain HTML, CSS and JS with no build step. [GSAP](https://gsap.com) with ScrollTrigger and [Lenis](https://lenis.darkroom.engineering) are vendored in `site/js/vendor/`; the 3D parts use [`<model-viewer>`](https://modelviewer.dev), loaded from a CDN.
 
-Pages: `index.html`, `pinball.html`, `lost-and-found.html`, `web.html`, `about.html`.
+Pages: `index.html`, `pinball.html`, `lost-and-found.html`, `shot-dispenser.html`, `web.html`, `about.html`.
 
 ## Run it
 
@@ -18,10 +18,10 @@ then open http://localhost:5173. On Windows, `open-site.bat` does both. The dev 
 
 ## Test
 
-The Lost and found demo has plain Node tests (Node 20+, nothing to install):
+The Lost and found and Shot dispenser demos have plain Node tests (Node 20+, nothing to install):
 
 ```bash
-node --test tests/locker-engine.test.mjs tests/locker-guided.test.mjs tests/locker-case-study.test.mjs tests/locker-pacing.test.mjs
+node --test tests/locker-engine.test.mjs tests/locker-guided.test.mjs tests/locker-case-study.test.mjs tests/locker-pacing.test.mjs tests/shot-engine.test.mjs
 ```
 
 ## Tools
@@ -38,6 +38,7 @@ node --test tests/locker-engine.test.mjs tests/locker-guided.test.mjs tests/lock
 | `check_box_joints.py` | Checks that the assembled box's finger joints interlock with no overlap or gap |
 | `extract_lf_photos.py` | Pulls the Lost and found prototype photos out of the assignment PDF |
 | `prepare_locker_media.py` | Prepares the Lost and found photos and clips (silent, metadata stripped) and `manifest.json` in `site/assets/media/lost-and-found/`; `--verify` re-checks the originals and the archived sketch |
+| `prepare_shot_media.py` | Prepares the Shot dispenser photos, report diagrams and demo video (silent, metadata stripped) in `site/assets/media/shot-dispenser/` |
 | `scope_locker_css.mjs` | Regenerates `site/css/locker-lab.css` from `locker-demo.css`, so the demo's styles stay inside the case study (Node, no install) |
 | `bump_cache_version.py` | Stamps one `?v=N` on every CSS and JS tag of every page; run it after editing `site/css` or `site/js` |
 
