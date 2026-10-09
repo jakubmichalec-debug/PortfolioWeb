@@ -23,4 +23,4 @@ Portfolio site for Jakub Michalec's interactive-prototyping internship search (K
 - The RFID reader pins in the Pinball wiring diagram (SS D10, MISO D12, RST D9) are placeholders until the real wiring is confirmed. The RFID code panel is labelled a reconstruction.
 - Shot dispenser: a solo project (confirmed by the author). The report's wristband designs are not used because they carry another festival's branding and photos of people.
 - Pinball: the author did the code, build and wiring and a teammate did the design; whether the Home card's "I designed the CAD" is accurate is not confirmed yet.
-- `site/index.html` still has `#` social links, no profile photo and no CV file (a CV draft is with the author).
+- `site/index.html` still has `#` social links, and no profile photo. The CV is `site/assets/Jakub-Michalec-CV.pdf`; its source is the author's private `tmp/cv.html`.
