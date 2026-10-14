@@ -3,7 +3,7 @@
    is a picture, not a sentence:
      photos  - a photo, a clip (its first frame) or a fan of several taken that day; they develop
                from cyanotype into colour as the cursor reaches the day
-     model   - the real 3D part from the files FreeCAD made that day, turning in place (click: the
+     model   - the real 3D part from the files FreeCAD made that day, a still picture of it (click: the
                full-screen 3D viewer the chapters use)
      drawing - the playfield drawing, which draws itself when the cursor reaches its day
    The dates come from the phones' capture dates and from the FreeCAD files' own creation dates.

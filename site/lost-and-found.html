@@ -11,12 +11,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
   <script>document.documentElement.classList.add(matchMedia('(prefers-reduced-motion: reduce)').matches ? 'still' : 'anim');</script>
-  <link rel="stylesheet" href="css/tokens.css?v=54">
-  <link rel="stylesheet" href="css/base.css?v=54">
-  <link rel="stylesheet" href="css/components.css?v=54">
-  <link rel="stylesheet" href="css/motion.css?v=54">
-  <link rel="stylesheet" href="css/locker-lab.css?v=54">
-  <link rel="stylesheet" href="css/locker.css?v=54">
+  <link rel="stylesheet" href="css/tokens.css?v=59">
+  <link rel="stylesheet" href="css/base.css?v=59">
+  <link rel="stylesheet" href="css/components.css?v=59">
+  <link rel="stylesheet" href="css/motion.css?v=59">
+  <link rel="stylesheet" href="css/locker-lab.css?v=59">
+  <link rel="stylesheet" href="css/locker.css?v=59">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -83,7 +83,7 @@
     <section class="lf-section wrap" id="inside">
       <div class="lf-section-heading"><div><p class="eyebrow">03 / UNDER THE SURFACE</p><h2>Simple parts.<br><em>A connected system.</em></h2></div><p>The reader supplies an identifier. The Arduino makes a decision. The display, LEDs, buzzer and servo make that decision visible.</p></div>
       <div class="lf-inside-grid">
-        <figure class="lf-hardware-photo"><button id="lf-hardware-enlarge" aria-label="Enlarge the selected hardware photo"><img id="lf-hardware-image" src="assets/media/lost-and-found/locker-inside.webp" width="1350" height="1800" alt="Electronics and servo inside the real locker" loading="lazy"><span class="lf-enlarge-label">LOOK CLOSER ↗</span></button><figcaption id="lf-hardware-caption">The real enclosure interior. Select a component to inspect its evidence and pin connections.</figcaption></figure>
+        <figure class="lf-hardware-photo"><button id="lf-hardware-enlarge" aria-label="Enlarge the selected hardware photo"><img id="lf-hardware-image" src="assets/media/lost-and-found/locker-arduino-wiring.webp" width="1350" height="1800" alt="Arduino Uno and jumper wiring before enclosure assembly" loading="lazy"><span class="lf-enlarge-label">LOOK CLOSER ↗</span></button><figcaption id="lf-hardware-caption">Arduino Uno and jumper wiring before enclosure assembly. Pin assignments are taken from the archived sketch.</figcaption></figure>
         <div class="lf-hardware-detail"><p class="eyebrow">SELECT A COMPONENT</p><div class="lf-hardware-tabs" aria-label="Real prototype components"><button data-hardware="arduino" aria-pressed="true">Arduino</button><button data-hardware="rfid" aria-pressed="false">RFID reader</button><button data-hardware="lcd" aria-pressed="false">LCD</button><button data-hardware="servo" aria-pressed="false">Servo</button><button data-hardware="feedback" aria-pressed="false">LEDs + buzzer</button></div><h3 id="lf-hardware-title">The decision-maker.</h3><p id="lf-hardware-description">An Arduino Uno coordinates the input, stored records and outputs. Item records live in RAM, rather than persistent storage.</p><p class="lf-hardware-spec" id="lf-hardware-spec">Arduino Uno · SPI + I²C · volatile memory</p><div class="lf-signal-diagram" aria-label="Conceptual signal flow, not a wiring schematic"><span>RFID input</span><i>→</i><strong>Arduino decision</strong><i>→</i><span>LCD · feedback · latch</span></div><p class="lf-small">Signal flow, not a traced wiring schematic. Exact source excerpts are available in the interactive demo above.</p><a class="lf-text-link" href="assets/code/lost-and-found.ino" download>Download the original Arduino sketch ↓</a></div>
       </div>
     </section>
@@ -94,7 +94,7 @@
     <section class="lf-section wrap" id="reflection"><div class="lf-section-heading"><div><p class="eyebrow">05 / A PROTOTYPE, NOT A PROMISE</p><h2>What works.<br><em>What comes next.</em></h2></div><p>The prototype demonstrates the card-to-latch interaction. A real unattended locker would need more than this proof of concept.</p></div><div class="lf-reflections"><article><span>01 / OWNERSHIP</span><h3>Assign the right person.</h3><p>The saved sketch assigns new items to a hardcoded owner. Next: a staff flow that pairs each found item with its actual owner.</p></article><article><span>02 / MEMORY</span><h3>Keep the records.</h3><p>Ten records live in RAM. Next: capacity checks and persistent storage, so a power cycle does not erase the inventory.</p></article><article><span>03 / PHYSICAL STATE</span><h3>Know what happened.</h3><p>The original uses an eight-second latch window, without door or item sensors. Next: detect closure and collection before confirming a return.</p></article><article><span>04 / INTERACTION</span><h3>Make the workflow complete.</h3><p>Descriptions are entered through Serial Monitor and delays block the loop. Next: a staff interface, non-blocking timing and a stronger enclosure.</p></article></div><p class="lf-evidence-note">The interactive model is a teaching illustration, not measured CAD. Its guided safeguards are browser additions, not features claimed for the original hardware. The original sketch remains unchanged.</p></section>
     <a class="lf-next-project wrap" href="pinball.html"><span class="eyebrow">ANOTHER PHYSICAL BUILD</span><strong>From a small box<br>to a full <em>playfield.</em></strong><span>Explore the pinball machine ↗</span></a>
   </main>
-  <dialog id="lf-lightbox" aria-label="Expanded project photo"><button id="lf-lightbox-close" aria-label="Close expanded photo">Close ×</button><figure><img id="lf-lightbox-image" alt=""><figcaption id="lf-lightbox-caption"></figcaption></figure></dialog>
+  <dialog id="lf-lightbox" data-lenis-prevent aria-label="Expanded project photo"><button id="lf-lightbox-close" aria-label="Close expanded photo">Close ×</button><figure><img id="lf-lightbox-image" alt=""><figcaption id="lf-lightbox-caption"></figcaption></figure></dialog>
 
   <footer class="footer">
     <div class="wrap">
@@ -104,11 +104,11 @@
     </div>
   </footer>
 
-  <script defer src="js/vendor/gsap.min.js?v=54"></script>
-  <script defer src="js/vendor/ScrollTrigger.min.js?v=54"></script>
-  <script defer src="js/vendor/lenis.min.js?v=54"></script>
-  <script defer src="js/playfield-data.js?v=54"></script>
-  <script defer src="js/main.js?v=54"></script>
-  <script type="module" src="js/locker-story.js?v=54"></script>
+  <script defer src="js/vendor/gsap.min.js?v=59"></script>
+  <script defer src="js/vendor/ScrollTrigger.min.js?v=59"></script>
+  <script defer src="js/vendor/lenis.min.js?v=59"></script>
+  <script defer src="js/playfield-data.js?v=59"></script>
+  <script defer src="js/main.js?v=59"></script>
+  <script type="module" src="js/locker-story.js?v=59"></script>
 </body>
 </html>

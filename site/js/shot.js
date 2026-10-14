@@ -95,14 +95,14 @@ function story(p) {
   const rig = createRig(document.querySelector('[data-rig="hero"]'));
   rig.set(story(motion ? 0 : .95));
   if (motion) {
-    let visible = false, start = 0;
+    let visible = false, start = 0, handle = 0;
     const frame = now => {
       if (!visible) return;
       const t = ((now - start) / 11000) % 1;
       rig.set(story(clamp(t * 1.12)));
-      requestAnimationFrame(frame);
+      handle = requestAnimationFrame(frame);
     };
-    new IntersectionObserver(([entry]) => { const was = visible; visible = entry.isIntersecting && !document.hidden; if (visible && !was) { start = performance.now(); requestAnimationFrame(frame); } }, { threshold: .2 }).observe(rig.host);
+    new IntersectionObserver(([entry]) => { const was = visible; visible = entry.isIntersecting && !document.hidden; if (visible && !was) { start = performance.now(); cancelAnimationFrame(handle); handle = requestAnimationFrame(frame); } }, { threshold: .2 }).observe(rig.host);
   }
 }
 
@@ -128,7 +128,7 @@ function story(p) {
 {
   const engine = new Dispenser(), rig = createRig(document.querySelector('[data-rig="lab"]'));
   const tags = [...document.querySelectorAll('[data-tag]')];
-  let frame = 0, audio = null, oscillator = null, fill = 0, tank = 1, playing = null;
+  let frame = 0, audio = null, oscillator = null, fill = 0, tank = 1, playing = null, tapped = null;
   const speed = () => $('lab-real').checked ? 1 : 2.5;
   const titles = {
     poured: ['POURING', 'Paid. One shot coming up.', `${PRICE} credits left the bracelet first, then the pump ran for five seconds.`],
@@ -137,19 +137,20 @@ function story(p) {
     'water-low': ['WATER LOW', 'The tank is empty.', 'The sketch stops reading bracelets until the level sensor sees liquid again.']
   };
   function tone(frequency) {
-    if (!$('lab-sound').checked || !audio) return;
-    if (frequency && !oscillator) {
+    if (oscillator && (!frequency || !$('lab-sound').checked)) { oscillator.stop(); oscillator = null; }
+    if (frequency && !oscillator && $('lab-sound').checked && audio) {
       oscillator = audio.createOscillator(); const gain = audio.createGain();
       oscillator.type = 'square'; oscillator.frequency.value = frequency; gain.gain.value = .03;
       oscillator.connect(gain); gain.connect(audio.destination); oscillator.start();
-    } else if (!frequency && oscillator) { oscillator.stop(); oscillator = null; }
+    }
   }
+  document.addEventListener('visibilitychange', () => { if (document.hidden) tone(0); }); // the clock stops with the tab; the beep must too
   function show(step, extra = {}) { rig.set({ ...step, fill, tank, tag: 0, balance: '', ...extra }); tone(step.tone); }
   function renderPanel(state, title, text) {
     $('lab-state').textContent = state; $('lab-title').textContent = title; $('lab-text').textContent = text;
     $('bal-a').textContent = String(engine.balance.a); $('bal-b').textContent = String(engine.balance.b);
     tags.forEach(button => { button.disabled = !!playing; });
-    $('lab-tank').textContent = engine.water ? 'Empty the tank' : 'Refill the tank'; $('lab-tank').setAttribute('aria-pressed', String(!engine.water));
+    $('lab-tank').textContent = engine.water ? 'Empty the tank' : 'Refill the tank';
     $('lab-tank').disabled = !!playing; $('lab-wait').hidden = !playing;
     $('lab-log').replaceChildren(...engine.log.slice(-7).map(line => Object.assign(document.createElement('li'), { textContent: line })));
   }
@@ -164,8 +165,9 @@ function story(p) {
     stop();
     const { steps, outcome, tankTo } = playing; playing = null;
     if (outcome === 'poured') { fill = 1; tank = tankTo; }
-    const [state, title, text] = titles[outcome];
+    const [state, title, text] = titles[outcome], lost = [document.body, $('lab-skip')].includes(document.activeElement);
     renderPanel(outcome === 'poured' ? 'ENJOY' : state, outcome === 'poured' ? 'Enjoy!' : title, text);
+    if (lost) (tapped || $('lab-tank')).focus();
     show(steps[steps.length - 1]);
     document.dispatchEvent(new CustomEvent('shot:outcome', { detail: outcome }));
   }
@@ -178,6 +180,7 @@ function story(p) {
     if (poured) fill = 0;
     playing = { ...result, tankTo };
     renderPanel(...titles[result.outcome]);
+    tapped = tags.find(button => button.dataset.tag === key); $('lab-skip').focus();
     const began = performance.now(), rate = speed();
     const tick = now => {
       if (!playing) return;
@@ -197,7 +200,7 @@ function story(p) {
   }
   tags.forEach(button => button.addEventListener('click', () => play(button.dataset.tag)));
   $('lab-skip').addEventListener('click', finish);
-  $('lab-tank').addEventListener('click', () => { engine.water = !engine.water; tank = engine.water ? 1 : .04; if (!engine.water) engine.log.push('Water Low! Refill required'); rest(); document.dispatchEvent(new CustomEvent('shot:outcome', { detail: 'water-low' })); });
+  $('lab-tank').addEventListener('click', () => { engine.water = !engine.water; tank = engine.water ? 1 : .04; rest(); if (!engine.water) document.dispatchEvent(new CustomEvent('shot:outcome', { detail: 'water-low' })); });
   $('lab-reset').addEventListener('click', () => { stop(); playing = null; engine.reset(); fill = 0; tank = 1; rest(); });
   $('lab-sound').addEventListener('change', async () => { if ($('lab-sound').checked) { audio ||= new (window.AudioContext || window.webkitAudioContext)(); await audio.resume(); } else tone(0); });
   rest();
@@ -208,9 +211,8 @@ function story(p) {
   const host = document.querySelector('[data-rig="signals"]');
   if (host) {
     const rig = createRig(host); rig.set({ lcd: ['Welcome! Please', 'scan bracelet'], green: true, tank: .8, fill: .6, tag: 0 });
-    const map = { sensor: 'sensor', reader: 'reader', lcd: 'lcd', leds: 'leds', pump: 'pump', buzzer: 'buzzer' };
     const signals = [...document.querySelectorAll('[data-signal]')];
-    const pick = button => { signals.forEach(other => other.setAttribute('aria-pressed', String(other === button))); rig.highlight(button ? map[button.dataset.signal] : ''); };
+    const pick = button => { signals.forEach(other => other.setAttribute('aria-pressed', String(other === button))); rig.highlight(button.dataset.signal); };
     signals.forEach(button => { button.addEventListener('click', () => pick(button)); button.addEventListener('pointerenter', () => pick(button)); button.addEventListener('focus', () => pick(button)); });
     pick(signals[0]);
   }
@@ -234,7 +236,7 @@ function story(p) {
   let current = 0, fade;
   const image = $('sd-build-img');
   function select(index, scroll = false) {
-    current = index; const [file, kicker, title, text] = steps[index];
+    current = index; const [file, , title, text] = steps[index];
     fade?.cancel(); image.src = `${media}${file}.webp`; image.alt = `${title}: ${text}`; [image.width, image.height] = sizes[file];
     if (motion) fade = image.animate([{ opacity: .25, transform: 'scale(.985)' }, { opacity: 1, transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.22,1,.36,1)' });
     $('sd-build-count').textContent = `${String(index + 1).padStart(2, '0')} / ${steps.length}`; $('sd-build-cap').textContent = text;
@@ -258,7 +260,7 @@ function story(p) {
 /* ---------- the sketch, by function ---------- */
 {
   const tabs = {
-    setup: ['Pins and loop', 'setup() and loop()', 1, 36, 'Thirteen lines of pins, two balances, and a loop that does one thing: check the water every five seconds.'],
+    setup: ['Pins and loop', 'setup() and loop()', 1, 36, 'The libraries, seven pins, two balances, and a loop that does one thing: check the water every five seconds.'],
     water: ['Water check', 'WaterLevelCheck()', 101, 124, 'With water: green light, welcome message, read a tag. Without: red light, three beeps, and no reading at all.'],
     rfid: ['Read the tag', 'handleRFID()', 126, 159, 'The tag’s bytes become an uppercase string, which is compared with the two known bracelets.'],
     pay: ['Pay and pour', 'processTransaction()', 161, 194, 'Enough credits: subtract six, pump for five seconds, say Enjoy. Not enough: beep and blink red.'],

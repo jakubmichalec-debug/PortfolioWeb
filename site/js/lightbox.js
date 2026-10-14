@@ -6,13 +6,18 @@
 
   const $ = (sel) => document.querySelector(sel);
   let activeClose = null;
+  let returnFocus = null;
 
   function wire(overlay, onClose) {
+    // data-lenis-prevent: the smooth scroller on window would otherwise scroll the page behind
+    overlay.setAttribute('data-lenis-prevent', '');
     const close = () => {
       overlay.classList.remove('open');
       overlay.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
       activeClose = null;
+      if (returnFocus && returnFocus.isConnected) returnFocus.focus();
+      returnFocus = null;
       onClose && onClose();
     };
     overlay.addEventListener('click', (e) => {
@@ -31,6 +36,9 @@
     overlay.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     activeClose = close;
+    returnFocus = document.activeElement;
+    // shortly after: the overlay is still visibility:hidden (fading in) and would refuse focus
+    setTimeout(() => overlay.querySelector('[data-close]').focus(), 60);
   }
 
   // ---------------- 3D lightbox ----------------
@@ -45,7 +53,7 @@
       <button type="button" class="lightbox-close" data-close aria-label="Close">
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13"/></svg>
       </button>
-      <model-viewer id="lightbox-mv" camera-controls auto-rotate rotation-per-second="10deg"
+      <model-viewer id="lightbox-mv" camera-controls rotation-per-second="10deg"
         shadow-intensity="0.9" environment-image="assets/env/studio.hdr" tone-mapping="aces" exposure="1.3"
         interaction-prompt="none"></model-viewer>
     </div>
@@ -61,6 +69,7 @@
     <div class="lightbox-parts" id="lightbox-parts" hidden></div>`;
   document.body.appendChild(lb);
   const mv = $('#lightbox-mv');
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) mv.setAttribute('auto-rotate', '');
   const dimsBtn = $('#lightbox-dims');
 
   // Every piece shown gets dimension lines (dimensions.js): a whole assembly uses its hand-set

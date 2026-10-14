@@ -438,7 +438,6 @@
   box-shadow: 0 0 0 1px var(--redline), 0 18px 40px -18px var(--redline-glow);
 }
 
-/* "+2" on a fan of photos, "3D" on a model, a play mark on a clip */
 /* a model or a drawing: the chapters' dark stage with its soft light, not a developing print */
 .day-sheet--model,
 .day-sheet--drawing {
@@ -498,6 +497,7 @@ html.still .day-pf--ghost {
   display: none;
 }
 
+/* "+2" on a fan of photos, "3D" on a model, a play mark on a clip */
 .day-badge {
   position: absolute;
   right: 6px;
@@ -938,11 +938,6 @@ html.still .day-pf--ghost {
 
 @keyframes serial-caret {
   50% { opacity: 0; }
-}
-
-.serial-unknown {
-  color: var(--ink-3);
-  border-bottom: 1px dotted currentColor;
 }
 
 .finale-events {

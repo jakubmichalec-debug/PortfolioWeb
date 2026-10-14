@@ -15,7 +15,6 @@
 
   const sync = () => {
     if (!toggle) return;
-    toggle.setAttribute('aria-pressed', String(video.paused));
     toggle.setAttribute('aria-label', video.paused ? 'Play the video' : 'Pause the video');
   };
 
@@ -37,7 +36,7 @@
   }
 
   // a phone in low-power mode can refuse to autoplay: show the button as "play"
-  video.play && !reduceMotion && video.play().catch(sync);
+  !reduceMotion && video.play().catch(sync);
 
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(([e]) => {

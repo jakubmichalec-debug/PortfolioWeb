@@ -228,12 +228,6 @@
   stroke-width: 1.5;
 }
 
-.chapter-code--soon {
-  color: var(--ink-3);
-  border-bottom-color: var(--rule);
-  cursor: default;
-}
-
 /* code written for the page rather than taken from the sketch: always says so */
 .chapter-code--recon {
   border-bottom-style: dashed;
@@ -324,6 +318,18 @@
 
 .chapter-stage:hover .chapter-expand {
   opacity: 1;
+}
+
+@media (hover: none) {
+  .chapter-expand {
+    opacity: 1;
+  }
+}
+
+.chapter-stage:focus-visible,
+.satellite:focus-visible {
+  outline: 2px solid var(--redline);
+  outline-offset: -3px;
 }
 
 .chapter-expand svg {
@@ -981,14 +987,6 @@
 
   .chapter-real figcaption {
     grid-area: cap;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .chapter-stage model-viewer,
-  .satellite model-viewer,
-  .lightbox-stage model-viewer {
-    --model-viewer-auto-rotate-delay: 999999;
   }
 }
 

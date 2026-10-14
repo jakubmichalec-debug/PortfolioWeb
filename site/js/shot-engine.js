@@ -13,7 +13,7 @@ const beeps = (count, state) => Array.from({ length: count }, () => [{ ...state,
 
 export class Dispenser {
   constructor() { this.reset(); }
-  reset() { this.balance = { ...START_BALANCE }; this.water = true; this.log = ['System Ready!']; }
+  reset() { this.balance = { ...START_BALANCE }; this.water = true; this.lowShown = false; this.log = ['System Ready!']; } // a power cycle: the sketch's waterLowMessageShown starts false
 
   // What WaterLevelCheck() leaves on the outputs between taps.
   idle() {
@@ -26,8 +26,8 @@ export class Dispenser {
   scan(key) {
     const off = { red: false, green: false, pump: false, tone: 0 };
     if (!this.water) {
-      // The sketch never reads the card while the sensor reports LOW: it only repeats the warning.
-      this.log.push('Water Low! Refill required');
+      // The sketch never reads the card while the sensor reports LOW: it beeps (the warning is already on screen from the last pass), Serial prints it once.
+      if (!this.lowShown) { this.lowShown = true; this.log.push('Water Low! Refill required'); }
       const low = { lcd: ['Water Low!', 'Refill required'], ...off, red: true };
       return { outcome: 'water-low', steps: [...beeps(3, low), { ...low, ms: 0 }] };
     }
@@ -35,7 +35,9 @@ export class Dispenser {
     this.log.push('Scanning NFC Tag...', `UID: ${tag.uid}`);
     const welcome = { lcd: ['Welcome!', 'Scan bracelet'], ...off, green: true, ms: 0 };
     if (!(key in this.balance)) {
-      return { outcome: 'unknown', steps: [{ lcd: ['Unknown Tag', 'Access Denied'], ...off, green: true, ms: 5000 }, { ...this.idle(), ms: 0 }] };
+      // delay(5000) in handleRFID(), then the loop's delay(5000) with the display unchanged, before the next check rewrites it.
+      const denied = { lcd: ['Unknown Tag', 'Access Denied'], ...off, green: true };
+      return { outcome: 'unknown', steps: [{ ...denied, ms: 5000 }, { ...denied, ms: LOOP_DELAY }, { ...this.idle(), ms: 0 }] };
     }
     this.log.push(`Balance: ${this.balance[key]}`);
     if (this.balance[key] >= PRICE) {

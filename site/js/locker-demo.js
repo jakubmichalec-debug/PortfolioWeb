@@ -99,7 +99,7 @@ function guideInfo() {
     action = 'Close and lock the door →'; command = 'door';
   } else if (engine.phase === 'await-tag') {
     title = 'Scan the found item’s tag'; instruction = 'A visitor card identifies a person. An item tag identifies the object. Choose Wallet or Keys below.';
-    const key = engine.items.some(item => item.tag === TAGS.wallet) ? 'keys' : 'wallet'; command = key; action = `Use the ${key === 'wallet' ? 'Wallet' : 'Keys'} item tag →`;
+    command = 'wallet'; action = 'Use the Wallet item tag →';
   } else if (engine.phase === 'await-description') {
     title = 'Give the item a name'; instruction = 'Edit the description below, then save it. Staff type this into the Arduino Serial Monitor on the real prototype.';
     action = 'Save description →'; command = 'description';
@@ -119,7 +119,7 @@ function renderGuide() {
   const guide = guideInfo(); const finished = engine.phase === 'complete';
   $('guide-position').textContent = finished ? 'TASK COMPLETE' : `STEP ${guide.index + 1} OF ${guide.steps.length}`;
   $('guide-title').textContent = guide.title; $('guide-instruction').textContent = guide.instruction;
-  $('next-action').textContent = guide.action; $('next-action').dataset.command = guide.command; $('next-action').disabled = guide.command === 'wait';
+  $('next-action').textContent = guide.action; $('next-action').dataset.command = guide.command; $('next-action').setAttribute('aria-disabled', String(guide.command === 'wait')); // not `disabled`: a disabled button drops keyboard focus
   const clip = embedded ? realFootageFor(engine) : null, watch = $('watch-real');
   if (watch) {
     watch.hidden = !clip;
@@ -166,7 +166,7 @@ function render() {
   $('item-tags').hidden = engine.phase !== 'await-tag'; $('registration').hidden = engine.phase !== 'await-description';
   root.querySelectorAll('[data-tag]').forEach(button => {
     const key = button.dataset.tag;
-    button.disabled = reading || !engine.canScan || (engine.phase === 'await-tag' ? !['wallet','keys'].includes(key) || engine.items.some(item => item.tag === TAGS[key]) : ['wallet','keys'].includes(key) || key === 'staff' && engine.scenario !== 'store');
+    button.disabled = reading || !engine.canScan || (engine.phase === 'await-tag' ? !['wallet','keys'].includes(key) : ['wallet','keys'].includes(key) || key === 'staff' && engine.scenario !== 'store');
   });
   $('count').textContent = String(engine.physicalItems.length).padStart(2, '0');
   $('memory-count').textContent = `Arduino records: ${engine.items.length}. Physical placement is tracked separately in this guided demo.`;
@@ -203,12 +203,12 @@ function render() {
   root.querySelectorAll('.signal-path li').forEach((item, index) => item.classList.toggle('active', engine.code === 'servo-and-feedback' ? index >= 2 : engine.code === 'owner-match' ? index === 1 : index === 0));
   if (engine.beep) { buzzer(engine.beep); engine.beep = null; }
 }
-function scan(key) {
+function scan(key, from) {
   if (reading || !engine.canScan) return;
   const previous = engine.phase;
   reading = true; inspect('rfid');
   $('reader').classList.remove('scan-pulse'); requestAnimationFrame(() => $('reader').classList.add('scan-pulse'));
-  const source = root.activeElement?.getBoundingClientRect(), target = $('reader').getBoundingClientRect();
+  const source = from?.getBoundingClientRect(), target = $('reader').getBoundingClientRect();
   if (target.top >= 0 && target.bottom <= innerHeight) flyGraphic('<span class="scan-card-chip">▦</span><span>RFID TAG</span>', source, target, 350, 'scan-flight');
   render();
   scanDelay = setTimeout(() => {
@@ -217,15 +217,14 @@ function scan(key) {
   }, reducedMotion ? 0 : 350);
 }
 root.querySelectorAll('[data-tag]').forEach(button => {
-  // Pointer dragging also works in browsers that suppress native button drags.
-  button.draggable = false;
+  // Mouse drag onto the reader is pointer-driven (no native drag and drop); touch and keyboard use the click.
   let start = null, ghost = null, suppressClick = false;
   function overReader(event) {
     const bounds = $('reader').getBoundingClientRect();
     return event.clientX >= bounds.left && event.clientX <= bounds.right && event.clientY >= bounds.top && event.clientY <= bounds.bottom;
   }
   function cleanup() { ghost?.remove(); ghost = null; start = null; $('reader').classList.remove('drag-over'); }
-  button.addEventListener('click', () => { if (suppressClick) { suppressClick = false; return; } scan(button.dataset.tag); });
+  button.addEventListener('click', () => { if (suppressClick) { suppressClick = false; return; } scan(button.dataset.tag, button); });
   button.addEventListener('pointerdown', event => {
     if (event.pointerType !== 'mouse' || event.button !== 0 || !engine.canScan) return;
     suppressClick = false; start = { x: event.clientX, y: event.clientY }; button.setPointerCapture(event.pointerId);
@@ -238,14 +237,11 @@ root.querySelectorAll('[data-tag]').forEach(button => {
   });
   button.addEventListener('pointerup', event => {
     if (!start) return;
-    if (ghost) { suppressClick = true; if (overReader(event)) scan(button.dataset.tag); }
+    if (ghost) { suppressClick = true; setTimeout(() => suppressClick = false); if (overReader(event)) scan(button.dataset.tag, button); }
     cleanup();
   });
   button.addEventListener('pointercancel', cleanup);
 });
-$('reader').addEventListener('dragover', event => { if (engine.canScan) { event.preventDefault(); $('reader').classList.add('drag-over'); } });
-$('reader').addEventListener('dragleave', () => $('reader').classList.remove('drag-over'));
-$('reader').addEventListener('drop', event => { event.preventDefault(); $('reader').classList.remove('drag-over'); const key = event.dataTransfer.getData('text/plain'); if (Object.hasOwn(TAGS, key)) scan(key); });
 // Hardware and code sit in a collapsed panel; a click on a part of the machine opens it, so the click has a visible result.
 function revealHood() {
   const hood = root.querySelector('.under-the-hood'); if (!hood) return;
@@ -274,13 +270,14 @@ function toggleDoor() { engine.toggleDoor(); render(); }
 $('door').addEventListener('click', toggleDoor);
 $('next-action').addEventListener('click', () => {
   const command = $('next-action').dataset.command;
+  if (command === 'wait') return;
   if (command === 'door') toggleDoor();
   else if (command === 'transfer') moveItem();
   else if (command === 'description') $('registration').requestSubmit();
   else if (command === 'continue') { engine.continueCollection(); followSignal(); render(); }
   else if (command === 'restart') restart(engine.scenario);
   else if (command === 'skip') skipWait();
-  else if (Object.hasOwn(TAGS, command)) scan(command);
+  else if (Object.hasOwn(TAGS, command)) scan(command, $('next-action'));
 });
 $('rotation').addEventListener('input', event => $('machine').style.setProperty('--rotation', `${event.target.value}deg`));
 // Feedback waits only (see locker-engine.js): the door, item and latch steps are physical and never skipped.
@@ -299,5 +296,5 @@ setInterval(() => {
   const now = performance.now(), oldPhase = engine.phase; engine.tick((now - lastTime) / 1000 * feedbackSpeed(engine, quickFeedback())); lastTime = now;
   if (oldPhase !== engine.phase) followSignal(); render();
 }, 100);
-fetch(new URL('../assets/media/lost-and-found/code-excerpts.json', import.meta.url)).then(response => { if (!response.ok) throw new Error('Source unavailable'); return response.json(); }).then(data => { excerpts = data; inspect(inspectedPart); }).catch(() => { $('code').textContent = 'The excerpt could not load. Download the original sketch above to inspect it.'; });
+fetch(new URL('../assets/media/lost-and-found/code-excerpts.json' + new URL(import.meta.url).search, import.meta.url)).then(response => { if (!response.ok) throw new Error('Source unavailable'); return response.json(); }).then(data => { excerpts = data; inspect(inspectedPart); }).catch(() => { $('code').textContent = 'The excerpt could not load. Download the original sketch above to inspect it.'; });
 render();

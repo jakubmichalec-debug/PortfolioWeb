@@ -114,6 +114,7 @@
 .sd-tags strong { font-size: 15px; font-weight: 500; } .sd-tags b { font: 600 22px var(--f-display); color: var(--redline); }
 .sd-tags small { margin-top: auto; font: 8px var(--f-mono); color: var(--ink-3); }
 .sd-wait { display: flex; align-items: center; gap: 14px; margin-top: 14px; }
+.sd-wait[hidden] { display: none; }
 .sd-wait-track { flex: 1; height: 3px; background: var(--rule); }
 .sd-wait-track i { display: block; height: 100%; background: var(--redline); transform-origin: left; }
 .sd-wait button { padding: 6px 0; font: 11px var(--f-mono); color: var(--redline); }
@@ -170,7 +171,7 @@
 .sd-code-tabs button[aria-pressed="true"] { background: #ffd60a0c; box-shadow: inset 3px 0 var(--redline); color: var(--redline); }
 .sd-code-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 24px; border-bottom: 1px solid var(--rule); font: 12px var(--f-mono); color: var(--ink-2); }
 .sd-code-head a { font-size: 10px; color: var(--redline); }
-.sd-code pre { margin: 0; padding: 20px 24px; max-height: 440px; min-height: 300px; overflow: auto; tab-size: 2; font: 11.5px/1.75 var(--f-mono); color: #bdd5f6; }
+.sd-code pre { margin: 0; padding: 20px 24px; max-height: 440px; min-height: 300px; overflow: auto; overscroll-behavior: contain; tab-size: 2; font: 11.5px/1.75 var(--f-mono); color: #bdd5f6; }
 .sd-code-body > p { margin: 0; padding: 12px 24px 16px; border-top: 1px solid var(--rule); font: 10px/1.8 var(--f-mono); color: var(--ink-3); }
 
 /* ---------- watch ---------- */
@@ -198,7 +199,7 @@
 .sd-next-project strong { font: 550 clamp(36px, 5vw, 66px)/1 var(--f-display); letter-spacing: -.04em; }
 .sd-next-project > span:last-child { font: 12px var(--f-mono); color: var(--redline); }
 
-#sd-lightbox { width: min(1100px, 95vw); max-height: 95dvh; padding: 55px 25px 25px; overflow: auto; border: 1px solid var(--rule-strong); background: var(--paper-deep); color: var(--ink); }
+#sd-lightbox { width: min(1100px, 95vw); max-height: 95dvh; padding: 55px 25px 25px; overflow: auto; overscroll-behavior: contain; border: 1px solid var(--rule-strong); background: var(--paper-deep); color: var(--ink); }
 #sd-lightbox::backdrop { background: #010717ee; backdrop-filter: blur(7px); }
 #sd-lightbox-close { position: absolute; right: 20px; top: 12px; padding: 10px; font: 12px var(--f-mono); color: var(--redline); cursor: pointer; }
 #sd-lightbox figure { margin: 0; }

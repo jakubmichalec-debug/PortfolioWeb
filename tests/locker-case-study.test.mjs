@@ -11,7 +11,7 @@ test('main case study exposes every planned section and the reusable locker isla
   for (const id of ['try','build','inside','watch','reflection','locker-lab','lf-lightbox']) assert.match(page,new RegExp(`id="${id}"`));
   assert.doesNotMatch(page,/class="stub"/);
   assert.match(read('js/locker-story.js'),/import\('\.\/locker-demo\.js'(?: \+ version)?\)/);
-  assert.match(read('js/locker-demo.js'),/new URL\('\.\.\/assets\/media\/lost-and-found\/code-excerpts\.json', import\.meta\.url\)/);
+  assert.match(read('js/locker-demo.js'),/new URL\('\.\.\/assets\/media\/lost-and-found\/code-excerpts\.json' \+ new URL\(import\.meta\.url\)\.search, import\.meta\.url\)/);
 });
 test('all local case-study HTML assets resolve', () => {
   for (const match of read('lost-and-found.html').matchAll(/(?:src|href|poster)="([^"#]+)"/g)) {

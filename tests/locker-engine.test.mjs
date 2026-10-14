@@ -53,9 +53,9 @@ test('staff registration waits for a tag and a serial description', () => {
   locker.tick(3); assert.equal(locker.lcd[0], 'Master Mode Off');
   locker.tick(2); assert.equal(locker.phase, 'listing'); assert.equal(locker.items.length, 3);
 });
-test('registration accepts any next tag, including a duplicate, like the sketch', () => {
-  const locker = new LockerEngine(); locker.scan(TAGS.staff); locker.skipDelay(); locker.scan(TAGS.other);
-  locker.register(''); assert.equal(locker.items[2].tag, TAGS.other); assert.equal(locker.items[2].owner, TAGS.owner);
+test('registration accepts a duplicate item tag and an empty description, like the sketch', () => {
+  const locker = new LockerEngine(); locker.scan(TAGS.staff); locker.skipDelay(); locker.scan(TAGS.wallet);
+  locker.register(''); assert.equal(locker.items[2].tag, TAGS.wallet); assert.equal(locker.items[0].tag, TAGS.wallet); assert.equal(locker.items[2].owner, TAGS.owner);
   assert.equal(locker.items[2].description, '');
 });
 test('description list rotates every three seconds', () => {

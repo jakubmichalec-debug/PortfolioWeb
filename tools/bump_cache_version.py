@@ -10,9 +10,9 @@ import os
 import re
 
 SITE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "site")
-ATTR = re.compile(r'((?:href|src)=")(css/[\w.\-]+\.css|js/[\w.\-/]+\.js)(?:\?v=(\d+))?(")')
+ATTR = re.compile(r'((?:href|src)=")((?:\.\./)?css/[\w.\-]+\.css|(?:\.\./)?js/[\w.\-/]+\.js)(?:\?v=(\d+))?(")')
 
-paths = glob.glob(os.path.join(SITE, "*.html"))
+paths = glob.glob(os.path.join(SITE, "*.html")) + glob.glob(os.path.join(SITE, "previews", "*.html"))  # previews link ../css/...
 seen = [int(m.group(3)) for path in paths for m in ATTR.finditer(open(path, encoding="utf8", newline="").read()) if m.group(3)]
 version = max(seen, default=0) + 1
 

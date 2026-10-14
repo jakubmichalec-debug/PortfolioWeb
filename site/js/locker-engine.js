@@ -16,7 +16,6 @@ export class LockerEngine {
     this.events = [scenario === 'store' ? 'Storage scenario · empty locker' : 'Collection scenario · Wallet and Keys inside'];
   }
   get canScan() { return this.phase === 'ready' || this.phase === 'listing' || this.phase === 'await-tag'; }
-  get busy() { return !this.canScan && this.phase !== 'await-description'; }
   get canOpenDoor() { return !this.doorOpen && this.servo === 0 && (!this.guided || this.phase === 'unlocked'); }
   get canCloseDoor() { return this.doorOpen && (!this.guided || this.transferred && this.phase === 'close-door'); }
   get canTransfer() { return this.guided && this.doorOpen && this.phase === 'transfer' && !this.transferred; }
@@ -29,16 +28,13 @@ export class LockerEngine {
       if (this.guided && ![TAGS.wallet, TAGS.keys].includes(tag)) {
         this.message = 'Choose a Wallet or Keys item tag below. A personal card is not an item tag in this guided exercise.'; return false;
       }
-      if (this.guided && this.items.some(item => item.tag === tag)) {
-        this.message = 'That item is already inside. Choose the other tag, or restart the storage scenario.'; return false;
-      }
       this.pendingTag = tag; this.phase = 'await-description'; this.lcd = ['Register Item', '']; this.code = 'registration';
       this.message = 'Type a short item description below, then press Save description. This represents the Arduino Serial Monitor.';
     } else if (tag === TAGS.staff) {
       if (this.guided && this.scenario !== 'store') { this.message = 'Choose “Store a found item” to start the staff-registration walkthrough.'; return false; }
-      this.wait('master-on', 2); this.lcd = ['Master Mode On', '']; this.code = 'registration'; this.beep = 1000;
-      this.message = 'Staff mode starts. After the 2-second delay, scan an item tag.';
+      this.code = 'registration'; this.beep = 1000;
       if (this.guided) { this.wait('await-tag', 0); this.lcd = ['Scan item tag', '']; this.message = 'Staff access accepted. Choose the Wallet or Keys item tag below.'; }
+      else { this.wait('master-on', 2); this.lcd = ['Master Mode On', '']; this.message = 'Staff mode starts. After the 2-second delay, scan an item tag.'; }
     } else if (tag === TAGS.owner || tag === TAGS.other) {
       if (!this.items.length) {
         this.wait('empty', 3); this.lcd = ['No Items', '']; this.code = 'owner-match';
@@ -161,7 +157,7 @@ export class LockerEngine {
       this.wait('empty-ready', 2); this.lcd = ['Locker Ready', '']; this.beep = 500;
     } else if (phase === 'denied') {
       this.red = false; this.idle(false); this.message = 'Unknown card rejected. Try the matching personal card.';
-    } else { this.idle(); this.message = 'Ready for another card. Stored descriptions cycle on the LCD.'; }
+    } else { this.idle(); this.message = this.items.length ? 'Ready for another card. Stored descriptions cycle on the LCD.' : 'Ready for another card.'; }
     if (seconds - step > 0.00001) this.tick(seconds - step);
   }
   skipDelay() { if (this.guided && ['closing','opening','moving-item'].includes(this.phase)) return false; if (this.duration) { this.tick(this.duration - this.elapsed); return true; } return false; }

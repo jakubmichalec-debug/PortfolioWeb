@@ -1,9 +1,10 @@
 /* Pinball page: the build told as one continuous story, not a filtered gallery. Each chapter
    is a mechanism (Structure, Flippers, Loading, Targets, Slide & small parts, Brackets, and
-   the electronics that run it all), alternating sides, connected by an animated path. Every
-   model just idles in place until clicked - click opens it full-screen with real orbit + zoom
-   controls (site/js/lightbox.js). Where there's footage of a mechanism working, it wipes in
-   beside the CAD model as the chapter scrolls up: the drawing, then the real thing.
+   the electronics that run it all), alternating sides, connected by an animated path. Models
+   are still pictures; only the chapter on screen gets a live, rotating viewer. Clicking one
+   opens it full-screen with real orbit + zoom controls (site/js/lightbox.js). Where there's
+   footage of a mechanism working, it wipes in beside the CAD model as the chapter scrolls up:
+   the drawing, then the real thing.
    Reads window.PINBALL_PARTS (tools/make_pinball_models.py) for the 3D/photo content and
    window.PINBALL_MEDIA (tools/make_pinball_media.py) for the photos and clips, and embeds
    short, real excerpts from the actual Arduino sketch (site/assets/code/pinball.ino) for the
@@ -166,8 +167,6 @@ void loop() {
   const EXPAND_ICON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4M10 2h4v4M6 14H2v-4M10 14h4v-4"/></svg>';
   const CODE_ICON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 5 2 8l3 3M11 5l3 3-3 3M9.5 3.5l-3 9"/></svg>';
 
-  // `measured`: draw its dimensions - chapter heroes only; a thumbnail is too small to carry
-  // labels, and gets them full-screen instead
   // Each live viewer costs WebGL time every frame, even half off screen: seven of them at once
   // made the scroll stutter. So a chapter's viewer exists only while its stage is in the middle
   // of the window, laid over the still and faded in once the model has loaded.
@@ -180,12 +179,17 @@ void loop() {
       mv.classList.add('stage-live');
       mv.addEventListener('load', () => mv.classList.add('is-ready'), { once: true });
       stage.prepend(mv);
-    } else if (!isIntersecting && live) live.remove();
+    } else if (!isIntersecting && live) {
+      live.dimensions?.detach(); // its line-drawing loop would otherwise run on after removal
+      live.remove();
+    }
   }), { rootMargin: '-15% 0px' });
 
-  // `still`: a pre-rendered picture of the model (tools: posters in assets/models/posters) -
-  // a thumbnail never needs live WebGL, and two dozen live viewers made the page stutter
-  function stageContent(part, { interactive = false, measured = false, still = false } = {}) {
+  // `measured`: draw its dimensions - chapter heroes only; a thumbnail is too small to carry
+  // labels, and gets them full-screen instead
+  // `still`: a pre-rendered picture of the model (assets/models/posters) - a thumbnail never
+  // needs live WebGL, and two dozen live viewers made the page stutter
+  function stageContent(part, { measured = false, still = false } = {}) {
     if (part.kind === 'model' && still) {
       const img = document.createElement('img');
       img.src = part.model.replace('assets/models/', 'assets/models/posters/').replace(/\.glb$/, '.webp');
@@ -209,13 +213,9 @@ void loop() {
         mv.setAttribute('auto-rotate', '');
         mv.setAttribute('rotation-per-second', '16deg');
       }
-      if (interactive) {
-        mv.setAttribute('camera-controls', '');
-        mv.setAttribute('interaction-prompt', 'none');
-      }
       if (measured && window.attachDimensions) {
         window.attachDimensions.frame(mv, true);
-        window.attachDimensions(mv, part.dims);
+        mv.dimensions = window.attachDimensions(mv, part.dims);
       }
       return mv;
     }
@@ -249,6 +249,20 @@ void loop() {
 
   function openable(part) {
     return part.kind === 'model'; // photos/placeholders/playfield have nothing extra to show full-screen
+  }
+
+  // a click target that is not a <button>: reachable by keyboard, opens the 3D lightbox
+  function asButton(el, part) {
+    el.setAttribute('role', 'button');
+    el.tabIndex = 0;
+    el.setAttribute('aria-label', `Open the 3D model: ${part.label}`);
+    el.addEventListener('click', () => window.openLightbox(part));
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        window.openLightbox(part);
+      }
+    });
   }
 
   function chapterText(ch, i) {
@@ -322,7 +336,7 @@ void loop() {
     const stage = document.createElement('div');
     stage.className = 'chapter-stage' + (hero.kind === 'placeholder' ? ' is-empty' : '');
     if (hero.kind === 'model') {
-      // a still first; the live, measured viewer only while the chapter is on screen (liveStage)
+      // a still first; the live, measured viewer only while the chapter is on screen (liveWatcher)
       stage.appendChild(stageContent(hero, { still: true }));
       liveStages.set(stage, hero);
       liveWatcher.observe(stage);
@@ -332,7 +346,7 @@ void loop() {
       expand.className = 'chapter-expand';
       expand.innerHTML = EXPAND_ICON + 'view in 3d';
       stage.appendChild(expand);
-      stage.addEventListener('click', () => window.openLightbox(hero));
+      asButton(stage, hero);
     }
     visual.appendChild(stage);
 
@@ -344,7 +358,7 @@ void loop() {
         s.className = 'satellite';
         s.title = p.label;
         s.appendChild(stageContent(p, { still: true }));
-        if (openable(p)) s.addEventListener('click', () => window.openLightbox(p));
+        if (openable(p)) asButton(s, p);
         sat.appendChild(s);
       });
       visual.appendChild(sat);
@@ -402,7 +416,10 @@ void loop() {
     const points = stops.map((s) => {
       const r = s.getBoundingClientRect();
       const top = s.hasAttribute('data-connector'); // a wide block: land on its top edge, not behind it
-      return { x: r.left - box.left + r.width / 2, y: r.top - box.top + (top ? 0 : r.height / 2) };
+      // a chapter not yet revealed still carries the reveal's y offset: measure where it will rest
+      const chapter = s.closest('.chapter');
+      const lift = canAnimate && chapter ? gsap.getProperty(chapter, 'y') : 0;
+      return { x: r.left - box.left + r.width / 2, y: r.top - box.top - lift + (top ? 0 : r.height / 2) };
     });
 
     let d = `M ${points[0].x} ${points[0].y}`;

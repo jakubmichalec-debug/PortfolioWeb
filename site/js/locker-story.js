@@ -1,6 +1,6 @@
 const $ = id => document.getElementById(id);
 const media = 'assets/media/lost-and-found/';
-const version = new URL(import.meta.url).search; // "?v=N" from this script's own tag, so one cache bump covers the markup and modules it loads
+const version = new URL(import.meta.url).search; // "?v=N" from this script's own tag, passed on to the markup and locker-demo.js (which passes it to its JSON). locker-demo.js's static imports (locker-engine.js, locker-pacing.js) carry no ?v of their own.
 const motion = !matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // "Try the locker" lands on the machine, not on the section heading above it. Lenis (when active) does the scrolling,
@@ -125,11 +125,11 @@ lightbox.addEventListener('click', event => { if (event.target === lightbox && (
 lightbox.addEventListener('close', () => lightboxTrigger?.focus());
 
 const heroFilm = $('lf-hero-video'), filmToggle = $('lf-film-toggle');
-let filmUserPaused = !motion;
+let filmUserPaused = !motion, filmOnScreen = false;
 function updateFilmButton() { filmToggle.textContent = heroFilm.paused ? 'Play ↗' : 'Pause Ⅱ'; filmToggle.setAttribute('aria-label', heroFilm.paused ? 'Play prototype preview' : 'Pause prototype preview'); }
 filmToggle.addEventListener('click', () => { filmUserPaused = !heroFilm.paused; if (heroFilm.paused) heroFilm.play().catch(()=>{}); else heroFilm.pause(); });
 heroFilm.addEventListener('play', updateFilmButton); heroFilm.addEventListener('pause', updateFilmButton);
-const filmObserver = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting && !filmUserPaused && !document.hidden) heroFilm.play().catch(()=>{}); else heroFilm.pause(); }), {threshold:.25});
+const filmObserver = new IntersectionObserver(entries => entries.forEach(entry => { filmOnScreen = entry.isIntersecting; if (entry.isIntersecting && !filmUserPaused && !document.hidden) heroFilm.play().catch(()=>{}); else heroFilm.pause(); }), {threshold:.25});
 filmObserver.observe(heroFilm);
 
 const walkthrough = $('lf-walkthrough');
@@ -177,7 +177,7 @@ async function loadChapters() {
 }
 loadChapters(); walkthrough.addEventListener('timeupdate',updateChapter);
 new IntersectionObserver(entries => entries.forEach(entry => { if (!entry.isIntersecting) walkthrough.pause(); }),{threshold:.05}).observe(walkthrough);
-document.addEventListener('visibilitychange', () => { if (document.hidden) { heroFilm.pause(); walkthrough.pause(); } });
+document.addEventListener('visibilitychange', () => { if (document.hidden) { heroFilm.pause(); walkthrough.pause(); } else if (filmOnScreen && !filmUserPaused) heroFilm.play().catch(()=>{}); });
 
 const sectionLinks = [...document.querySelectorAll('.lf-section-nav a')];
 const sectionObserver = new IntersectionObserver(entries => {

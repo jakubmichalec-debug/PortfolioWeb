@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
-import { Dispenser, PRICE, TAGS, START_BALANCE, duration, pumpTime } from '../site/js/shot-engine.js';
+import { Dispenser, PRICE, TAGS, START_BALANCE, LOOP_DELAY, duration, pumpTime } from '../site/js/shot-engine.js';
 
 const site = new URL('../site/', import.meta.url);
 const read = path => readFileSync(new URL(path, site), 'utf8');
@@ -62,6 +62,21 @@ test('with an empty tank no bracelet is read: red light, three beeps, no pump, n
   assert.equal(outcome, 'water-low'); assert.equal(machine.balance.a, 15);
   assert.equal(pumpTime(steps), 0); assert.equal(steps.filter(step => step.tone).length, 3); assert.ok(steps.every(step => step.red));
   machine.water = true; assert.equal(machine.scan('a').outcome, 'poured');
+});
+
+test('an unknown tag keeps its message through the 5 s delay and the 5 s loop delay, like the sketch', () => {
+  const { steps } = new Dispenser().scan('unknown');
+  assert.equal(duration(steps), 5000 + LOOP_DELAY); assert.equal(steps[1].lcd.join('|'), 'Unknown Tag|Access Denied');
+  assert.deepEqual(steps.at(-1).lcd, ['Welcome! Please', 'scan bracelet']);
+});
+
+test('water low: Serial prints the warning once', () => {
+  const machine = new Dispenser(); machine.water = false;
+  machine.scan('a');
+  machine.scan('b'); machine.scan('a');
+  assert.equal(machine.log.filter(line => line === 'Water Low! Refill required').length, 1);
+  machine.reset(); machine.water = false; machine.scan('a');
+  assert.equal(machine.log.filter(line => line === 'Water Low! Refill required').length, 1, 'a power cycle starts the flag again');
 });
 
 test('reset restores both balances and the tank', () => {

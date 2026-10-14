@@ -274,19 +274,30 @@
 }
 
 /* ---------- drafting crosshair cursor ---------- */
+/* !important because page CSS (pointer, zoom-in, wait on buttons, summaries, labels, ...) sets
+   its own cursor on the element, which would otherwise show next to the crosshair */
 .has-xhair,
-.has-xhair a,
-.has-xhair button {
-  cursor: none;
+.has-xhair * {
+  cursor: none !important;
 }
 
-/* clickable elements that aren't a/button (story.css's model-viewer stages) need their own
-   entry here too - an explicit cursor:pointer on the element itself beats the inherited
-   cursor:none from .has-xhair regardless of selector specificity, so without this they'd
-   show the native pointer next to the crosshair instead of just the crosshair. */
-.has-xhair .chapter-stage,
-.has-xhair .satellite {
-  cursor: none;
+/* a modal <dialog> (the photo lightboxes on Lost & Found and Shot dispenser) and a fullscreen
+   video sit in the browser's top layer, above the crosshair whatever its z-index: use the
+   system cursor there */
+.has-xhair dialog[open],
+.has-xhair dialog[open] *,
+.has-xhair :fullscreen,
+.has-xhair :fullscreen * {
+  cursor: auto !important;
+}
+
+.has-xhair dialog[open] :is(a, button),
+.has-xhair :fullscreen :is(a, button) {
+  cursor: pointer !important;
+}
+
+.has-xhair:has(dialog[open], :fullscreen) .xhair {
+  opacity: 0;
 }
 
 .xhair {
@@ -464,4 +475,11 @@
   * {
     scroll-behavior: auto !important;
   }
+}
+
+/* a modal <dialog> doesn't stop the page behind it scrolling natively; the gutter keeps the
+   page from shifting sideways where the scrollbar takes up space (Windows) */
+html:has(dialog[open]) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
 }

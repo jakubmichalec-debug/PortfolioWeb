@@ -130,7 +130,7 @@
   }
 
   // ---------------- scene(): progress through a sticky track ----------------
-  // `track` is the tall element; its first child is position: sticky (see story.css .scene-pin).
+  // `track` is the tall element; its first child is position: sticky (see scenes.css .days-pin).
   // Returns false when there's no scrolling scene (reduced motion / no GSAP) so the caller can
   // lay out its still version instead.
   function scene(track, onProgress) {

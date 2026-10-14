@@ -166,7 +166,6 @@
   // ---------- play / pause ----------
   let userPaused = reduceMotion; // reduced motion: nothing plays until it is asked to
   const sync = () => {
-    playBtn.setAttribute('aria-pressed', String(video.paused));
     playBtn.setAttribute('aria-label', video.paused ? 'Play' : 'Pause');
   };
   video.addEventListener('play', () => {

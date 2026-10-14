@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#08205a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="../css/tokens.css"><link rel="stylesheet" href="../css/locker-demo.css">
-  <script type="module" src="../js/locker-demo.js"></script>
+  <link rel="stylesheet" href="../css/tokens.css?v=59"><link rel="stylesheet" href="../css/locker-demo.css?v=59">
+  <script type="module" src="../js/locker-demo.js?v=59"></script>
 </head>
 <body>
   <a class="skip" href="#controls">Skip to demo controls</a>
@@ -59,10 +59,10 @@
         <div class="drawer-body">
           <p class="subtle">Tap a card, or drag it onto the reader. The matching personal card collects items; staff mode stores them.</p>
           <div class="cards" id="cards">
-          <button class="tag-card owner-card" draggable="true" data-tag="owner"><span class="card-chip">▦</span><span class="card-kind">PERSONAL / A</span><strong>My items</strong><small>538CC9D9 · matching owner</small><span class="card-arrow">↗</span></button>
-          <button class="tag-card other-card" draggable="true" data-tag="other"><span class="card-chip">▦</span><span class="card-kind">PERSONAL / B</span><strong>Another visitor</strong><small>77C01C2F · no owned items</small><span class="card-arrow">↗</span></button>
-          <button class="tag-card unknown-card" draggable="true" data-tag="unknown"><span class="card-chip">▦</span><span class="card-kind">UNRECOGNISED</span><strong>Unknown card</strong><small>DEADBEEF · access denied</small><span class="card-arrow">↗</span></button>
-          <button class="tag-card staff-card" draggable="true" data-tag="staff"><span class="card-chip">▦</span><span class="card-kind">STAFF / MASTER</span><strong>Store an item</strong><small>D34611DA · registration mode</small><span class="card-arrow">↗</span></button>
+          <button class="tag-card owner-card" data-tag="owner"><span class="card-chip">▦</span><span class="card-kind">PERSONAL / A</span><strong>My items</strong><small>538CC9D9 · matching owner</small><span class="card-arrow">↗</span></button>
+          <button class="tag-card other-card" data-tag="other"><span class="card-chip">▦</span><span class="card-kind">PERSONAL / B</span><strong>Another visitor</strong><small>77C01C2F · no owned items</small><span class="card-arrow">↗</span></button>
+          <button class="tag-card unknown-card" data-tag="unknown"><span class="card-chip">▦</span><span class="card-kind">UNRECOGNISED</span><strong>Unknown card</strong><small>DEADBEEF · access denied</small><span class="card-arrow">↗</span></button>
+          <button class="tag-card staff-card" data-tag="staff"><span class="card-chip">▦</span><span class="card-kind">STAFF / MASTER</span><strong>Store an item</strong><small>D34611DA · registration mode</small><span class="card-arrow">↗</span></button>
         </div>
           <div class="options">
             <label class="toggle"><input id="sound" type="checkbox"> Buzzer sound <span class="tiny">500 / 1000 Hz</span></label>
@@ -76,13 +76,13 @@
       <summary>Hardware &amp; code behind each step</summary>
       <div class="hood-body">
       <div class="explanation"><h2 id="part-title">One scan.<br>A chain of decisions.</h2><p id="part-description">The reader turns a card UID into an uppercase string. The Arduino checks staff access first, then recognised personal cards and item ownership.</p><div class="part-tabs" role="group" aria-label="Inspect a component"><button data-part="rfid" aria-pressed="true">RFID</button><button data-part="arduino" aria-pressed="false">Arduino</button><button data-part="lcd" aria-pressed="false">LCD</button><button data-part="servo" aria-pressed="false">Servo</button><button data-part="feedback" aria-pressed="false">Feedback</button><button data-part="memory" aria-pressed="false">Memory</button></div><ol class="signal-path"><li>RFID input</li><li>Owner check</li><li>LCD + feedback</li><li>Servo latch</li></ol><p class="tiny" id="hardware-spec">MFRC522 · chip select 10 · reset 9</p></div>
-      <div class="code-panel"><div class="panel-label"><span id="code-label">getRFIDTag()</span><a href="../assets/code/lost-and-found.ino" download>Original sketch ↓</a></div><pre tabindex="0" aria-label="Original Arduino source excerpt"><code id="code">Loading the archived Arduino sketch…</code></pre><p class="tiny" id="code-location"></p></div>
+      <div class="code-panel"><div class="panel-label"><span id="code-label">getRFIDTag()</span><a href="../assets/code/lost-and-found.ino" download>Original sketch ↓</a></div><pre tabindex="0" data-lenis-prevent aria-label="Original Arduino source excerpt"><code id="code">Loading the archived Arduino sketch…</code></pre><p class="tiny" id="code-location"></p></div>
         <div class="event-panel"><div><p class="eyebrow">SIGNAL LOG</p><ol id="events"></ol></div><div class="inventory"><span class="eyebrow">PHYSICALLY INSIDE <span id="count">02</span></span><div id="inventory-list"></div><p class="tiny" id="memory-count"></p></div></div>
       </div>
     </details>
     <details class="honesty-note">
       <summary>What’s real, what’s simulated</summary>
-      <p>This walkthrough adds teaching safeguards: move the item before closing, no time limit while you learn, non-empty descriptions and duplicate-tag checks. Waits after a rejected card are shortened by default (untick Quick feedback for the real delays). The real Arduino sketch has no door or item sensor: it runs an eight-second servo window and removes the first matching record afterward. Those physical-step safeguards would need extra hardware and firmware in a real locker. Card IDs, owner checks and staff registration are based on the saved sketch; geometry, sample descriptions and exposed latch placement are illustrative. The guided view adds helpful LCD prompts and starts closed at 90°, while the original setup writes 0°. This is not a secure production system.</p>
+      <p>This walkthrough adds teaching safeguards: move the item before closing, no time limit while you learn, and non-empty descriptions. Waits after a rejected card are shortened by default (untick Quick feedback for the real delays). The real Arduino sketch has no door or item sensor: it runs an eight-second servo window and removes the first matching record afterward. Those physical-step safeguards would need extra hardware and firmware in a real locker. Card IDs, owner checks and staff registration are based on the saved sketch; geometry, sample descriptions and exposed latch placement are illustrative. The guided view adds helpful LCD prompts and starts closed at 90°, while the original setup writes 0°. The real sketch also reads and discards one scan at startup and one to leave the description cycle, so the real device needs one extra scan there; the demo acts on that scan. This is not a secure production system.</p>
     </details>
     <footer><span>JAKUB MICHALEC / LOST & FOUND</span><a href="../assets/media/lost-and-found/walkthrough-captioned.mp4">Compare with the real build ↗</a></footer>
   </main>

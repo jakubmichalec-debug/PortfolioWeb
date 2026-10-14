@@ -253,7 +253,15 @@
         const target = a.getAttribute('href') === '#' ? null : $(a.getAttribute('href'));
         if (!target) return;
         e.preventDefault();
-        lenis.scrollTo(target, { offset: -(parseInt(getComputedStyle(doc).getPropertyValue('--nav-h'), 10) || 64) });
+        lenis.scrollTo(target, {
+          offset: -(parseInt(getComputedStyle(doc).getPropertyValue('--nav-h'), 10) || 64),
+          onComplete: () => {
+            // preventDefault stopped the browser's fragment jump, so move focus and the hash ourselves
+            if (!target.hasAttribute('tabindex') && !target.matches('a[href], button, input, select, textarea, summary')) target.tabIndex = -1;
+            target.focus({ preventScroll: true });
+            history.pushState(null, '', a.getAttribute('href'));
+          },
+        });
       });
     });
   }

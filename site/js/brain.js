@@ -297,6 +297,7 @@
       const next = width >= 700 ? 'wide' : 'tall';
       if (next === mode) return;
       mode = next;
+      drawn = false;
       stop();
       parts = render(svg, layout(mode));
       svg.prepend(desc);

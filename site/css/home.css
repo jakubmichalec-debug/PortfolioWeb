@@ -690,20 +690,6 @@
   transform: translateX(6px);
 }
 
-.project--soon {
-  grid-column: 1 / -1;
-  display: grid;
-  place-items: center;
-  padding: 22px;
-  border-style: dashed;
-  border-color: var(--rule-strong);
-  background: none;
-  color: var(--ink-3);
-  font: 500 0.72rem var(--f-mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
 /* ================= CONTACT ================= */
 .contact {
   padding-top: clamp(72px, 10vw, 132px);
