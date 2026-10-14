@@ -4,7 +4,7 @@ Portfolio site for an interactive-prototyping internship (KdG, Multimedia and Cr
 
 Plain HTML, CSS and JS with no build step. [GSAP](https://gsap.com) with ScrollTrigger and [Lenis](https://lenis.darkroom.engineering) are vendored in `site/js/vendor/`; the 3D parts use [`<model-viewer>`](https://modelviewer.dev), loaded from a CDN.
 
-Pages: `index.html`, `pinball.html`, `lost-and-found.html`, `shot-dispenser.html`, `web.html`, `about.html`.
+Pages: `index.html`, `pinball.html`, `lost-and-found.html`, `shot-dispenser.html`, `web.html`.
 
 ## Run it
 
