@@ -168,7 +168,32 @@ void loop() {
 
   // `measured`: draw its dimensions - chapter heroes only; a thumbnail is too small to carry
   // labels, and gets them full-screen instead
-  function stageContent(part, { interactive = false, measured = false } = {}) {
+  // Each live viewer costs WebGL time every frame, even half off screen: seven of them at once
+  // made the scroll stutter. So a chapter's viewer exists only while its stage is in the middle
+  // of the window, laid over the still and faded in once the model has loaded.
+  const liveStages = new Map();
+  const liveWatcher = new IntersectionObserver((hits) => hits.forEach(({ target: stage, isIntersecting }) => {
+    const live = stage.querySelector('model-viewer');
+    if (isIntersecting && !live) {
+      const mv = stageContent(liveStages.get(stage), { measured: true });
+      mv.setAttribute('loading', 'eager');
+      mv.classList.add('stage-live');
+      mv.addEventListener('load', () => mv.classList.add('is-ready'), { once: true });
+      stage.prepend(mv);
+    } else if (!isIntersecting && live) live.remove();
+  }), { rootMargin: '-15% 0px' });
+
+  // `still`: a pre-rendered picture of the model (tools: posters in assets/models/posters) -
+  // a thumbnail never needs live WebGL, and two dozen live viewers made the page stutter
+  function stageContent(part, { interactive = false, measured = false, still = false } = {}) {
+    if (part.kind === 'model' && still) {
+      const img = document.createElement('img');
+      img.src = part.model.replace('assets/models/', 'assets/models/posters/').replace(/\.glb$/, '.webp');
+      img.alt = `3D model of ${part.label}`;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      return img;
+    }
     if (part.kind === 'model') {
       const mv = document.createElement('model-viewer');
       mv.setAttribute('src', part.model);
@@ -296,7 +321,12 @@ void loop() {
     visual.className = 'chapter-visual';
     const stage = document.createElement('div');
     stage.className = 'chapter-stage' + (hero.kind === 'placeholder' ? ' is-empty' : '');
-    stage.appendChild(stageContent(hero, { measured: true }));
+    if (hero.kind === 'model') {
+      // a still first; the live, measured viewer only while the chapter is on screen (liveStage)
+      stage.appendChild(stageContent(hero, { still: true }));
+      liveStages.set(stage, hero);
+      liveWatcher.observe(stage);
+    } else stage.appendChild(stageContent(hero, { measured: true }));
     if (openable(hero)) {
       const expand = document.createElement('span');
       expand.className = 'chapter-expand';
@@ -313,7 +343,7 @@ void loop() {
         const s = document.createElement('div');
         s.className = 'satellite';
         s.title = p.label;
-        s.appendChild(stageContent(p));
+        s.appendChild(stageContent(p, { still: true }));
         if (openable(p)) s.addEventListener('click', () => window.openLightbox(p));
         sat.appendChild(s);
       });

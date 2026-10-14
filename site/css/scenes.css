@@ -450,20 +450,20 @@
   background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.08), transparent 62%), var(--paper-deep);
 }
 
-.day-sheet--model model-viewer {
+.day-sheet--model img {
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: contain;
+  padding: 6%;
   pointer-events: none;
-  --poster-color: transparent;
-  --progress-bar-color: transparent; /* no loading bar across a card's top edge */
-  --progress-bar-height: 0px;
+  mix-blend-mode: normal;
   /* undeveloped: a blue print of the part, like the photos; true colour once the cursor arrives */
   filter: grayscale(1) sepia(1) hue-rotate(178deg) saturate(2.6) brightness(0.8);
-  transition: filter 0.8s;
+  transition: filter 0.8s, transform 0.7s var(--ease-out);
 }
 
-.day-card.is-past .day-sheet--model model-viewer {
+.day-card.is-past .day-sheet--model img {
   filter: none;
 }
 
@@ -1271,7 +1271,7 @@ html.still .day-pf--ghost {
   .fe-body,
   .day-sheet,
   .day-sheet img,
-  .day-sheet--model model-viewer,
+  .day-sheet--model img,
   .day-elbow {
     transition: none;
   }

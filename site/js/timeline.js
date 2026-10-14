@@ -74,22 +74,14 @@
   // ---------- the pictures ----------
   const thumb = (it) => (it.kind === 'video' ? it.poster : it.thumb);
 
-  function modelViewer(part) {
-    const mv = document.createElement('model-viewer');
-    mv.setAttribute('src', part.model);
-    mv.setAttribute('loading', 'lazy'); // fetched when its card scrolls into the window, not before
-    mv.setAttribute('reveal', 'auto');
-    mv.setAttribute('shadow-intensity', '0.8');
-    mv.setAttribute('environment-image', 'assets/env/studio.hdr'); // same lighting as the chapters
-    mv.setAttribute('tone-mapping', 'aces');
-    mv.setAttribute('exposure', '1.3');
-    mv.setAttribute('interaction-prompt', 'none'); // no camera-controls: a card must never grab the scroll
-    mv.setAttribute('alt', `3D model of ${part.label}`);
-    if (!reduceMotion) {
-      mv.setAttribute('auto-rotate', '');
-      mv.setAttribute('rotation-per-second', '16deg');
-    }
-    return mv;
+  // A still of the model, rendered with the chapters' lighting (assets/models/posters): a live
+  // WebGL viewer per card made the pinned scroll stutter. The card opens the live one.
+  function modelStill(part) {
+    const img = document.createElement('img');
+    img.src = part.model.replace('assets/models/', 'assets/models/posters/').replace(/\.glb$/, '.webp');
+    img.alt = `3D model of ${part.label}`;
+    img.decoding = 'async';
+    return img;
   }
 
   // the playfield outline, twice: a faint full copy, and the one that draws itself in (CSS)
@@ -123,7 +115,7 @@
           </button>
           ${meta}${cap}
         </div>`;
-      li.querySelector('.day-sheet').appendChild(modelViewer(part));
+      li.querySelector('.day-sheet').appendChild(modelStill(part));
       li.querySelector('.day-open').addEventListener('click', () => window.openLightbox && window.openLightbox(part));
     } else if (e.kind === 'drawing') {
       li.className = 'day-card day-card--drawing';
@@ -158,18 +150,6 @@
     list.appendChild(li);
     return li;
   });
-
-  // The models are small (0.1-1 MB) but a blank card on arrival looks broken: once any of the
-  // section is on screen, fetch them all instead of waiting for each card to scroll into view.
-  const viewers = Array.from(list.querySelectorAll('model-viewer'));
-  if (viewers.length && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver((hits) => {
-      if (!hits.some((h) => h.isIntersecting)) return;
-      viewers.forEach((mv) => mv.setAttribute('loading', 'eager'));
-      io.disconnect();
-    });
-    io.observe(section);
-  }
 
   // ---------- geometry ----------
   let dayW = 40;

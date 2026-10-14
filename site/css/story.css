@@ -991,3 +991,20 @@
     --model-viewer-auto-rotate-delay: 999999;
   }
 }
+
+/* the live viewer of the chapter on screen, laid over its still (story.js liveWatcher) */
+.chapter-stage .stage-live {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.chapter-stage .stage-live.is-ready {
+  opacity: 1;
+}
+
+.chapter-stage .stage-live.is-ready + img {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
